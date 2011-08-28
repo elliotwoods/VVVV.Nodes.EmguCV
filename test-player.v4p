@@ -97,13 +97,15 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="1875" top="225" type="Node" width="100">
+   <BOUNDS height="100" left="1875" top="75" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="1875" top="225" type="Box" width="5145">
+   <BOUNDS height="240" left="1875" top="75" type="Box" width="5145">
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
    <PIN encoded="0" pinname="Input String" slicecount="1" values="|Z:\amore media\processed\interviews\kihara.avi|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filename" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Image" srcnodeid="11" srcpinname="Image">

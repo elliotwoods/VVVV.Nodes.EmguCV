@@ -5,3 +5,4 @@ EmguCV is dual license (GPL/commercial). So this code is GPL, and you should be 
 Suggest move to opencvsharp http://code.google.com/p/opencvsharp/
 or discussion with EmguCV about a licensing model for the VVVV community.
 
+Ensure that all the OpenGL dll's + Emgu.CV.dll and Emgu.Util.dll are in your plugin folder. Also note that the location of your plugin folder needs to be set if you're using vvvv26+. Check Prerequisites.zip
