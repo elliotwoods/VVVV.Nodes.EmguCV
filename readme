@@ -1,0 +1,7 @@
+Simple video playback / video capture using EmguCV in VVVV
+Options are open for full replacement of DirectShow, including spreadable video, CV manipulation, access to images in dynamic plugins, CV in dynamic plugins
+
+EmguCV is dual license (GPL/commercial). So this code is GPL, and you should be wary that also your code must be GPL if it employs this.
+Suggest move to opencvsharp http://code.google.com/p/opencvsharp/
+or discussion with EmguCV about a licensing model for the VVVV community.
+
