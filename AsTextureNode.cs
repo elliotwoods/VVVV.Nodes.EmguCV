@@ -68,9 +68,17 @@ namespace VVVV.Nodes.EmguCV
 				if (ImageSource.FrameAttributesChanged)
 					InitialiseImage(ImageSource);
 
-				lock (ImageSource.Lock)
+				try
+				{
 					lock (Lock)
-						CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+						lock (ImageSource.Lock)
+							if (ImageSource.Ptr != null)
+								CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+				}
+				catch
+				{
+					
+				}
 			}
 		}
 
@@ -132,48 +140,55 @@ namespace VVVV.Nodes.EmguCV
         }
         private void CheckChanges(int count)
         {
-            //this is all manual at the moment
-            //ideally we flag images when they change attributes
+			bool needsInit = false;
+			ImageRGB imgIn;
 
-            bool needsInit;
-            bool newInit = false;
-            ImageRGB imgIn;
-            for (int i=0; i<FPinInImage.SliceCount; i++)
-            {
-                imgIn = FPinInImage[i];
-                if (FImageAttributes.ContainsKey(i))
-                {
-					if (imgIn != null)
+			//check for change size
+			if (FImageAttributes.Count != FPinInImage.SliceCount)
+			{
+				needsInit = true;
+
+				//shrink local
+				if (FImageAttributes.Count > FPinInImage.SliceCount)
+				{
+					for (int i = FPinInImage.SliceCount; i < FImageAttributes.Count; i++)
+						FImageAttributes.Remove(i);
+				}
+				//grow local
+				else
+				{
+					for (int i = FImageAttributes.Count; i < FPinInImage.SliceCount; i++)
 					{
-						if (imgIn.Width == FImageAttributes[i].Width && imgIn.Height == FImageAttributes[i].Height)
-						{
-							needsInit = false;
-						}
-						else
-						{
-							FImageAttributes.Remove(i);
-							needsInit = true;
-						}
-					}
-					else
-					{
-						needsInit = false;
-					}
-                } else
-                    needsInit = true;
+						ImageAttributes attribs = new ImageAttributes();
 
-                if (needsInit)
-                {
-                    ImageAttributes attribs = new ImageAttributes();
-                    
-                    //presume BGR
-                    attribs.InitialiseImage(imgIn);
-                    FImageAttributes.Add(i, attribs);
-                    newInit = true;
-                }
-            }
+						//presume BGR input
+						attribs.InitialiseImage(FPinInImage[i]);
+						FImageAttributes.Add(i, attribs);
+					}
+				}
 
-            if (newInit)
+			}
+
+			//check for data changes
+			for (int i = 0; i < count; i++)
+			{
+				imgIn = FPinInImage[i];
+
+				// this should be dealt with by ImageRGB.FrameAttributesChanged
+				if (imgIn.Width != FImageAttributes[i].Width || imgIn.Height != FImageAttributes[i].Height)
+				{
+					ImageAttributes attribs = new ImageAttributes();
+
+					//presume BGR input
+					attribs.InitialiseImage(imgIn);
+					FImageAttributes[i] = attribs;
+
+					needsInit = true;
+				}
+			}
+
+			//seems a shame to have to reinitialise absolutely everything..
+			if (needsInit)
                 Reinitialize();
         }
 

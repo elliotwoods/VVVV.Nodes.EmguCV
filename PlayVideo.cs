@@ -24,7 +24,7 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class PlayVideoInstance : IDisposable
+	class PlayVideoInstance
 	{
 		public string Filename = "";
 
@@ -68,15 +68,12 @@ namespace VVVV.Nodes.EmguCV
 			_Status = "Player open success";
 			HasCapture = true;
 
+			Image.FrameAttributesChanged = true;
+
 			Filename = filename;
 			CaptureThreadRun = true;
 			CaptureThread = new Thread(fnCapture);
 			CaptureThread.Start();
-		}
-
-		public void Dispose()
-		{
-			Close();
 		}
 
 		public void Close()
@@ -84,7 +81,7 @@ namespace VVVV.Nodes.EmguCV
 			if (HasCapture)
 			{
 				CaptureThreadRun = false;
-				CaptureThread.Join();
+				CaptureThread.Join(100);
 				_Status = "Capture thread closed";
 
 				_Capture.Dispose();
@@ -182,7 +179,7 @@ namespace VVVV.Nodes.EmguCV
 				Help = "Plays AVI files into IPLImage, using libavcodec(?)",
 				Tags = "")]
 	#endregion PluginInfo
-	public class PlayVideoNode : IPluginEvaluate
+	public class PlayVideoNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
 
@@ -211,9 +208,6 @@ namespace VVVV.Nodes.EmguCV
 		ILogger FLogger;
 
 		IPluginHost FHost;
-
-		//track the current texture slice
-		int FCurrentSlice;
 
 		Dictionary<int, PlayVideoInstance> FCaptures= new Dictionary<int, PlayVideoInstance>();
 
@@ -246,8 +240,8 @@ namespace VVVV.Nodes.EmguCV
 
 			if (FPinInFilename.IsChanged)
 			{
-				if (FCaptures.Count != FPinInFilename.SliceCount)
-					ResizeOutput(FPinInFilename.SliceCount);
+				if (FCaptures.Count != SpreadMax)
+					ResizeOutput(SpreadMax);
 
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -261,13 +255,15 @@ namespace VVVV.Nodes.EmguCV
 					}
 				}
 
-				if (FCaptures.Count > FPinInFilename.SliceCount)
+				if (FCaptures.Count > SpreadMax)
 				{
-					for (int i = FPinInFilename.SliceCount; i < FCaptures.Count; i++)
+					for (int i = SpreadMax; i < FCaptures.Count; i++)
 					{
 						FCaptures.Remove(i);
 					}
 				}
+
+				TakeInputs(SpreadMax);
 			}
 
 			if (FPinInPlay.IsChanged)
@@ -286,6 +282,20 @@ namespace VVVV.Nodes.EmguCV
 				}
 			}
 
+			GiveOutputs();
+		}
+
+		void TakeInputs(int count)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				FCaptures[i].Play = FPinInPlay[i];
+				FCaptures[i].Loop = FPinInLoop[i];
+			}
+		}
+
+		void GiveOutputs()
+		{
 			foreach (KeyValuePair<int, PlayVideoInstance> player in FCaptures)
 			{
 				if (player.Value.IsRunning)

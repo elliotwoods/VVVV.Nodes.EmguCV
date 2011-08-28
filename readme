@@ -19,3 +19,9 @@ The ImageRGB type wraps Image<Bgr, byte> (which actually is RGB not BGR strangel
 However, it's likely we should consider creating a resource dll VVVV.CV.dll or similar which defines some utility types and nodes. Vux previously suggested having a flag to say whether the image is fresh, so we dont process it further down the line unles changes have been made. ImageRGB wrapper class has this functionality, but is not fully tested yet. I suggest more capable VVVV platform people (e.g. vux, Elias) pitch in on that wrapper. 
 
 In conclusion, this is a proof of concept, and a temporary solution for some projects. I expect more capable hands will come along and rewrite from scratch before this becomes a solid platform to work on, but if people have suggestions on developing this in the time being, they'd be more than welcome! Please use issues on github
+
+
+=====
+TODO
+=====
+Create ICaptureNode interface for simplifying development of capture nodes

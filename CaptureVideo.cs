@@ -17,11 +17,72 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.Util;
 using System.Threading;
+using System.Collections.Generic;
 
 #endregion usings
 
 namespace VVVV.Nodes.EmguCV
 {
+	class CaptureVideoInstance
+	{
+		public int CameraID;
+		public string Status;
+
+		Thread FCaptureThread;
+		bool FRunCaptureThread = false;
+
+		public ImageRGB Image = new ImageRGB();
+		Capture FCapture;
+		public bool IsRunning;
+
+		public void Initialise(int id)
+		{
+			Close();
+			try
+			{
+				FCapture = new Capture(id); //create a camera captue
+			}
+			catch
+			{
+				Status = "Camera open failed";
+				IsRunning = false;
+				return;
+			}
+
+			Status = "Camera open success";
+			IsRunning = true;
+
+			CameraID = id;
+
+			FRunCaptureThread = true;
+			FCaptureThread = new Thread(fnCapture);
+			FCaptureThread.Start();
+		}
+
+		private void fnCapture()
+		{
+			while (FRunCaptureThread)
+			{
+				lock(Image.Lock)
+					Image.Img = FCapture.QueryFrame();
+
+				//allow a gap where we're not locked
+				Thread.Sleep(5);
+			}
+		}
+
+		public void Close()
+		{
+			if (IsRunning)
+			{
+				FRunCaptureThread = false;
+				FCaptureThread.Join(100);
+				FCapture.Dispose();
+				IsRunning = false;
+			}
+		}
+
+	}
     #region PluginInfo
     [PluginInfo(Name = "VideoIn",
                 Category = "EmguCV",
@@ -29,7 +90,7 @@ namespace VVVV.Nodes.EmguCV
                 Help = "Captures from DShow device to IPLImage",
                 Tags = "")]
     #endregion PluginInfo
-    public class CaptureVideoNode : IPluginEvaluate
+    public class CaptureVideoNode : IPluginEvaluate, IDisposable
     {
         #region fields & pins
 
@@ -37,7 +98,7 @@ namespace VVVV.Nodes.EmguCV
         IDiffSpread<int> FPinInCameraID;
 
         [Output("Image")]
-        ISpread<Image<Bgr, byte>> FPinOutImage;
+        ISpread<ImageRGB> FPinOutImage;
 
         [Output("Status")]
         ISpread<string> FPinOutStatus;
@@ -47,15 +108,7 @@ namespace VVVV.Nodes.EmguCV
 
         IPluginHost FHost;
 
-        //track the current texture slice
-        int FCurrentSlice;
-
-        Thread      FCaptureThread;
-        bool        FRunCaptureThread = false;
-
-        Image<Bgr, byte>        FImage;
-        Capture                 FCapture;
-        bool                    FHasCapture;
+		Dictionary<int, CaptureVideoInstance> FCaptures = new Dictionary<int, CaptureVideoInstance>();
 
         #endregion fields & pins
 
@@ -66,52 +119,75 @@ namespace VVVV.Nodes.EmguCV
             FHost = host;
         }
 
+		public void Dispose()
+		{
+			foreach (KeyValuePair<int, CaptureVideoInstance> capture in FCaptures)
+				capture.Value.Close();
+
+			GC.SuppressFinalize(this);
+		}
+
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
+			if (SpreadMax == 0)
+			{
+				FCaptures.Clear();
+				ResizeOutput(0);
+				return;
+			}
+
             if (FPinInCameraID.IsChanged)
             {
-                InitialiseCamera(FPinInCameraID[0]);
+				if (FCaptures.Count != SpreadMax)
+					ResizeOutput(SpreadMax);
+
+				for (int i = 0; i < SpreadMax; i++)
+				{
+					if (!FCaptures.ContainsKey(i))
+					{
+						FCaptures.Add(i, new CaptureVideoInstance());
+					}
+					if (FCaptures[i].CameraID != FPinInCameraID[i])
+						FCaptures[i].Initialise(FPinInCameraID[i]);
+				}
+
+				if (FCaptures.Count > SpreadMax)
+				{
+					for (int i = SpreadMax; i < FCaptures.Count; i++)
+					{
+						FCaptures.Remove(i);
+					}
+				}
             }
 
-            if (FRunCaptureThread)
-                FPinOutImage[0] = FImage;
+			GiveOutputs();
         }
 
-		private void InitialiseCamera(int id)
-        {
-            CloseCamera();
-            try
-            {
-                FCapture = new Capture(id); //create a camera captue
-            }
-            catch
-            {
-				FPinOutStatus[0] = "Camera open failed";
-                return;
-            }
+		void GiveOutputs()
+		{
+			foreach (KeyValuePair<int, CaptureVideoInstance> capture in FCaptures)
+			{
+				if (capture.Value.Image.FrameChanged)
+				{
+					FPinOutImage[capture.Key] = capture.Value.Image;
+				}
+				FPinOutStatus[capture.Key] = capture.Value.Status;
+			}
+		}
 
-			FPinOutStatus[0] = "Camera open success";
-            FHasCapture = true;
+		void ResizeOutput(int count)
+		{
+			FPinOutStatus.SliceCount = count;
+			FPinOutImage.SliceCount = count;
 
-            FRunCaptureThread = true;
-            FCaptureThread = new Thread(fnCapture);
-            FCaptureThread.Start();
-        }
-        private void CloseCamera()
-        {
-            if (FHasCapture)
-                FCapture.Dispose();
-            FHasCapture = false;
-        }
-
-        private void fnCapture()
-        {
-            while (FRunCaptureThread)
-            {
-                FImage = FCapture.QueryFrame();
-                FPinOutImage[0] = FImage;
-            }
-        }
+			for (int i = 0; i < count; i++)
+			{
+				if (FPinOutImage[i] == null)
+				{
+					FPinOutImage[i] = new ImageRGB();
+				}
+			}
+		}
     }
 }

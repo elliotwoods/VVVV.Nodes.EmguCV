@@ -13,8 +13,17 @@ namespace VVVV.Nodes.EmguCV
 	{
 		public Object Lock = new Object();
 		private Image<Bgr, byte> _Img;
-		public bool FrameChanged = false;
+
 		public bool FrameAttributesChanged = false;
+
+		public bool FrameChanged
+		{
+			get
+			{
+				return _FrameChanged;
+			}
+		}
+		bool _FrameChanged = false;
 
 		public Image<Bgr, byte> Img
 		{
@@ -29,6 +38,7 @@ namespace VVVV.Nodes.EmguCV
 				if (value == null)
 				{
 					FrameAttributesChanged = true;
+					_FrameChanged = false;
 				}
 				else
 				{
@@ -37,7 +47,7 @@ namespace VVVV.Nodes.EmguCV
 					else
 						FrameAttributesChanged = false;
 				}
-				FrameChanged = true;
+				_FrameChanged = true;
 			}
 		}
 
