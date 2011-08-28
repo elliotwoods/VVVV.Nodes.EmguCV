@@ -55,4 +55,6 @@ Contour
 FindChessboardCorners
 
 StereoCalibrate
+
+AsImage					Convert texture to image (AsVideo in existing DirectShow). - requires texture input on plugins (i.e. not possible yet)
 //-------------------
