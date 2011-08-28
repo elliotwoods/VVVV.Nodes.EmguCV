@@ -36,6 +36,18 @@ Double buffering on ICaptureNode (get rid of low fps issue on VideoIn)
 //
 //-------------------
 
+
+
+//-------------------
+INTERFACE SUGGESTIONS
+//-------------------
+ICaptureNode
+ICaptureInstance
+IImageInputNode (e.g. AsTexture, FaceTracker)
+//-------------------
+
+
+
 //-------------------
 NODE SUGGESTIONS
 //-------------------

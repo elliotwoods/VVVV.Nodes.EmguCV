@@ -25,7 +25,7 @@ namespace VVVV.Nodes.EmguCV
 {
 	class CaptureVideoInstance
 	{
-		public int CameraID;
+		public int CameraID = -1;
 		public string Status;
 
 		Thread FCaptureThread;
@@ -33,7 +33,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public ImageRGB Image = new ImageRGB();
 		Capture FCapture;
-		public bool IsRunning;
+		public bool IsRunning = false;
+
+		Image<Bgr, byte> FBuffer = null;
 
 		public void Initialise(int id)
 		{
@@ -54,6 +56,8 @@ namespace VVVV.Nodes.EmguCV
 
 			CameraID = id;
 
+			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FCapture.Width, FCapture.Height));
+
 			FRunCaptureThread = true;
 			FCaptureThread = new Thread(fnCapture);
 			FCaptureThread.Start();
@@ -63,9 +67,10 @@ namespace VVVV.Nodes.EmguCV
 		{
 			while (FRunCaptureThread)
 			{
-				lock(Image.Lock)
-					Image.Img = FCapture.QueryFrame();
+				FBuffer = FCapture.QueryFrame();
 
+				lock (Image.Lock)
+					Image.Img = FBuffer;
 				//allow a gap where we're not locked
 				Thread.Sleep(5);
 			}
@@ -75,9 +80,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (IsRunning)
 			{
+
 				FRunCaptureThread = false;
 				FCaptureThread.Join(100);
 				FCapture.Dispose();
+				FBuffer.Dispose();
 				IsRunning = false;
 			}
 		}
@@ -94,7 +101,7 @@ namespace VVVV.Nodes.EmguCV
     {
         #region fields & pins
 
-        [Input("Camera ID", DefaultValue = 0)]
+        [Input("Camera ID", DefaultValue = 0, MinValue=0)]
         IDiffSpread<int> FPinInCameraID;
 
         [Output("Image")]
@@ -137,8 +144,8 @@ namespace VVVV.Nodes.EmguCV
 				return;
 			}
 
-            if (FPinInCameraID.IsChanged)
-            {
+			//if (FPinInCameraID.IsChanged)
+			//{
 				if (FCaptures.Count != SpreadMax)
 					ResizeOutput(SpreadMax);
 
@@ -147,6 +154,7 @@ namespace VVVV.Nodes.EmguCV
 					if (!FCaptures.ContainsKey(i))
 					{
 						FCaptures.Add(i, new CaptureVideoInstance());
+						FCaptures[i].Initialise(FPinInCameraID[i]);
 					}
 					if (FCaptures[i].CameraID != FPinInCameraID[i])
 						FCaptures[i].Initialise(FPinInCameraID[i]);
@@ -159,7 +167,7 @@ namespace VVVV.Nodes.EmguCV
 						FCaptures.Remove(i);
 					}
 				}
-            }
+			//}
 
 			GiveOutputs();
         }
