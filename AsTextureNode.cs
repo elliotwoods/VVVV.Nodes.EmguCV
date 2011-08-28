@@ -101,7 +101,7 @@ namespace VVVV.Nodes.EmguCV
     #region PluginInfo
     [PluginInfo(Name = "AsTexture",
                 Category = "EmguCV",
-                Version = "",
+                Version = "RGB",
                 Help = "Converts IPLImage to Texture",
                 Tags = "")]
     #endregion PluginInfo

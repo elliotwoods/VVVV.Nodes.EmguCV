@@ -21,7 +21,38 @@ However, it's likely we should consider creating a resource dll VVVV.CV.dll or s
 In conclusion, this is a proof of concept, and a temporary solution for some projects. I expect more capable hands will come along and rewrite from scratch before this becomes a solid platform to work on, but if people have suggestions on developing this in the time being, they'd be more than welcome! Please use issues on github
 
 
-=====
+//-------------------
 TODO
-=====
+//-------------------
+//
+Naming convention
+currently we have VideoIn and VideoPlayer
+i.e. [Asset][What it does]
+
 Create ICaptureNode interface for simplifying development of capture nodes
+
+Double buffering on ICaptureNode (get rid of low fps issue on VideoIn)
+
+//
+//-------------------
+
+//-------------------
+NODE SUGGESTIONS
+//-------------------
++						adds colour values
+-						subtracts colour values
+Queue
+Cons
+
+ImageLoad				Loads a set of images into RAM as ImageRGB's
+ImageSave
+VideoSave				Built into CV so should be decent performance
+
+AsTexture(Greyscale)	Deals with new type ImageGreyscale
+
+FaceTracker				(alg!!! :) )
+Contour
+FindChessboardCorners
+
+StereoCalibrate
+//-------------------
