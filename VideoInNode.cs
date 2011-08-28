@@ -35,13 +35,13 @@ namespace VVVV.Nodes.EmguCV
 		Capture FCapture;
 		public bool IsRunning = false;
 
+		Image<Bgr, byte> FBuffer = null;
+
 		public void Initialise(int id)
 		{
 			Close();
 			try
 			{
-				if (id == 1)
-					throw (new Exception("can't load id1")) ;
 				FCapture = new Capture(id); //create a camera captue
 			}
 			catch
@@ -56,6 +56,8 @@ namespace VVVV.Nodes.EmguCV
 
 			CameraID = id;
 
+			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FCapture.Width, FCapture.Height));
+
 			FRunCaptureThread = true;
 			FCaptureThread = new Thread(fnCapture);
 			FCaptureThread.Start();
@@ -65,9 +67,10 @@ namespace VVVV.Nodes.EmguCV
 		{
 			while (FRunCaptureThread)
 			{
-				lock(Image.Lock)
-					Image.Img = FCapture.QueryFrame();
+				FBuffer = FCapture.QueryFrame();
 
+				lock (Image.Lock)
+					Image.Img = FBuffer;
 				//allow a gap where we're not locked
 				Thread.Sleep(5);
 			}
@@ -77,9 +80,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (IsRunning)
 			{
+
 				FRunCaptureThread = false;
 				FCaptureThread.Join(100);
 				FCapture.Dispose();
+				FBuffer.Dispose();
 				IsRunning = false;
 			}
 		}
