@@ -94,6 +94,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FaceTrackingNode.cs" />
     <Compile Include="VideoInNode.cs" />
     <Compile Include="AsTextureNode.cs" />
     <Compile Include="ImageRGB.cs" />
