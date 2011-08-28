@@ -6,7 +6,7 @@ Options are open for full replacement of DirectShow, including spreadable video 
 EmguCV is dual license (GPL/commercial). So this code is GPL, and you should be wary that also your code must be GPL if it employs this.
 Suggest move to opencvsharp http://code.google.com/p/opencvsharp/
 or discussion with EmguCV about a licensing model for the VVVV community. 
-Ensure that all the OpenGL dll's + Emgu.CV.dll and Emgu.Util.dll are in your plugin folder. Also note that the location of your plugin folder needs to be set if you're using vvvv26+. Check Prerequisites.zip (there's an old version of the plugins in there as well)
+Ensure that all the OpenCV dll's + Emgu.CV.dll and Emgu.Util.dll are in the same folder as the plugin. Check Prerequisites.zip (there's an old version of the plugins in there as well)
 
 Notes for video playback:
 1. This isn't going to employ any fancy hardware optimisation. If you need to chunk big video files, suggest sticking with FileStream + clever codecs.
