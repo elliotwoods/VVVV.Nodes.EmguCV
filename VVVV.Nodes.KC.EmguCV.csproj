@@ -94,10 +94,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaptureVideo.cs" />
+    <Compile Include="VideoInNode.cs" />
     <Compile Include="AsTextureNode.cs" />
     <Compile Include="ImageRGB.cs" />
-    <Compile Include="PlayVideo.cs" />
+    <Compile Include="VideoPlayerNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

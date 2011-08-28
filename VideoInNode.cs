@@ -25,7 +25,7 @@ namespace VVVV.Nodes.EmguCV
 {
 	class CaptureVideoInstance
 	{
-		public int CameraID;
+		public int CameraID = -1;
 		public string Status;
 
 		Thread FCaptureThread;
@@ -33,13 +33,15 @@ namespace VVVV.Nodes.EmguCV
 
 		public ImageRGB Image = new ImageRGB();
 		Capture FCapture;
-		public bool IsRunning;
+		public bool IsRunning = false;
 
 		public void Initialise(int id)
 		{
 			Close();
 			try
 			{
+				if (id == 1)
+					throw (new Exception("can't load id1")) ;
 				FCapture = new Capture(id); //create a camera captue
 			}
 			catch
@@ -94,7 +96,7 @@ namespace VVVV.Nodes.EmguCV
     {
         #region fields & pins
 
-        [Input("Camera ID", DefaultValue = 0)]
+        [Input("Camera ID", DefaultValue = 0, MinValue=0)]
         IDiffSpread<int> FPinInCameraID;
 
         [Output("Image")]
@@ -137,8 +139,8 @@ namespace VVVV.Nodes.EmguCV
 				return;
 			}
 
-            if (FPinInCameraID.IsChanged)
-            {
+			//if (FPinInCameraID.IsChanged)
+			//{
 				if (FCaptures.Count != SpreadMax)
 					ResizeOutput(SpreadMax);
 
@@ -147,6 +149,7 @@ namespace VVVV.Nodes.EmguCV
 					if (!FCaptures.ContainsKey(i))
 					{
 						FCaptures.Add(i, new CaptureVideoInstance());
+						FCaptures[i].Initialise(FPinInCameraID[i]);
 					}
 					if (FCaptures[i].CameraID != FPinInCameraID[i])
 						FCaptures[i].Initialise(FPinInCameraID[i]);
@@ -159,7 +162,7 @@ namespace VVVV.Nodes.EmguCV
 						FCaptures.Remove(i);
 					}
 				}
-            }
+			//}
 
 			GiveOutputs();
         }
