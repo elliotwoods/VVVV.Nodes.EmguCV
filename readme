@@ -44,7 +44,7 @@ NODE SUGGESTIONS
 Queue
 Cons
 
-ImageLoad				Loads a set of images into RAM as ImageRGB's
+ImageLoad				Loads a set of images into RAM as ImageRGB's. Either use OpenCV's image loader or .NET's Bitmap class (probably quicker)
 ImageSave
 VideoSave				Built into CV so should be decent performance
 
