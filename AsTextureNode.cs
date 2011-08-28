@@ -31,36 +31,47 @@ namespace VVVV.Nodes.EmguCV
         public int Width, Height;
 		Image<Rgba, byte> Image;
 		public bool Initialised = false;
+		public Object Lock = new Object();
 
-        public void InitialiseImage(Image<Bgr, byte> imgIn)
+        public void InitialiseImage(ImageRGB imgIn)
         {
-			if (imgIn == null)
+			lock (Lock)
 			{
-				Image = null;
-				Initialised = false;
-				return;
-			}
+				if (imgIn == null)
+				{
+					Image = null;
+					Initialised = false;
+					return;
+				}
 
-			Width = imgIn.Width;
-			Height = imgIn.Height;
-			if (Width > 0 && Height > 0)
-			{
-				Image = new Image<Rgba, byte>(Width, Height);
-				Initialised = true;
-			}
-			else
-			{
-				Initialised = false;
+				Width = imgIn.Width;
+				Height = imgIn.Height;
+				if (Width > 0 && Height > 0)
+				{
+					Image = new Image<Rgba, byte>(Width, Height);
+					Initialised = true;
+				}
+				else
+				{
+					Initialised = false;
+				}
 			}
         }
 
-		public void Resample(Image<Bgr, byte> ImageSource)
+		public void Load(ImageRGB ImageSource)
 		{
 			if (ImageSource == null)
 				Close();
 
-			if (Initialised)
-				CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+			if (Initialised && ImageSource.FrameChanged)
+			{
+				if (ImageSource.FrameAttributesChanged)
+					InitialiseImage(ImageSource);
+
+				lock (ImageSource.Lock)
+					lock (Lock)
+						CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+			}
 		}
 
 		public void Close()
@@ -90,7 +101,7 @@ namespace VVVV.Nodes.EmguCV
     {
         #region fields & pins
         [Input("Image")]
-        IDiffSpread<Image<Bgr, byte>> FPinInImage;
+        IDiffSpread<ImageRGB> FPinInImage;
 
         [Import]
         ILogger FLogger;
@@ -115,13 +126,9 @@ namespace VVVV.Nodes.EmguCV
         {
             SetSliceCount(SpreadMax);
 
-            if (FPinInImage.IsChanged)
-            {
-                CheckChanges(SpreadMax);
+            CheckChanges(SpreadMax);
 
-				Update();
-            }
-
+			CheckUpdates();
         }
         private void CheckChanges(int count)
         {
@@ -130,7 +137,7 @@ namespace VVVV.Nodes.EmguCV
 
             bool needsInit;
             bool newInit = false;
-            Image<Bgr, byte> imgIn;
+            ImageRGB imgIn;
             for (int i=0; i<FPinInImage.SliceCount; i++)
             {
                 imgIn = FPinInImage[i];
@@ -168,12 +175,14 @@ namespace VVVV.Nodes.EmguCV
 
             if (newInit)
                 Reinitialize();
-
-			foreach (KeyValuePair<int,ImageAttributes> img in FImageAttributes)
-				img.Value.Resample(FPinInImage[img.Key]);
-			
-
         }
+
+		void CheckUpdates()
+		{
+			foreach (KeyValuePair<int, ImageAttributes> img in FImageAttributes)
+				img.Value.Load(FPinInImage[img.Key]);
+			Update();
+		}
 
         //this method gets called, when Reinitialize() was called in evaluate,
         //or a graphics device asks for its data
@@ -200,7 +209,8 @@ namespace VVVV.Nodes.EmguCV
                 Surface srf = texture.GetSurfaceLevel(0);
                 DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-				rect.Data.WriteRange(FImageAttributes[Slice].Ptr, FImageAttributes[Slice].Width * FImageAttributes[Slice].Height * 4);
+				lock(FImageAttributes[Slice].Lock)
+					rect.Data.WriteRange(FImageAttributes[Slice].Ptr, FImageAttributes[Slice].Width * FImageAttributes[Slice].Height * 4);
 
                 srf.UnlockRectangle();
             }

@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="CaptureVideo.cs" />
     <Compile Include="AsTextureNode.cs" />
+    <Compile Include="RGBImage.cs" />
     <Compile Include="PlayVideo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
