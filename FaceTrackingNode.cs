@@ -12,55 +12,57 @@ using VVVV.Core.Logging;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
-using ThreadState = System.Threading.ThreadState;
 using System.Collections.Generic;
 
 #endregion usings
 
 namespace VVVV.Nodes.EmguCV
 {
-	class FaceTrackingFace
+	class FaceTrackingElement
 	{
 		public Vector2D Position;
 		public Vector2D Scale;
 	}
+
 	class FaceTrackingInstance
 	{
-		readonly Vector2D CMinimumSourceXY = new Vector2D(0, 0);
-		readonly Vector2D CMinimumDestXY = new Vector2D(-1, 1);
-		readonly Vector2D CMaximumDestXY = new Vector2D(1, -1);
+		private readonly Vector2D CMinimumSourceXY = new Vector2D(0, 0);
+		private readonly Vector2D CMinimumDestXY = new Vector2D(-1, 1);
+		private readonly Vector2D CMaximumDestXY = new Vector2D(1, -1);
 
 		private Thread FTrackingThread;
-
-		bool IsRunning;
-		public List<FaceTrackingFace> Faces = new List<FaceTrackingFace>();
-		ImageRGB FSource = null;
-		Image<Gray, byte> FGrayImage;
-		HaarCascade FHaarCascade;
+		private bool FIsRunning;
+		
+		public List<FaceTrackingElement> Faces = new List<FaceTrackingElement>();
+		public List<FaceTrackingElement> Eyes = new List<FaceTrackingElement>(); 
+		
+		private ImageRGB FSource = null;
+		private Image<Gray, byte> FGrayImage;
+		private HaarCascade FFaceHaarCascade;
+		private HaarCascade FEyesHaarCascade;
 
 		public FaceTrackingInstance(ImageRGB image, HaarCascade cascade)
 		{
 			FSource = image;
-			FHaarCascade = cascade;
-			FTrackingThread = new Thread(fnFindFacesThread);
+			FFaceHaarCascade = cascade;
+			FTrackingThread = new Thread(FindFacesThread);
 			FTrackingThread.Start();
 
-			IsRunning = true;
+			FIsRunning = true;
 		}
 
 		public void Close()
 		{
-			if (IsRunning)
-			{
-				IsRunning = false;
-				FTrackingThread.Join(100);
-				FTrackingThread = null;
-			}
+			if (!FIsRunning) return;
+			
+			FIsRunning = false;
+			FTrackingThread.Join(100);
+			FTrackingThread = null;
 		}
 
-		void fnFindFacesThread()
+		void FindFacesThread()
 		{
-			while (IsRunning)
+			while (FIsRunning)
 			{
 				if (FSource.FrameChanged)
 					lock(this)
@@ -77,31 +79,45 @@ namespace VVVV.Nodes.EmguCV
 						
 						FGrayImage._EqualizeHist();
 
-						MCvAvgComp[] faceDetected = FHaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
-
+						MCvAvgComp[] faceDetected = FFaceHaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
 
 						Faces.Clear();
 
 						foreach (MCvAvgComp f in faceDetected)
 						{
-							FaceTrackingFace face = new FaceTrackingFace();
-							var faceVector = new Vector2D(f.rect.X + f.rect.Width / 2, f.rect.Y + f.rect.Height / 2);
+							FaceTrackingElement face = new FaceTrackingElement();
+							
+							Vector2D facePosition = new Vector2D(f.rect.X + f.rect.Width / 2, f.rect.Y + f.rect.Height / 2);
+							Vector2D maximumSourceXY = new Vector2D(FGrayImage.Width, FGrayImage.Height);
 
-							Vector2D CMaximumSourceXY = new Vector2D(FGrayImage.Width, FGrayImage.Height);
-
-							face.Position = VMath.Map(faceVector, CMinimumSourceXY, CMaximumSourceXY, CMinimumDestXY, CMaximumDestXY, TMapMode.Float);
-							face.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), CMinimumSourceXY.x, CMaximumSourceXY.x, 0, 2, TMapMode.Float);
+							face.Position = VMath.Map(facePosition, CMinimumSourceXY, maximumSourceXY, CMinimumDestXY, CMaximumDestXY, TMapMode.Float);
+							face.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), CMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
 
 							Faces.Add(face);
+
+							FGrayImage.ROI = f.rect;
+							MCvAvgComp[] eyeDetected = FFaceHaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width/8, FGrayImage.Height/8));
+							FGrayImage.ROI = Rectangle.Empty;
+
+							foreach (var e in eyeDetected)
+							{
+								FaceTrackingElement eye = new FaceTrackingElement();
+
+								Vector2D eyePosition = new Vector2D(e.rect.X + e.rect.Width / 2, e.rect.Y + f.rect.Height / 2);
+
+								eye.Position = VMath.Map(eyePosition, CMinimumSourceXY, maximumSourceXY, CMinimumDestXY, CMaximumDestXY, TMapMode.Float);
+								eye.Scale = VMath.Map(new Vector2D(e.rect.Width, e.rect.Height), CMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
+
+								Eyes.Add(eye);
+							}
 						}
 					}
-				
 			}
 		}
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "FaceTracking", Category = "EmguCV", Help = "Tracks faces XY and Width/Height", Tags = "")]
+	[PluginInfo(Name = "FaceTracking", Category = "EmguCV", Help = "Tracks faces and eyes", Author = "alg, sugokuGENKI", Tags = "")]
 	#endregion PluginInfo
 	public class FaceTrackingNode : IPluginEvaluate, IDisposable
 	{
@@ -109,17 +125,26 @@ namespace VVVV.Nodes.EmguCV
 		[Input("Image", IsSingle = true)]
 		ISpread<ImageRGB> FPinInImages;
 
-		[Input("Haar Table", DefaultString = "haarcascade_frontalface_alt2.xml", IsSingle = true, StringType = StringType.Filename)] 
-		IDiffSpread<string> FPath;
+		[Input("Face Haar Table", DefaultString = "haarcascade_frontalface_alt2.xml", IsSingle = true, StringType = StringType.Filename)] 
+		IDiffSpread<string> FFacePath;
+
+		[Input("Eyes Haar Table", DefaultString = null, IsSingle = true, StringType = StringType.Filename)] 
+		IDiffSpread<string> FEyesPath;
 
 		[Input("Enabled", DefaultValue = 1)]
 		ISpread<bool> FEnabled;
 
-		[Output("Position")] 
-		ISpread<ISpread<Vector2D>> FPinOutPositionXY;
+		[Output("Face Position")] 
+		ISpread<ISpread<Vector2D>> FPinOutFacePositionXY;
 
-		[Output("Scale")] 
-		ISpread<ISpread<Vector2D>> FPinOutScaleXY;
+		[Output("Face Scale")] 
+		ISpread<ISpread<Vector2D>> FPinOutFaceScaleXY;
+
+		[Output("Eye Position")] 
+		ISpread<ISpread<Vector2D>> FPinOutEyePositionXY;
+
+		[Output("Eye Scale")]
+		ISpread<ISpread<Vector2D>> FPinOutEyeScaleXY;
 
 		[Output("Status")]
 		ISpread<string> FStatus;
@@ -127,8 +152,11 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		HaarCascade FHaarCascade;
-		Dictionary<int, FaceTrackingInstance> FFaceTrackers = new Dictionary<int,FaceTrackingInstance>();
+		private HaarCascade FFaceHaarCascade;
+		private HaarCascade FEyesHaarCascade;
+
+		private Dictionary<int, FaceTrackingInstance> FFaceTrackers = new Dictionary<int,FaceTrackingInstance>();
+		
 
 		#endregion fields & pins
 
@@ -147,13 +175,13 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FPath.IsChanged)
+			if(FFacePath.IsChanged)
 			{
-				if (FPath.SliceCount > 0)
+				if (FFacePath.SliceCount > 0)
 				{
 					try
 					{
-						FHaarCascade = new HaarCascade(FPath[0]);
+						FFaceHaarCascade = new HaarCascade(FFacePath[0]);
 					}
 					catch
 					{
@@ -163,7 +191,23 @@ namespace VVVV.Nodes.EmguCV
 				}
 			}
 
-			if (FHaarCascade == null)
+			if(FEyesPath.IsChanged)
+			{
+				if(FEyesPath.SliceCount > 0)
+				{
+					try
+					{
+						FEyesHaarCascade = new HaarCascade(FEyesPath[0]);
+					}
+					catch
+					{
+						
+						FLogger.Log(LogType.Error, "Eyes haar cascade was not loaded");
+					}
+				}
+			}
+
+			if (FFaceHaarCascade == null)
 			{
 				FStatus.SliceCount = 1;
 				FStatus[0] = "Please load haar cascade xml";
@@ -180,35 +224,44 @@ namespace VVVV.Nodes.EmguCV
 			for (int i = 0; i < FPinInImages.SliceCount; i++)
 			{
 				if (!FFaceTrackers.ContainsKey(i))
-					FFaceTrackers.Add(i, new FaceTrackingInstance(FPinInImages[i], FHaarCascade));
+					FFaceTrackers.Add(i, new FaceTrackingInstance(FPinInImages[i], FFaceHaarCascade));
 				else if (FPinInImages[i].FrameAttributesChanged)
-					FFaceTrackers[i] = new FaceTrackingInstance(FPinInImages[i], FHaarCascade);
+					FFaceTrackers[i] = new FaceTrackingInstance(FPinInImages[i], FFaceHaarCascade);
 			}
 
-			if (FFaceTrackers.Count > FPinInImages.SliceCount)
+			if (FFaceTrackers.Count <= FPinInImages.SliceCount) return;
+			
+			for (int i = FPinInImages.SliceCount; i < FFaceTrackers.Count; i++)
 			{
-				for (int i = FPinInImages.SliceCount; i < FFaceTrackers.Count; i++)
-				{
-					FFaceTrackers.Remove(i);
-				}
+				FFaceTrackers.Remove(i);
 			}
 		}
 
 		void OutputFaces()
 		{
-			FPinOutPositionXY.SliceCount = FFaceTrackers.Count;
-			FPinOutScaleXY.SliceCount = FFaceTrackers.Count;
+			FPinOutFacePositionXY.SliceCount = FFaceTrackers.Count;
+			FPinOutFaceScaleXY.SliceCount = FFaceTrackers.Count;
 
 			foreach (KeyValuePair<int, FaceTrackingInstance> tracker in FFaceTrackers)
 			{
-				int count = tracker.Value.Faces.Count;
-				FPinOutPositionXY[tracker.Key].SliceCount = count;
-				FPinOutScaleXY[tracker.Key].SliceCount = count;
+				int faceCount = tracker.Value.Faces.Count;
+				FPinOutFacePositionXY[tracker.Key].SliceCount = faceCount;
+				FPinOutFaceScaleXY[tracker.Key].SliceCount = faceCount;
 
-				for (int i = 0; i < count; i++)
+				for (int i = 0; i < faceCount; i++)
 				{
-					FPinOutPositionXY[tracker.Key][i] = tracker.Value.Faces[i].Position;
-					FPinOutScaleXY[tracker.Key][i] = tracker.Value.Faces[i].Scale;
+					FPinOutFacePositionXY[tracker.Key][i] = tracker.Value.Faces[i].Position;
+					FPinOutFaceScaleXY[tracker.Key][i] = tracker.Value.Faces[i].Scale;
+				}
+
+				int eyeCount = tracker.Value.Eyes.Count;
+				FPinOutEyePositionXY[tracker.Key].SliceCount = eyeCount;
+				FPinOutEyeScaleXY[tracker.Key].SliceCount = eyeCount;
+
+				for (int j = 0; j < eyeCount; j++)
+				{
+					FPinOutEyePositionXY[tracker.Key][j] = tracker.Value.Eyes[j].Position;
+					FPinOutEyeScaleXY[tracker.Key][j] = tracker.Value.Eyes[j].Scale;
 				}
 			}
 		}
