@@ -3,7 +3,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files (x86)\vvvv_45beta26\vvvv.exe</StartProgram>
-    <StartArguments>/o "E:\Various repos\VVVV\VVVV.Nodes.EmguCV\bin\Debug\TestLoader.v4p"</StartArguments>
+    <StartArguments>/o "C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\bin\Debug\test-FaceTracking.v4p"</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory />
