@@ -2,7 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartAction>Program</StartAction>
-    <StartProgram>c:\vvvv\vvvv_45beta26\vvvv.exe</StartProgram>
+    <StartProgram>C:\Program Files (x86)\vvvv_45beta26\vvvv.exe</StartProgram>
+    <StartArguments>/o "C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\bin\Debug\test-FaceTracking.v4p"</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory />
