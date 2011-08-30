@@ -101,7 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsTextureNode.cs" />
-    <Compile Include="FaceTrackingNode.cs" />
+    <Compile Include="ObjectTrackingNode.cs" />
     <Compile Include="ImageLoadNode.cs" />
     <Compile Include="ImageRGB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,7 +132,9 @@
     <None Include="readme" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="cvextern.dll" />
+    <Content Include="cvextern.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
