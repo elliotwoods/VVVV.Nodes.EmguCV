@@ -9,8 +9,10 @@ namespace VVVV.Nodes.EmguCV
 		public Object Lock = new Object();
 		private Image<Bgr, byte> FImg;
 
-		public bool FrameAttributesChanged;
-
+		//TODO: FrameAttributesChanges must be private for set i think. 
+		//Setting it "true" in VideoPlayerNode looks like a hack.
+		
+		public bool FrameAttributesChanged { get; set; }
 		public bool FrameChanged { get; private set; }
 
 		public ImageRGB()
@@ -28,6 +30,8 @@ namespace VVVV.Nodes.EmguCV
 			set
 			{
 				FImg = value;
+				
+
 				if (value == null)
 				{
 					FrameAttributesChanged = true;
@@ -35,12 +39,12 @@ namespace VVVV.Nodes.EmguCV
 				}
 				else
 				{
-					if (Width != value.Width || Height != value.Height)
-						FrameAttributesChanged = true;
-					else
-						FrameAttributesChanged = false;
+					FrameChanged = true;
+
+					if (Width != value.Width || Height != value.Height) FrameAttributesChanged = true;
+					else FrameAttributesChanged = false;
 				}
-				FrameChanged = true;
+				
 			}
 		}
 

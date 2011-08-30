@@ -170,20 +170,30 @@ namespace VVVV.Nodes.EmguCV
 
 		void UpdateTrackers()
 		{
-			for (int i = 0; i < FPinInImages.SliceCount; i++)
-			{
-				if (!FTrackers.ContainsKey(i))
-					FTrackers.Add(i, new TrackingInstance(FPinInImages[i], FHaarCascade));
-				else if (FPinInImages[i].FrameAttributesChanged)
-					FTrackers[i] = new TrackingInstance(FPinInImages[i], FHaarCascade);
-			}
+			//if (FTrackers.Count == FPinInImages.SliceCount) return;
 
-			if (FTrackers.Count <= FPinInImages.SliceCount) return;
-			
 			for (int i = FPinInImages.SliceCount; i < FTrackers.Count; i++)
 			{
 				FTrackers.Remove(i);
 			}
+
+			for (int i = 0; i < FPinInImages.SliceCount; i++)
+			{
+				if(FPinInImages[i] == null) continue;
+
+				if (!FTrackers.ContainsKey(i))
+				{
+					if(FPinInImages[i].Img == null) continue;
+
+					FTrackers.Add(i, new TrackingInstance(FPinInImages[i], FHaarCascade));
+				}
+				else if (FPinInImages[i].FrameAttributesChanged)
+				{
+					FTrackers[i] = new TrackingInstance(FPinInImages[i], FHaarCascade);
+				}
+					
+			}
+
 		}
 
 		void OutputFaces()
