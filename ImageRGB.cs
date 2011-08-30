@@ -1,44 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
 
 namespace VVVV.Nodes.EmguCV
 {
 	class ImageRGB
 	{
 		public Object Lock = new Object();
-		private Image<Bgr, byte> _Img;
+		private Image<Bgr, byte> FImg;
 
-		public bool FrameAttributesChanged = false;
+		public bool FrameAttributesChanged;
 
-		public bool FrameChanged
+		public bool FrameChanged { get; private set; }
+
+		public ImageRGB()
 		{
-			get
-			{
-				return _FrameChanged;
-			}
+			FrameChanged = false;
 		}
-		bool _FrameChanged = false;
 
 		public Image<Bgr, byte> Img
 		{
 			get
 			{
-				return _Img;
+				return FImg;
 			}
 
 			set
 			{
-				_Img = value;
+				FImg = value;
 				if (value == null)
 				{
 					FrameAttributesChanged = true;
-					_FrameChanged = false;
+					FrameChanged = false;
 				}
 				else
 				{
@@ -47,29 +40,23 @@ namespace VVVV.Nodes.EmguCV
 					else
 						FrameAttributesChanged = false;
 				}
-				_FrameChanged = true;
+				FrameChanged = true;
 			}
 		}
 
 		public int Width
 		{
-			get
+			get 
 			{
-				if (Img == null)
-					return 0;
-				else
-					return Img.Width;
+				return Img == null ? 0 : Img.Width;
 			}
 		}
 
 		public int Height
 		{
-			get
+			get 
 			{
-				if (Img == null)
-					return 0;
-				else
-					return Img.Height;
+				return Img == null ? 0 : Img.Height;
 			}
 		}
 
