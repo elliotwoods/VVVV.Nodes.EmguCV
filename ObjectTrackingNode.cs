@@ -25,9 +25,9 @@ namespace VVVV.Nodes.EmguCV
 
 	class TrackingInstance
 	{
-		private readonly Vector2D CMinimumSourceXY = new Vector2D(0, 0);
-		private readonly Vector2D CMinimumDestXY = new Vector2D(-1, 1);
-		private readonly Vector2D CMaximumDestXY = new Vector2D(1, -1);
+		private readonly Vector2D FMinimumSourceXY = new Vector2D(0, 0);
+		private readonly Vector2D FMinimumDestXY = new Vector2D(-1, 1);
+		private readonly Vector2D FMaximumDestXY = new Vector2D(1, -1);
 
 		private Thread FTrackingThread;
 		private bool FIsRunning;
@@ -36,12 +36,13 @@ namespace VVVV.Nodes.EmguCV
 		
 		private ImageRGB FSource;
 		private Image<Gray, byte> FGrayImage;
-		private HaarCascade FFaceHaarCascade;
+
+		public HaarCascade HaarCascade { private get; set; }
 
 		public TrackingInstance(ImageRGB image, HaarCascade cascade)
 		{
 			FSource = image;
-			FFaceHaarCascade = cascade;
+			HaarCascade = cascade;
 			FTrackingThread = new Thread(FindFacesThread);
 			FTrackingThread.Start();
 
@@ -76,7 +77,7 @@ namespace VVVV.Nodes.EmguCV
 						
 						FGrayImage._EqualizeHist();
 
-						MCvAvgComp[] objectsDetected = FFaceHaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
+						MCvAvgComp[] objectsDetected = HaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
 
 						Objects.Clear();
 
@@ -87,8 +88,8 @@ namespace VVVV.Nodes.EmguCV
 							Vector2D objectCenterPosition = new Vector2D(f.rect.X + f.rect.Width / 2, f.rect.Y + f.rect.Height / 2);
 							Vector2D maximumSourceXY = new Vector2D(FGrayImage.Width, FGrayImage.Height);
 
-							trackingObject.Position = VMath.Map(objectCenterPosition, CMinimumSourceXY, maximumSourceXY, CMinimumDestXY, CMaximumDestXY, TMapMode.Float);
-							trackingObject.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), CMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
+							trackingObject.Position = VMath.Map(objectCenterPosition, FMinimumSourceXY, maximumSourceXY, FMinimumDestXY, FMaximumDestXY, TMapMode.Float);
+							trackingObject.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), FMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
 
 							Objects.Add(trackingObject);
 						}
@@ -147,6 +148,7 @@ namespace VVVV.Nodes.EmguCV
 					try
 					{
 						FHaarCascade = new HaarCascade(FFacePath[0]);
+						UpdateHaars();
 					}
 					catch
 					{
@@ -170,8 +172,6 @@ namespace VVVV.Nodes.EmguCV
 
 		void UpdateTrackers()
 		{
-			//if (FTrackers.Count == FPinInImages.SliceCount) return;
-
 			for (int i = FPinInImages.SliceCount; i < FTrackers.Count; i++)
 			{
 				FTrackers.Remove(i);
@@ -179,7 +179,11 @@ namespace VVVV.Nodes.EmguCV
 
 			for (int i = 0; i < FPinInImages.SliceCount; i++)
 			{
-				if(FPinInImages[i] == null) continue;
+				if(FPinInImages[i] == null)
+				{
+					FTrackers.Remove(i);
+					continue;
+				}
 
 				if (!FTrackers.ContainsKey(i))
 				{
@@ -190,10 +194,19 @@ namespace VVVV.Nodes.EmguCV
 				else if (FPinInImages[i].FrameAttributesChanged)
 				{
 					FTrackers[i] = new TrackingInstance(FPinInImages[i], FHaarCascade);
-				}
-					
+				}	
 			}
 
+		}
+
+		void UpdateHaars()
+		{
+			int count = FTrackers.Count;
+			
+			for (int i = 0; i < count; i++)
+			{
+				FTrackers[i].HaarCascade = FHaarCascade;
+			}
 		}
 
 		void OutputFaces()
