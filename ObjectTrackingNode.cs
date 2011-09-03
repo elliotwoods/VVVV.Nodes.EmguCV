@@ -32,17 +32,36 @@ namespace VVVV.Nodes.EmguCV
 		private Thread FTrackingThread;
 		private bool FIsRunning;
 		
-		public List<TrackingObject> Objects = new List<TrackingObject>();
-		
 		private ImageRGB FSource;
 		private Image<Gray, byte> FGrayImage;
 
-		public HaarCascade HaarCascade { private get; set; }
+		private HaarCascade FHaarCascade;
 
-		public TrackingInstance(ImageRGB image, HaarCascade cascade)
+		public List<TrackingObject> Objects = new List<TrackingObject>();
+
+		private string FHaarPath;
+
+		public string HaarPath
+		{
+			get { return FHaarPath; }
+			
+			set
+			{
+				FHaarPath = value;
+				FHaarCascade = new HaarCascade(value);
+			}
+		}
+
+		public ImageRGB Source
+		{
+			get { return FSource; }
+			set { FSource = value; }
+		}
+
+		public TrackingInstance(ImageRGB image, string haarPath)
 		{
 			FSource = image;
-			HaarCascade = cascade;
+			HaarPath = haarPath;
 			FTrackingThread = new Thread(FindFacesThread);
 			FTrackingThread.Start();
 
@@ -77,7 +96,7 @@ namespace VVVV.Nodes.EmguCV
 						
 						FGrayImage._EqualizeHist();
 
-						MCvAvgComp[] objectsDetected = HaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
+						MCvAvgComp[] objectsDetected = FHaarCascade.Detect(FGrayImage, 1.8, 4, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(FGrayImage.Width / 8, FGrayImage.Height / 8));
 
 						Objects.Clear();
 
@@ -104,11 +123,11 @@ namespace VVVV.Nodes.EmguCV
 	public class ObjectTrackingNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
-		[Input("Image", IsSingle = true)]
-		ISpread<ImageRGB> FPinInImages;
+		[Input("Image")]
+		IDiffSpread<ImageRGB> FPinInImages;
 
 		[Input("Haar Table", DefaultString = "haarcascade_frontalface_alt2.xml", IsSingle = true, StringType = StringType.Filename)] 
-		IDiffSpread<string> FFacePath;
+		IDiffSpread<string> FHaarPath;
 
 		[Input("Enabled", DefaultValue = 1)]
 		ISpread<bool> FEnabled;
@@ -125,8 +144,6 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		private HaarCascade FHaarCascade;
-
 		private readonly Dictionary<int, TrackingInstance> FTrackers = new Dictionary<int,TrackingInstance>();
 		
 
@@ -141,13 +158,15 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FFacePath.IsChanged)
+
+			UpdateTrackers();
+
+			if(FHaarPath.IsChanged)
 			{
-				if (FFacePath.SliceCount > 0)
+				if (FHaarPath.SliceCount > 0)
 				{
 					try
 					{
-						FHaarCascade = new HaarCascade(FFacePath[0]);
 						UpdateHaars();
 					}
 					catch
@@ -158,14 +177,10 @@ namespace VVVV.Nodes.EmguCV
 				}
 			}
 
-			if (FHaarCascade == null)
+			if(FPinInImages.IsChanged)
 			{
-				FStatus.SliceCount = 1;
-				FStatus[0] = "Please load haar cascade xml";
-				return;
+				if(FPinInImages.SliceCount > 0) UpdateImages();
 			}
-
-			UpdateTrackers();
 
 			OutputFaces();
 		}
@@ -189,11 +204,11 @@ namespace VVVV.Nodes.EmguCV
 				{
 					if(FPinInImages[i].Img == null) continue;
 
-					FTrackers.Add(i, new TrackingInstance(FPinInImages[i], FHaarCascade));
+					FTrackers.Add(i, new TrackingInstance(FPinInImages[i], FHaarPath[i]));
 				}
 				else if (FPinInImages[i].FrameAttributesChanged)
 				{
-					FTrackers[i] = new TrackingInstance(FPinInImages[i], FHaarCascade);
+					FTrackers[i] = new TrackingInstance(FPinInImages[i], FHaarPath[i]);
 				}	
 			}
 
@@ -205,7 +220,15 @@ namespace VVVV.Nodes.EmguCV
 			
 			for (int i = 0; i < count; i++)
 			{
-				FTrackers[i].HaarCascade = FHaarCascade;
+				FTrackers[i].HaarPath = FHaarPath[i];
+			}
+		}
+
+		void UpdateImages()
+		{
+			for (int i = 0; i < FTrackers.Count; i++)
+			{
+				FTrackers[i].Source = FPinInImages[i];
 			}
 		}
 
