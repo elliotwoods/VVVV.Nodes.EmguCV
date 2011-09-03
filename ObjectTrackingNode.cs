@@ -83,11 +83,12 @@ namespace VVVV.Nodes.EmguCV
 						foreach (MCvAvgComp f in objectsDetected)
 						{
 							TrackingObject trackingObject = new TrackingObject();
-							
+
 							Vector2D objectCenterPosition = new Vector2D(f.rect.X + f.rect.Width / 2, f.rect.Y + f.rect.Height / 2);
 							Vector2D maximumSourceXY = new Vector2D(FGrayImage.Width, FGrayImage.Height);
 
 							trackingObject.Position = VMath.Map(objectCenterPosition, CMinimumSourceXY, maximumSourceXY, CMinimumDestXY, CMaximumDestXY, TMapMode.Float);
+							
 							trackingObject.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), CMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
 
 							Objects.Add(trackingObject);
