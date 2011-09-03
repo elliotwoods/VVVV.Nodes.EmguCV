@@ -1,0 +1,245 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p" systemname="test-FaceTracking (ImageLoad)" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p">
+   <BOUNDS type="Window" left="10710" top="0" width="9780" height="11520">
+   </BOUNDS>
+   <NODE systemname="ImageLoad (EmguCV)" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="ImageLoad (EmguCV)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="990" top="2175" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsTexture (EmguCV RGB)" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="AsTexture (EmguCV RGB)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="990" top="3225" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="990" top="3225">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="675" top="6645" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="4">
+   <BOUNDS type="Node" left="690" top="8700" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="690" top="8700" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="930" top="0" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="1005" top="5730" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="2" dstpinname="Image">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Texture Out" dstnodeid="10" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="3" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="5490" top="6870" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="11">
+   <BOUNDS type="Node" left="5505" top="7575" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5505" top="7575" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="930" top="5370" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="11" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="5805" top="5970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output Node" dstnodeid="12" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="975" top="1140" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="975" top="1140" width="1785" height="765">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="2" values="..\..\..\..\Desktop\lily-cole.jpg,..\..\..\..\Desktop\lily-cole.jpg" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="0" dstpinname="Filename">
+   </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="855" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="3" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="12" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="ObjectTracking (EmguCV)" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="ObjectTracking (EmguCV)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="3060" top="3015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Haar Table" slicecount="1" values="haars\haarcascade_frontalface_alt2.xml" encoded="0">
+   </PIN>
+   <PIN pinname="Position Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="17" dstpinname="Image">
+   </LINK>
+   <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="2970" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="3330" top="3855" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Position Bin Size" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="3315" top="4260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="21" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="19" dstpinname="Bin Size">
+   </LINK>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="675" top="7365" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="22" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="2055" top="6630" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="2070" top="6120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Render State Out" dstnodeid="23" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Layer" dstnodeid="22" dstpinname="Layer 2">
+   </LINK>
+   <NODE systemname="Translate (Transform)" nodename="Translate (Transform)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="2685" top="5820" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="2970" top="5280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="26" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="X" dstnodeid="25" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y" dstnodeid="25" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="23" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Scale (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="3240" top="6255" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="PositionXY" dstnodeid="19" dstpinname="Input">
+   </LINK>
+   </PATCH>
