@@ -46,3 +46,6 @@ _ReSharper*/
 
 # VVVV bcp
 *~.xml
+
+#dll's
+cvextern.dll
