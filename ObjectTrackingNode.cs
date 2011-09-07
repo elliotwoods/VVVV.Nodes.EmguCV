@@ -138,9 +138,6 @@ namespace VVVV.Nodes.EmguCV
 		[Output("Scale")] 
 		ISpread<ISpread<Vector2D>> FPinOutScaleXY;
 
-		[Output("Status")]
-		ISpread<string> FStatus;
-
 		[Import]
 		ILogger FLogger;
 
@@ -165,15 +162,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FHaarPath.SliceCount > 0)
 				{
-					try
-					{
-						UpdateHaars();
-					}
-					catch
-					{
-						for (int i = 0; i < FStatus.SliceCount; i++)
-							FStatus[i] = "Loading cascade xml failed";
-					}
+					UpdateHaars();
 				}
 			}
 
@@ -220,7 +209,14 @@ namespace VVVV.Nodes.EmguCV
 			
 			for (int i = 0; i < count; i++)
 			{
-				FTrackers[i].HaarPath = FHaarPath[i];
+				try
+				{
+					FTrackers[i].HaarPath = FHaarPath[i];
+				}
+				catch
+				{
+					FLogger.Log(LogType.Error, "Loading Haar failed at slice ", i.ToString());
+				}
 			}
 		}
 
@@ -245,8 +241,15 @@ namespace VVVV.Nodes.EmguCV
 
 				for (int i = 0; i < count; i++)
 				{
-					FPinOutPositionXY[tracker.Key][i] = tracker.Value.Objects[i].Position;
-					FPinOutScaleXY[tracker.Key][i] = tracker.Value.Objects[i].Scale;
+					try
+					{
+						FPinOutPositionXY[tracker.Key][i] = tracker.Value.Objects[i].Position;
+						FPinOutScaleXY[tracker.Key][i] = tracker.Value.Objects[i].Scale;
+					}
+					catch
+					{
+						FLogger.Log(LogType.Error, "Desync in threads");
+					}
 				}
 			}
 		}
