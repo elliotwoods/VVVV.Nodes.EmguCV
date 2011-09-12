@@ -26,8 +26,8 @@ namespace VVVV.Nodes.EmguCV
 	class TrackingInstance
 	{
 		private readonly Vector2D FMinimumSourceXY = new Vector2D(0, 0);
-		private readonly Vector2D FMinimumDestXY = new Vector2D(-1, 1);
-		private readonly Vector2D FMaximumDestXY = new Vector2D(1, -1);
+		private readonly Vector2D FMinimumDestXY = new Vector2D(-0.5, 0.5);
+		private readonly Vector2D FMaximumDestXY = new Vector2D(0.5, -0.5);
 
 		private Thread FTrackingThread;
 		private bool FIsRunning;
@@ -108,7 +108,7 @@ namespace VVVV.Nodes.EmguCV
 							Vector2D maximumSourceXY = new Vector2D(FGrayImage.Width, FGrayImage.Height);
 
 							trackingObject.Position = VMath.Map(objectCenterPosition, FMinimumSourceXY, maximumSourceXY, FMinimumDestXY, FMaximumDestXY, TMapMode.Float);
-							trackingObject.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), FMinimumSourceXY.x, maximumSourceXY.x, 0, 2, TMapMode.Float);
+							trackingObject.Scale = VMath.Map(new Vector2D(f.rect.Width, f.rect.Height), FMinimumSourceXY.x, maximumSourceXY.x, 0, 1, TMapMode.Float);
 
 							Objects.Add(trackingObject);
 						}
