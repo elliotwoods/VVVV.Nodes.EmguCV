@@ -178,6 +178,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			for (int i = FPinInImages.SliceCount; i < FTrackers.Count; i++)
 			{
+				FTrackers[i].Close();
 				FTrackers.Remove(i);
 			}
 
@@ -185,7 +186,13 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if(FPinInImages[i] == null)
 				{
-					FTrackers.Remove(i);
+					TrackingInstance instance;
+					FTrackers.TryGetValue(i, out instance);
+					if(instance != null)
+					{
+						FTrackers[i].Close();
+						FTrackers.Remove(i);
+					}
 					continue;
 				}
 

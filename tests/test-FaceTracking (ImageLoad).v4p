@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p" systemname="test-FaceTracking (ImageLoad)">
+   <PATCH nodename="E:\Various repos\VVVV\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-FaceTracking (ImageLoad).v4p" systemname="test-FaceTracking (ImageLoad)">
    <BOUNDS height="11520" left="7200" top="0" type="Window" width="9780">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="0" nodename="ImageLoad (EmguCV)" systemname="ImageLoad (EmguCV)">
@@ -47,7 +47,7 @@
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN encoded="0" pinname="Input String" slicecount="2" values="..\..\..\..\Desktop\Face.jpg,..\..\..\..\Desktop\Face.jpg">
+   <PIN encoded="0" pinname="Input String" slicecount="2" values="|C:\Users\Vadim\Desktop\lily cole is not our favorite model, because our face is more oval.jpg|,|C:\Users\Vadim\Desktop\lily cole is not our favorite model, because our face is more oval.jpg|">
    </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Filename" srcnodeid="15" srcpinname="Output String">
@@ -91,7 +91,7 @@
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" values="0.46">
+   <PIN pinname="XYZ" slicecount="1" values="0.47">
    </PIN>
    </NODE>
    <LINK dstnodeid="28" dstpinname="Transform" srcnodeid="31" srcpinname="Transform Out">
@@ -105,7 +105,7 @@
    </PIN>
    <PIN pinname="Spread Count" visible="1">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="2.05">
+   <PIN pinname="Width" slicecount="1" values="2">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="33" nodename="Count (Node)" systemname="Count (Node)">
@@ -153,6 +153,8 @@
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="36" dstpinname="Render State" srcnodeid="35" srcpinname="Render State Out">
    </LINK>
@@ -182,6 +184,8 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="38" dstpinname="Transform In" srcnodeid="39" srcpinname="Transform Out">
@@ -214,23 +218,19 @@
    </LINK>
    <LINK dstnodeid="41" dstpinname="XY" srcnodeid="17" srcpinname="ScaleXY">
    </LINK>
-   <LINK dstnodeid="38" dstpinname="X" srcnodeid="41" srcpinname="X" linkstyle="VHV">
+   <LINK dstnodeid="38" dstpinname="X" linkstyle="VHV" srcnodeid="41" srcpinname="X">
    <LINKPOINT x="7410" y="4725">
    </LINKPOINT>
    <LINKPOINT x="4785" y="4725">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="38" dstpinname="Y" srcnodeid="41" srcpinname="Y" linkstyle="VHV">
+   <LINK dstnodeid="38" dstpinname="Y" linkstyle="VHV" srcnodeid="41" srcpinname="Y">
    <LINKPOINT x="7980" y="4725">
    </LINKPOINT>
    <LINKPOINT x="5640" y="4725">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="30" dstpinname="X" srcnodeid="32" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="39" dstpinname="Transform In" srcnodeid="31" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="17" dstpinname="Image" srcnodeid="0" srcpinname="Image">
    </LINK>
    <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="5745" top="3825" type="Node" width="100">
@@ -256,4 +256,8 @@
    <BOUNDS height="4455" left="930" top="4260" type="Window" width="6195">
    </BOUNDS>
    </NODE>
+   <LINK srcnodeid="31" srcpinname="Transform Out" dstnodeid="39" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="17" dstpinname="Image">
+   </LINK>
    </PATCH>
