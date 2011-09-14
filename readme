@@ -55,6 +55,7 @@ NODE SUGGESTIONS
 -						subtracts colour values
 Queue
 Cons
+S+H
 
 ImageLoad				Loads a set of images into RAM as ImageRGB's. Either use OpenCV's image loader or .NET's Bitmap class (probably quicker)
 ImageSave
@@ -62,7 +63,6 @@ VideoSave				Built into CV so should be decent performance
 
 AsTexture(Greyscale)	Deals with new type ImageGreyscale
 
-FaceTracker				(alg!!! :) )
 Contour
 FindChessboardCorners
 

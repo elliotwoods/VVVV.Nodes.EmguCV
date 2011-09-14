@@ -2,14 +2,6 @@
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\test-player (High Spreaded).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\test-player (High Spreaded).v4p" systemname="test-player (High Spreaded)">
    <BOUNDS height="12255" left="8820" top="2625" type="Window" width="11715">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="1" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
-   <BOUNDS height="100" left="1890" top="2325" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Image" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="100" left="5310" top="2280" type="Node" width="100">
    </BOUNDS>
@@ -34,8 +26,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="1" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="InABox" id="6" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="1560" top="5625" type="Node" width="100">
    </BOUNDS>
@@ -90,8 +80,6 @@
    <PIN pinname="Length" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Image" srcnodeid="11" srcpinname="Image">
-   </LINK>
    <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="11" srcpinname="Status">
    </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -190,7 +178,7 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="X" srcnodeid="19" srcpinname="X Out">
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Y" srcnodeid="19" srcpinname="Y Out" linkstyle="VHV">
+   <LINK dstnodeid="18" dstpinname="Y" linkstyle="VHV" srcnodeid="19" srcpinname="Y Out">
    <LINKPOINT x="2640" y="3435">
    </LINKPOINT>
    <LINKPOINT x="2265" y="3435">
@@ -208,7 +196,7 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="X In" srcnodeid="20" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="19" dstpinname="Y In" srcnodeid="20" srcpinname="Output" linkstyle="VHV">
+   <LINK dstnodeid="19" dstpinname="Y In" linkstyle="VHV" srcnodeid="20" srcpinname="Output">
    <LINKPOINT x="2010" y="3068">
    </LINKPOINT>
    <LINKPOINT x="2100" y="3068">
@@ -259,19 +247,13 @@
    <NODE componentmode="Hidden" id="24" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
    <BOUNDS height="100" left="7530" top="1590" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
    <PIN pinname="Height" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="24" dstpinname="Texture" linkstyle="VHV" srcnodeid="1" srcpinname="Texture Out">
-   <LINKPOINT x="1750" y="2268">
-   </LINKPOINT>
-   <LINKPOINT x="7730" y="1888">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="25" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
    <BOUNDS height="100" left="7530" top="1965" type="Node" width="100">
    </BOUNDS>
@@ -310,18 +292,18 @@
    </NODE>
    <LINK dstnodeid="26" dstpinname="Y Input Value" srcnodeid="25" srcpinname="XY">
    </LINK>
-   <NODE systemname="CPULoad (Debug)" nodename="CPULoad (Debug)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="9195" top="1590" width="100" height="100">
+   <NODE componentmode="Hidden" id="27" nodename="CPULoad (Debug)" systemname="CPULoad (Debug)">
+   <BOUNDS height="100" left="9195" top="1590" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="CPU Load" visible="1">
    </PIN>
    <PIN pinname="Do Check" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
-   <BOUNDS type="Node" left="9030" top="2460" width="100" height="100">
+   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="9030" top="2460" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="9030" top="2460" width="1035" height="2685">
+   <BOUNDS height="2685" left="9030" top="2460" type="Box" width="1035">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="8">
    </PIN>
@@ -329,23 +311,23 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Core i7 (8 virtual)|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Core i7 (8 virtual)|">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="8850" top="1275" width="100" height="100">
+   <NODE componentmode="Hidden" id="29" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="100" left="8850" top="1275" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Change" visible="1">
    </PIN>
    <PIN pinname="Period" slicecount="1" values="0.1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="29" srcpinname="Change" dstnodeid="27" dstpinname="Do Check">
+   <LINK dstnodeid="27" dstpinname="Do Check" srcnodeid="29" srcpinname="Change">
    </LINK>
-   <NODE systemname="Damper (Animation)" nodename="Damper (Animation)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="9030" top="2115" width="100" height="100">
+   <NODE componentmode="Hidden" id="30" nodename="Damper (Animation)" systemname="Damper (Animation)">
+   <BOUNDS height="100" left="9030" top="2115" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Position Out" visible="1">
    </PIN>
@@ -354,12 +336,24 @@
    <PIN pinname="FilterTime" slicecount="1" values="30">
    </PIN>
    </NODE>
-   <LINK srcnodeid="30" srcpinname="Position Out" dstnodeid="28" dstpinname="Y Input Value">
+   <LINK dstnodeid="28" dstpinname="Y Input Value" srcnodeid="30" srcpinname="Position Out">
    </LINK>
-   <LINK srcnodeid="27" srcpinname="CPU Load" dstnodeid="30" dstpinname="Go To Position" linkstyle="VHV">
+   <LINK dstnodeid="30" dstpinname="Go To Position" linkstyle="VHV" srcnodeid="27" srcpinname="CPU Load">
    <LINKPOINT x="9960" y="1973">
    </LINKPOINT>
    <LINKPOINT x="9090" y="1973">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="AsTexture (EmguCV RGB)" filename="..\Prerequisites\VVVV.Nodes.EmguCV.dll" nodename="AsTexture (EmguCV RGB)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="1890" top="2145" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Image" dstnodeid="31" dstpinname="Image">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Texture Out" dstnodeid="4" dstpinname="Texture">
    </LINK>
    </PATCH>

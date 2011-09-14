@@ -34,7 +34,7 @@ namespace VVVV.Nodes.EmguCV
 
 		bool IsRunning;
 		public List<FaceTrackingFace> Faces = new List<FaceTrackingFace>();
-		ImageRGB FSource = null;
+		CVImage FSource = null;
 		Image<Gray, byte> FGrayImage;
 		HaarCascade FHaarCascade;
 

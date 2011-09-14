@@ -41,7 +41,7 @@ namespace VVVV.Nodes.EmguCV
 		Object CaptureThreadLock = new Object();
 		bool CaptureThreadRun = false;
 
-		public ImageRGB Image = new ImageRGB();
+		public CVImageLink FImage = new CVImageLink();
 		Capture _Capture;
 
 		private bool _Changed = false;
@@ -67,8 +67,6 @@ namespace VVVV.Nodes.EmguCV
 
 			_Status = "Player open success";
 			HasCapture = true;
-
-			Image.FrameAttributesChanged = true;
 
 			Filename = filename;
 			CaptureThreadRun = true;
@@ -154,10 +152,9 @@ namespace VVVV.Nodes.EmguCV
 			{
 				lock (CaptureThreadLock)
 				{
-					if ((Image.Img == null && !_Play) || _Play)
+					if (_Play)
 					{
-						lock (Image.Lock)
-							Image.Img = _Capture.QueryFrame();
+						FImage.UpdateImage(_Capture.QueryFrame());
 						_Changed = true;
 					}
 
@@ -193,7 +190,7 @@ namespace VVVV.Nodes.EmguCV
 		IDiffSpread<bool> FPinInLoop;
 
 		[Output("Image")]
-		ISpread<ImageRGB> FPinOutImage;
+		ISpread<CVImageLink> FPinOutImage;
 
 		[Output("Position")]
 		ISpread<double> FPinOutPosition;
@@ -300,7 +297,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (player.Value.IsRunning)
 				{
-					FPinOutImage[player.Key] = player.Value.Image;
+					FPinOutImage[player.Key] = player.Value.FImage;
 					FPinOutPosition[player.Key] = player.Value.Position;
 					FPinOutLength[player.Key] = player.Value.Length;
 				}
@@ -319,7 +316,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FPinOutImage[i] == null)
 				{
-					FPinOutImage[i] = new ImageRGB();
+					FPinOutImage[i] = new CVImageLink();
 				}
 			}
 		}
