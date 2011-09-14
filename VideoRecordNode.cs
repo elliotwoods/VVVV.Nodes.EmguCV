@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Emgu.CV;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class VideoRecordInstance : CaptureInstance
+	class VideoRecordInstance : ImageProcessingInstance
 	{
 		private VideoWriter FVideoWriter;
 		
@@ -50,7 +50,7 @@ namespace VVVV.Nodes.EmguCV
 	#region PluginInfo
 	[PluginInfo(Name = "VideoRecord", Category = "EmguCV", Help = "RecordsVideo", Author = "alg", Credits = "sugokuGENKI", Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class VideoRecordNode : IPluginEvaluate
+	public class VideoRecordNode : IPluginEvaluate, IDisposable
 	{
 		[Input("ImageIn")] 
 		private ISpread<ImageRGB> FInput;
@@ -64,15 +64,8 @@ namespace VVVV.Nodes.EmguCV
 		[Input("Record", DefaultValue = 0)] 
 		private ISpread<bool> FRecord;
 
-		private Spread<bool> FPRecord;
-		private Dictionary<int, VideoRecordInstance> FWritersByIndex;
-
-		[ImportingConstructor]
-		public VideoRecordNode()
-		{
-			FPRecord = new Spread<bool>(1);
-			FWritersByIndex = new Dictionary<int, VideoRecordInstance>();
-		}
+		private Spread<bool> FPRecord = new Spread<bool>(1);
+		private Dictionary<int, VideoRecordInstance> FWritersByIndex = new Dictionary<int, VideoRecordInstance>();
 
 		public void Evaluate(int SpreadMax)
 		{
@@ -116,6 +109,14 @@ namespace VVVV.Nodes.EmguCV
 			for (int i = spreadMax; i < FWritersByIndex.Count; i++)
 			{
 				FWritersByIndex.Remove(i);
+			}
+		}
+
+		public void Dispose()
+		{
+			foreach (KeyValuePair<int, VideoRecordInstance> keyValuePair in FWritersByIndex)
+			{
+				keyValuePair.Value.Close();
 			}
 		}
 	}
