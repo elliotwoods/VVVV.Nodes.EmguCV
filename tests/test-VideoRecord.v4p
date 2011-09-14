@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="E:\Various repos\VVVV\VVVV.Nodes.EmguCV\tests\test-VideoRecord.v4p" filename="E:\Various repos\VVVV\VVVV.Nodes.EmguCV\tests\test-VideoRecord.v4p" systemname="test-VideoRecord">
-   <BOUNDS height="6000" left="9900" top="6000" type="Window" width="9000">
+   <BOUNDS height="7320" left="9900" top="6000" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="0" nodename="VideoRecord (EmguCV)" systemname="VideoRecord (EmguCV)">
    <BOUNDS height="100" left="2370" top="2850" type="Node" width="100">
@@ -13,9 +13,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="2880" top="2160" type="Node" width="100">
+   <BOUNDS height="100" left="2700" top="2160" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="330" left="2880" top="2160" type="Box" width="4335">
+   <BOUNDS height="330" left="2700" top="2160" type="Box" width="4335">
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -48,8 +48,6 @@
    <PIN pinname="Image" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="ImageIn" srcnodeid="3" srcpinname="Image">
-   </LINK>
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="4" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
    <BOUNDS height="100" left="1185" top="3060" type="Node" width="100">
    </BOUNDS>
@@ -94,4 +92,20 @@
    </NODE>
    <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
    </LINK>
+   <LINK dstnodeid="0" dstpinname="ImageIn" srcnodeid="3" srcpinname="Image">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4530" top="480" width="420" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4530" top="480" width="3000" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|You can get system codecs FOURCC by VirtualDub (Compression menu).|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

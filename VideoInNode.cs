@@ -7,7 +7,6 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
 using System.Collections.Generic;
-
 #endregion usings
 
 namespace VVVV.Nodes.EmguCV
