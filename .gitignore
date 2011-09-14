@@ -49,3 +49,6 @@ _ReSharper*/
 
 #dll's
 cvextern.dll
+
+#media files
+*.avi

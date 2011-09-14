@@ -4,7 +4,7 @@ using Emgu.CV.Structure;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class ImageRGB
+	public class ImageRGB
 	{
 		public Object Lock = new Object();
 		private Image<Bgr, byte> FImg;

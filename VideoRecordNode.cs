@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Emgu.CV;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class VideoRecordInstance : ImageProcessingInstance
+	public class VideoRecordInstance : ImageProcessingInstance
 	{
 		private VideoWriter FVideoWriter;
 		
@@ -47,10 +46,11 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 	}
+
 	#region PluginInfo
 	[PluginInfo(Name = "VideoRecord", Category = "EmguCV", Help = "RecordsVideo", Author = "alg", Credits = "sugokuGENKI", Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class VideoRecordNode : IPluginEvaluate, IDisposable
+	public class VideoRecordNode : ImageProcessingNode<VideoRecordInstance>
 	{
 		[Input("ImageIn")] 
 		private ISpread<ImageRGB> FInput;
@@ -65,11 +65,11 @@ namespace VVVV.Nodes.EmguCV
 		private ISpread<bool> FRecord;
 
 		private Spread<bool> FPRecord = new Spread<bool>(1);
-		private Dictionary<int, VideoRecordInstance> FWritersByIndex = new Dictionary<int, VideoRecordInstance>();
+		//private Dictionary<int, VideoRecordInstance> FWritersByIndex = new Dictionary<int, VideoRecordInstance>();
 
-		public void Evaluate(int SpreadMax)
+		public override void Evaluate(int SpreadMax)
 		{
-			CheckWritersSize(SpreadMax);
+			base.Evaluate(SpreadMax);
 
 			int codec = CvInvoke.CV_FOURCC(FCodec[0][0], FCodec[0][1], FCodec[0][2], FCodec[0][3]);
 
@@ -77,47 +77,16 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if(FInput[i] == null || !FRecord[i])
 				{
-					FWritersByIndex[i].Close();
+					InstancesByIndex[i].Close();
 				}
 				else if(FRecord[i] && !FPRecord[i])
 				{
 					//Start record
-					FWritersByIndex[i].Initialise(FInput[i], FPath[i], codec);
+					InstancesByIndex[i].Initialise(FInput[i], FPath[i], codec);
 				}
 			}
 
 			FPRecord = (Spread<bool>)FRecord.Clone();
-		}
-
-		private void CheckWritersSize(int spreadMax)
-		{
-			if(FWritersByIndex.Count < spreadMax)
-			{
-				for (int i = 0; i < spreadMax; i++)
-				{
-					if (!FWritersByIndex.ContainsKey(i))
-					{
-						FWritersByIndex.Add(i, new VideoRecordInstance());
-					}
-				}
-
-				
-			}
-
-			if (FWritersByIndex.Count > spreadMax) return;
-			
-			for (int i = spreadMax; i < FWritersByIndex.Count; i++)
-			{
-				FWritersByIndex.Remove(i);
-			}
-		}
-
-		public void Dispose()
-		{
-			foreach (KeyValuePair<int, VideoRecordInstance> keyValuePair in FWritersByIndex)
-			{
-				keyValuePair.Value.Close();
-			}
 		}
 	}
 }

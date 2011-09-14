@@ -6,7 +6,7 @@ namespace VVVV.Nodes.EmguCV
 {
 	public abstract class ImageProcessingNode<T>: IPluginEvaluate, IDisposable where T : ImageProcessingInstance, new()
 	{
-		protected Dictionary<int, T> InstancesByIndex;
+		protected Dictionary<int, T> InstancesByIndex = new Dictionary<int, T>();
 		
 		public virtual void Evaluate(int SpreadMax)
 		{
@@ -24,11 +24,8 @@ namespace VVVV.Nodes.EmguCV
 						InstancesByIndex.Add(i, new T());
 					}
 				}
-
-
 			}
-
-			if (InstancesByIndex.Count > spreadMax) return;
+			else if (InstancesByIndex.Count > spreadMax) return;
 
 			for (int i = spreadMax; i < InstancesByIndex.Count; i++)
 			{
