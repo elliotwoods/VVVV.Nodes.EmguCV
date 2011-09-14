@@ -70,7 +70,8 @@ namespace VVVV.Nodes.EmguCV
 			{
 				FBuffer = FCapture.QueryFrame();
 
-				Image.UpdateImage(FBuffer);
+				if (FBuffer.Data != null)
+					Image.UpdateImage(FBuffer);
 
 				//allow a gap where we're not locked
 				Thread.Sleep(5);

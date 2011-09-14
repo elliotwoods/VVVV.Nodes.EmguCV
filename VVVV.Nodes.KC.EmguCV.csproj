@@ -99,7 +99,7 @@
     <Compile Include="Types\CVImageAttributes.cs" />
     <None Include="Nodes\FaceTrackingNode.cs" />
     <Compile Include="Nodes\VideoInNode.cs" />
-    <None Include="Nodes\AsTextureNode.cs" />
+    <Compile Include="Nodes\AsTextureNode.cs" />
     <Compile Include="Nodes\VideoPlayerNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
