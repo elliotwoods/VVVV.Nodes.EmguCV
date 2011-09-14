@@ -101,7 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsTextureNode.cs" />
-    <Compile Include="CaptureInstance.cs" />
+    <Compile Include="ImageProcessingInstance.cs" />
+    <Compile Include="ImageProcessingNode.cs" />
     <Compile Include="ObjectTrackingNode.cs" />
     <Compile Include="ImageLoadNode.cs" />
     <Compile Include="ImageRGB.cs" />
