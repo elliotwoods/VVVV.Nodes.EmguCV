@@ -35,7 +35,10 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (!FPRecord[0])
 				{
-					FVideoWriter[0] = new VideoWriter(@"C:\test.avi", 25, FInput[0].Width, FInput[0].Height, true);
+					var capture = new Capture(0);
+					//Capture.GetCaptureProperty(CAP_PROP.CV_CAP_PROP_FOURCC))
+					int codec = CvInvoke.CV_FOURCC('t', 's', 'c', 'c');
+					FVideoWriter[0] = new VideoWriter(@"C:\test.avi", codec, 25, 640, 480, true);
 				}
 
 				FVideoWriter[0].WriteFrame(FInput[0].Img);
