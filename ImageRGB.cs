@@ -1,75 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class ImageRGB
+	public class ImageRGB
 	{
 		public Object Lock = new Object();
-		private Image<Bgr, byte> _Img;
+		private Image<Bgr, byte> FImg;
 
-		public bool FrameAttributesChanged = false;
+		//TODO: FrameAttributesChanges must be private for set i think. 
+		//Setting it "true" in VideoPlayerNode looks like a hack.
+		
+		public bool FrameAttributesChanged { get; set; }
+		public bool FrameChanged { get; private set; }
 
-		public bool FrameChanged
+		public ImageRGB()
 		{
-			get
-			{
-				return _FrameChanged;
-			}
+			FrameChanged = false;
 		}
-		bool _FrameChanged = false;
 
 		public Image<Bgr, byte> Img
 		{
 			get
 			{
-				return _Img;
+				return FImg;
 			}
 
 			set
 			{
-				_Img = value;
+				FImg = value;
+				
+
 				if (value == null)
 				{
 					FrameAttributesChanged = true;
-					_FrameChanged = false;
+					FrameChanged = false;
 				}
 				else
 				{
-					if (Width != value.Width || Height != value.Height)
-						FrameAttributesChanged = true;
-					else
-						FrameAttributesChanged = false;
+					FrameChanged = true;
+
+					if (Width != value.Width || Height != value.Height) FrameAttributesChanged = true;
+					else FrameAttributesChanged = false;
 				}
-				_FrameChanged = true;
+				
 			}
 		}
 
 		public int Width
 		{
-			get
+			get 
 			{
-				if (Img == null)
-					return 0;
-				else
-					return Img.Width;
+				return Img == null ? 0 : Img.Width;
 			}
 		}
 
 		public int Height
 		{
-			get
+			get 
 			{
-				if (Img == null)
-					return 0;
-				else
-					return Img.Height;
+				return Img == null ? 0 : Img.Height;
 			}
 		}
 

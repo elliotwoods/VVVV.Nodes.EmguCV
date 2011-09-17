@@ -1,26 +1,21 @@
 ﻿#region usings
+
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
-
 using SlimDX;
 using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 using VVVV.Utils.SlimDX;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
 
 #endregion usings
 
 //here you can change the vertex type
-using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 using System.Collections.Generic;
 using Emgu.CV.CvEnum;
 
@@ -29,9 +24,10 @@ namespace VVVV.Nodes.EmguCV
     class ImageAttributes
     {
         public int Width, Height;
-		Image<Rgba, byte> Image;
-		public bool Initialised = false;
+		public bool Initialised;
 		public Object Lock = new Object();
+
+		private Image<Rgba, byte> FImage;
 
         public void InitialiseImage(ImageRGB imgIn)
         {
@@ -39,7 +35,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (imgIn == null)
 				{
-					Image = null;
+					FImage = null;
 					Initialised = false;
 					return;
 				}
@@ -48,7 +44,7 @@ namespace VVVV.Nodes.EmguCV
 				Height = imgIn.Height;
 				if (Width > 0 && Height > 0)
 				{
-					Image = new Image<Rgba, byte>(Width, Height);
+					FImage = new Image<Rgba, byte>(Width, Height);
 					Initialised = true;
 				}
 				else
@@ -58,33 +54,33 @@ namespace VVVV.Nodes.EmguCV
 			}
         }
 
-		public void Load(ImageRGB ImageSource)
+		public void Load(ImageRGB imageSource)
 		{
-			if (ImageSource == null)
-				Close();
-
-			if (Initialised && ImageSource.FrameChanged)
+			if (imageSource == null)
 			{
-				if (ImageSource.FrameAttributesChanged)
-					InitialiseImage(ImageSource);
+				Close();
+				return;
+			}
 
-				try
-				{
-					lock (Lock)
-						lock (ImageSource.Lock)
-							if (ImageSource.Ptr != null)
-								CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
-				}
-				catch
-				{
-					
-				}
+			if (!Initialised || !imageSource.FrameChanged) return;
+			
+			if (imageSource.FrameAttributesChanged) InitialiseImage(imageSource);
+
+			try
+			{
+				lock (Lock)
+					lock (imageSource.Lock)
+						CvInvoke.cvCvtColor(imageSource.Ptr, FImage.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+			}
+			catch
+			{
+				//ToDo: What kind of errors we could get here? Locking?
 			}
 		}
 
 		public void Close()
 		{
-			Image = null;
+			FImage = null;
 			Initialised = false;
 		}
 		
@@ -93,7 +89,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return Image.MIplImage.imageData;
+				return FImage.MIplImage.imageData;
 			}
 		}
     }
@@ -117,13 +113,13 @@ namespace VVVV.Nodes.EmguCV
         //track the current texture slice
         int FCurrentSlice;
 
-        Dictionary<int, ImageAttributes> FImageAttributes = new Dictionary<int,ImageAttributes>();
+        Dictionary<int, ImageAttributes> FImageAttributes = new Dictionary<int, ImageAttributes>();
 
         bool FTexReady = false;
         #endregion fields & pins
 
         // import host and hand it to base constructor
-        [ImportingConstructor()]
+        [ImportingConstructor]
         public AsTextureNode(IPluginHost host)
             : base(host)
         {
@@ -141,9 +137,8 @@ namespace VVVV.Nodes.EmguCV
         private void CheckChanges(int count)
         {
 			bool needsInit = false;
-			ImageRGB imgIn;
 
-			//check for change size
+        	//check for change size
 			if (FImageAttributes.Count != FPinInImage.SliceCount)
 			{
 				needsInit = true;
@@ -172,22 +167,21 @@ namespace VVVV.Nodes.EmguCV
 			//check for data changes
 			for (int i = 0; i < count; i++)
 			{
-				imgIn = FPinInImage[i];
+				ImageRGB imgIn = FPinInImage[i];
 
 				// this should be dealt with by ImageRGB.FrameAttributesChanged
-				if (imgIn.Width != FImageAttributes[i].Width || imgIn.Height != FImageAttributes[i].Height)
-				{
-					ImageAttributes attribs = new ImageAttributes();
+				if (imgIn.Width == FImageAttributes[i].Width && imgIn.Height == FImageAttributes[i].Height) continue;
+				
+				ImageAttributes attribs = new ImageAttributes();
 
-					//presume BGR input
-					attribs.InitialiseImage(imgIn);
-					FImageAttributes[i] = attribs;
+				//presume BGR input
+				attribs.InitialiseImage(imgIn);
+				FImageAttributes[i] = attribs;
 
-					needsInit = true;
-				}
+				needsInit = true;
 			}
 
-			//seems a shame to have to reinitialise absolutely everything..
+        	//seems a shame to have to reinitialise absolutely everything..
 			if (needsInit)
                 Reinitialize();
         }
@@ -219,16 +213,15 @@ namespace VVVV.Nodes.EmguCV
         //calculate the pixels in evaluate and just copy the data to the device texture here
         protected unsafe override void UpdateTexture(int Slice, Texture texture)
         {
-			if (FImageAttributes[Slice].Initialised)
-			{
-                Surface srf = texture.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+        	if (!FImageAttributes[Slice].Initialised) return;
+        	
+			Surface srf = texture.GetSurfaceLevel(0);
+        	DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-				lock(FImageAttributes[Slice].Lock)
-					rect.Data.WriteRange(FImageAttributes[Slice].Ptr, FImageAttributes[Slice].Width * FImageAttributes[Slice].Height * 4);
+        	lock(FImageAttributes[Slice].Lock)
+        		rect.Data.WriteRange(FImageAttributes[Slice].Ptr, FImageAttributes[Slice].Width * FImageAttributes[Slice].Height * 4);
 
-                srf.UnlockRectangle();
-            }
+        	srf.UnlockRectangle();
         }
     }
 }
