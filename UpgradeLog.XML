@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="VVVV.Nodes.KC.EmguCV">
+</Property><Property Name="Solution File" Value="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\VVVV.Nodes.KC.EmguCV.sln">
+</Property><Property Name="Date" Value="27 August 2011">
+</Property><Property Name="Time" Value="23:17">
+</Property></Properties><Event ErrorLevel="0" Project="VVVV.Nodes.ImageCache" Source="VVVV.Nodes.ImageCache.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="VVVV.Nodes.ImageCache" Source="VVVV.Nodes.ImageCache.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="VVVV.Nodes.KC.EmguCV.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="VVVV.Nodes.KC.EmguCV.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="VVVV.Nodes.ImageCache" Source="VVVV.Nodes.ImageCache.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

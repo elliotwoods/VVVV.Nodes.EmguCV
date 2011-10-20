@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Nodes\Interfaces\ImageCVInPluginBase.cs" />
-    <Compile Include="Types\CVImage.cs" />
+    <Compile Include="Types\CVImageLink.cs" />
     <Compile Include="Types\CVImageAttributes.cs" />
     <None Include="Nodes\FaceTrackingNode.cs" />
     <Compile Include="Nodes\VideoInNode.cs" />

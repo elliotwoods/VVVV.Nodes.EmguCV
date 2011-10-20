@@ -33,10 +33,12 @@ namespace VVVV.Nodes.EmguCV
                 Help = "Converts IPLImage to Texture",
                 Tags = "")]
     #endregion PluginInfo
-	public class AsTextureNode : DXTextureOutPluginBase, ImageCVInPluginBase
+	public class AsTextureNode : DXTextureOutPluginBase
     {
         #region fields & pins
+		ISpread<CVImageLink> FPinInImage;
 
+		Map<>
         bool FTexReady = false;
         #endregion fields & pins
 
