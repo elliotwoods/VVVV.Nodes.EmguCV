@@ -94,11 +94,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FaceTrackingNode.cs" />
+    <None Include="FaceTrackingNode.cs" />
+    <Compile Include="FindBoardNode.cs" />
+    <Compile Include="CVImageAttributes.cs" />
     <Compile Include="VideoInNode.cs" />
     <Compile Include="AsTextureNode.cs" />
     <Compile Include="ImageRGB.cs" />
-    <Compile Include="VideoPlayerNode.cs" />
+    <None Include="VideoPlayerNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

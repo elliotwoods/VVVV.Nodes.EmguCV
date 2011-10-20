@@ -6,59 +6,127 @@ using System.Text;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.Util;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.EmguCV
 {
+
+	public class ImageAttributesChangedEventArgs : EventArgs
+	{
+		public CVImageAttributes Attributes { get; private set; }
+
+		public ImageAttributesChangedEventArgs(CVImageAttributes attributes)
+		{
+			this.Attributes = attributes;
+		}
+	}
+
 	class ImageRGB
 	{
-		public Object Lock = new Object();
-		private Image<Bgr, byte> _Img;
+		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
+		static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
 
-		public bool FrameAttributesChanged = false;
+		private Object FLock = new Object();
+		private Image<Bgr, byte> FImage;
+		private CVImageAttributes FImageAttributes = new CVImageAttributes();
 
-		public bool FrameChanged
+		public bool Initialised
 		{
 			get
 			{
-				return _FrameChanged;
+				return FImage != null;
 			}
 		}
-		bool _FrameChanged = false;
+		#region Events
 
-		public Image<Bgr, byte> Img
+		#region ImageUpdate
+		public event EventHandler ImageUpdate;
+
+		protected void OnImageUpdate()
+		{
+			if (ImageUpdate == null)
+				return;
+			ImageUpdate(this, EventArgs.Empty);
+		}
+		#endregion
+
+		#region ImageAttributesUpdate
+		public event EventHandler<ImageAttributesChangedEventArgs> ImageAttributesUpdate;
+
+		protected void OnImageAttributesUpdate(CVImageAttributes attributes)
+		{
+			if (ImageAttributesUpdate == null)
+				return;
+			ImageAttributesUpdate(this, new ImageAttributesChangedEventArgs(attributes));
+		}
+		#endregion
+
+		#endregion
+		
+		public object GetLock()
+		{
+			return FLock;
+		}
+
+		public CVImageAttributes ImageAttributes
 		{
 			get
 			{
-				return _Img;
+				return FImageAttributes;
 			}
+		}
 
-			set
+		public TColourData NativeType
+		{
+			get
 			{
-				_Img = value;
-				if (value == null)
-				{
-					FrameAttributesChanged = true;
-					_FrameChanged = false;
-				}
-				else
-				{
-					if (Width != value.Width || Height != value.Height)
-						FrameAttributesChanged = true;
-					else
-						FrameAttributesChanged = false;
-				}
-				_FrameChanged = true;
+				return ImageAttributes.ColourType;
 			}
+		}
+
+		public Image<Bgr, byte> Image
+		{
+			get
+			{
+				return FImage;
+			}
+		}
+
+		public void SetImage(Image<Bgr, byte> value)
+		{
+			lock (FLock)
+			{
+				bool changedAttributes = FImageAttributes.CheckChanges(TColourData.RGB8, value.Size);
+
+				if (ImageAttributes.Initialised)
+				{
+					if (changedAttributes)
+					{
+						Allocate();
+						OnImageAttributesUpdate(ImageAttributes);
+					}
+
+					this.FImage = value;
+
+					if (ImageUpdate != null)
+						OnImageUpdate();
+				}
+			}
+		}
+
+		private void Allocate()
+		{
+			FImage = new Image<Bgr, byte>(ImageAttributes.Width, ImageAttributes.Height);
 		}
 
 		public int Width
 		{
 			get
 			{
-				if (Img == null)
+				if (FImage == null)
 					return 0;
 				else
-					return Img.Width;
+					return FImage.Size.Width;
 			}
 		}
 
@@ -66,10 +134,10 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				if (Img == null)
+				if (FImage == null)
 					return 0;
 				else
-					return Img.Height;
+					return FImage.Size.Height;
 			}
 		}
 
@@ -77,7 +145,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return Img.Ptr;
+				return FImage.Ptr;
 			}
 		}
 	}

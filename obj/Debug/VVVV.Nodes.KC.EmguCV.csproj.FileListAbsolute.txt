@@ -1,0 +1,5 @@
+C:\kimchiandchips\VVVV.Research\Prerequisites\VVVV.Nodes.EmguCV.dll
+C:\kimchiandchips\VVVV.Research\Prerequisites\VVVV.Nodes.EmguCV.pdb
+C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\obj\Debug\ResolveAssemblyReference.cache
+C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\obj\Debug\VVVV.Nodes.EmguCV.dll
+C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\obj\Debug\VVVV.Nodes.EmguCV.pdb

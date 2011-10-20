@@ -26,7 +26,7 @@ using Emgu.CV.CvEnum;
 
 namespace VVVV.Nodes.EmguCV
 {
-    class ImageAttributes
+    class ImageInstance
     {
         public int Width, Height;
 		Image<Rgba, byte> Image;
@@ -37,47 +37,51 @@ namespace VVVV.Nodes.EmguCV
         {
 			lock (Lock)
 			{
-				if (imgIn == null)
+				if (imgIn == null || !imgIn.Initialised)
 				{
 					Image = null;
 					Initialised = false;
 					return;
 				}
+				imgIn.ImageUpdate += new EventHandler(imgIn_ImageUpdate);
+				imgIn.ImageAttributesUpdate += new EventHandler<ImageAttributesChangedEventArgs>(imgIn_ImageAttributesUpdate);
 
-				Width = imgIn.Width;
-				Height = imgIn.Height;
-				if (Width > 0 && Height > 0)
-				{
-					Image = new Image<Rgba, byte>(Width, Height);
-					Initialised = true;
-				}
-				else
-				{
-					Initialised = false;
-				}
+				Allocate(imgIn.ImageAttributes);
 			}
         }
 
-		public void Load(ImageRGB ImageSource)
+		void imgIn_ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
 		{
-			if (ImageSource == null)
-				Close();
+			Allocate(e.Attributes);
+		}
 
-			if (Initialised && ImageSource.FrameChanged)
+		void Allocate(CVImageAttributes imageAttributes)
+		{
+			Width = imageAttributes.Width;
+			Height = imageAttributes.Height;
+
+			Image = new Image<Rgba, byte>(Width, Height);
+			Initialised = true;
+		}
+
+		void imgIn_ImageUpdate(object sender, EventArgs e)
+		{
+			var imageRGB = sender as ImageRGB;
+			if (imageRGB != null)
 			{
-				if (ImageSource.FrameAttributesChanged)
-					InitialiseImage(ImageSource);
-
 				try
 				{
 					lock (Lock)
-						lock (ImageSource.Lock)
-							if (ImageSource.Ptr != null)
-								CvInvoke.cvCvtColor(ImageSource.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+						lock (imageRGB.GetLock())
+							if (imageRGB.Ptr != null)
+							{
+								_isFresh = true;
+								CvInvoke.cvCvtColor(imageRGB.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+							}
 				}
 				catch
 				{
-					
+
 				}
 			}
 		}
@@ -87,7 +91,24 @@ namespace VVVV.Nodes.EmguCV
 			Image = null;
 			Initialised = false;
 		}
-		
+
+		bool _isFresh;
+		public bool isFresh
+		{
+			get
+			{
+				if (_isFresh)
+				{
+					_isFresh = false;
+					return true;
+				} else
+					return false;
+			}
+			set
+			{
+				_isFresh = isFresh;
+			}
+		}
 
 		public IntPtr Ptr
 		{
@@ -117,7 +138,7 @@ namespace VVVV.Nodes.EmguCV
         //track the current texture slice
         int FCurrentSlice;
 
-        Dictionary<int, ImageAttributes> FImageAttributes = new Dictionary<int,ImageAttributes>();
+		Dictionary<int, ImageInstance> FImageInstances = new Dictionary<int, ImageInstance>();
 
         bool FTexReady = false;
         #endregion fields & pins
@@ -132,72 +153,65 @@ namespace VVVV.Nodes.EmguCV
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-            SetSliceCount(SpreadMax);
-
             CheckChanges(SpreadMax);
-
-			CheckUpdates();
+			Update();
         }
-        private void CheckChanges(int count)
+
+		private void CheckChanges(int FImageInstancescount)
         {
 			bool needsInit = false;
 			ImageRGB imgIn;
 
-			//check for change size
-			if (FImageAttributes.Count != FPinInImage.SliceCount)
+			if (FPinInImage[0] == null)
 			{
+				FImageInstances.Clear();
 				needsInit = true;
+			} else if (FImageInstances.Count != FPinInImage.SliceCount)
+			{
+				needsInit = false;
 
 				//shrink local
-				if (FImageAttributes.Count > FPinInImage.SliceCount)
+				if (FImageInstances.Count > FPinInImage.SliceCount)
 				{
-					for (int i = FPinInImage.SliceCount; i < FImageAttributes.Count; i++)
-						FImageAttributes.Remove(i);
+					for (int i = FPinInImage.SliceCount; i < FImageInstances.Count; i++)
+						FImageInstances.Remove(i);
+					needsInit = true;
 				}
 				//grow local
 				else
 				{
-					for (int i = FImageAttributes.Count; i < FPinInImage.SliceCount; i++)
+					for (int i = FImageInstances.Count; i < FPinInImage.SliceCount; i++)
 					{
-						ImageAttributes attribs = new ImageAttributes();
+						if (FPinInImage[i] == null || !FPinInImage[0].Initialised)
+							break;
+
+						ImageInstance attribs = new ImageInstance();
 
 						//presume BGR input
 						attribs.InitialiseImage(FPinInImage[i]);
-						FImageAttributes.Add(i, attribs);
+						FImageInstances.Add(i, attribs);
 					}
-				}
-
-			}
-
-			//check for data changes
-			for (int i = 0; i < count; i++)
-			{
-				imgIn = FPinInImage[i];
-
-				// this should be dealt with by ImageRGB.FrameAttributesChanged
-				if (imgIn.Width != FImageAttributes[i].Width || imgIn.Height != FImageAttributes[i].Height)
-				{
-					ImageAttributes attribs = new ImageAttributes();
-
-					//presume BGR input
-					attribs.InitialiseImage(imgIn);
-					FImageAttributes[i] = attribs;
-
 					needsInit = true;
 				}
+
 			}
+
+			SetSliceCount(FImageInstances.Count);
 
 			//seems a shame to have to reinitialise absolutely everything..
 			if (needsInit)
-                Reinitialize();
-        }
+				Reinitialize();
 
-		void CheckUpdates()
-		{
-			foreach (KeyValuePair<int, ImageAttributes> img in FImageAttributes)
-				img.Value.Load(FPinInImage[img.Key]);
-			Update();
-		}
+			//check for data changes
+			bool needsUpdate = false;
+			for (int i = 0; i < FImageInstances.Count; i++)
+			{
+				if (FImageInstances[i].isFresh)
+					needsUpdate = true;
+			}
+			//if (needsUpdate)
+				//Update();
+        }
 
         //this method gets called, when Reinitialize() was called in evaluate,
         //or a graphics device asks for its data
@@ -205,12 +219,18 @@ namespace VVVV.Nodes.EmguCV
         {
             FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
 
-			if (FImageAttributes[Slice].Initialised)
-                //return new Texture(device,  Math.Max(FWidths[Slice], 1), Math.Max(FHeights[Slice], 1), 1, Usage.None, Format.R8G8B8, Pool.Managed);
-				return TextureUtils.CreateTexture(device, Math.Max(FImageAttributes[Slice].Width, 1), Math.Max(FImageAttributes[Slice].Height, 1));
-            else
-                return TextureUtils.CreateTexture(device, 1, 1);
-            
+			if (FImageInstances.Count > 0)
+			{
+				if (FImageInstances[Slice].Initialised)
+					//return new Texture(device,  Math.Max(FWidths[Slice], 1), Math.Max(FHeights[Slice], 1), 1, Usage.None, Format.R8G8B8, Pool.Managed);
+					return TextureUtils.CreateTexture(device, Math.Max(FImageInstances[Slice].Width, 1), Math.Max(FImageInstances[Slice].Height, 1));
+				else
+					return TextureUtils.CreateTexture(device, 1, 1);
+			}
+			else
+			{
+				return TextureUtils.CreateTexture(device, 1, 1);
+			}
         }
 
         //this method gets called, when Update() was called in evaluate,
@@ -219,13 +239,16 @@ namespace VVVV.Nodes.EmguCV
         //calculate the pixels in evaluate and just copy the data to the device texture here
         protected unsafe override void UpdateTexture(int Slice, Texture texture)
         {
-			if (FImageAttributes[Slice].Initialised)
+			if (FImageInstances.Count < Slice)
+				return;
+
+			if (FImageInstances[Slice].Initialised)
 			{
                 Surface srf = texture.GetSurfaceLevel(0);
                 DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-				lock(FImageAttributes[Slice].Lock)
-					rect.Data.WriteRange(FImageAttributes[Slice].Ptr, FImageAttributes[Slice].Width * FImageAttributes[Slice].Height * 4);
+				lock(FImageInstances[Slice].Lock)
+					rect.Data.WriteRange(FImageInstances[Slice].Ptr, FImageInstances[Slice].Width * FImageInstances[Slice].Height * 4);
 
                 srf.UnlockRectangle();
             }

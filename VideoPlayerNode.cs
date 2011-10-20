@@ -184,7 +184,7 @@ namespace VVVV.Nodes.EmguCV
 		#region fields & pins
 
 		[Input("Filename", StringType = StringType.Filename)]
-        IDiffSpread<string> FPinInFilename;
+		IDiffSpread<string> FPinInFilename;
 
 		[Input("Play")]
 		IDiffSpread<bool> FPinInPlay;

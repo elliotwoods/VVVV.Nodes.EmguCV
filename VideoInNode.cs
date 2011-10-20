@@ -69,8 +69,8 @@ namespace VVVV.Nodes.EmguCV
 			{
 				FBuffer = FCapture.QueryFrame();
 
-				lock (Image.Lock)
-					Image.Img = FBuffer;
+				lock (Image.GetLock())
+					Image.SetImage(FBuffer);
 				//allow a gap where we're not locked
 				Thread.Sleep(5);
 			}
@@ -137,37 +137,7 @@ namespace VVVV.Nodes.EmguCV
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-			if (SpreadMax == 0)
-			{
-				FCaptures.Clear();
-				ResizeOutput(0);
-				return;
-			}
-
-			//if (FPinInCameraID.IsChanged)
-			//{
-				if (FCaptures.Count != SpreadMax)
-					ResizeOutput(SpreadMax);
-
-				for (int i = 0; i < SpreadMax; i++)
-				{
-					if (!FCaptures.ContainsKey(i))
-					{
-						FCaptures.Add(i, new CaptureVideoInstance());
-						FCaptures[i].Initialise(FPinInCameraID[i]);
-					}
-					if (FCaptures[i].CameraID != FPinInCameraID[i])
-						FCaptures[i].Initialise(FPinInCameraID[i]);
-				}
-
-				if (FCaptures.Count > SpreadMax)
-				{
-					for (int i = SpreadMax; i < FCaptures.Count; i++)
-					{
-						FCaptures.Remove(i);
-					}
-				}
-			//}
+			Resize(SpreadMax);
 
 			GiveOutputs();
         }
@@ -176,24 +146,36 @@ namespace VVVV.Nodes.EmguCV
 		{
 			foreach (KeyValuePair<int, CaptureVideoInstance> capture in FCaptures)
 			{
-				if (capture.Value.Image.FrameChanged)
-				{
-					FPinOutImage[capture.Key] = capture.Value.Image;
-				}
 				FPinOutStatus[capture.Key] = capture.Value.Status;
 			}
 		}
 
-		void ResizeOutput(int count)
+		private void Resize(int SpreadMax)
 		{
-			FPinOutStatus.SliceCount = count;
-			FPinOutImage.SliceCount = count;
+			FPinOutStatus.SliceCount = SpreadMax;
+			FPinOutImage.SliceCount = SpreadMax;
 
-			for (int i = 0; i < count; i++)
+			if (SpreadMax == 0)
 			{
-				if (FPinOutImage[i] == null)
+				FCaptures.Clear();
+				return;
+			}
+
+			for (int i = 0; i < SpreadMax; i++)
+			{
+				if (!FCaptures.ContainsKey(i))
 				{
-					FPinOutImage[i] = new ImageRGB();
+					FCaptures.Add(i, new CaptureVideoInstance());
+					FCaptures[i].Initialise(FPinInCameraID[i]);
+					FPinOutImage[i] = FCaptures[i].Image;
+				}
+			}
+
+			if (FCaptures.Count > SpreadMax)
+			{
+				for (int i = SpreadMax; i < FCaptures.Count; i++)
+				{
+					FCaptures.Remove(i);
 				}
 			}
 		}
