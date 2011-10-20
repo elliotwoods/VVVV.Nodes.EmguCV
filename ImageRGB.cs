@@ -21,7 +21,7 @@ namespace VVVV.Nodes.EmguCV
 		}
 	}
 
-	class ImageRGB
+	public class ImageRGB
 	{
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
 		static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);

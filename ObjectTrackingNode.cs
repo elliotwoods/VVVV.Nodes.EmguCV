@@ -73,10 +73,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			while (RunCaptureThread)
 			{
-				if (FSource.FrameChanged)
 					lock (this)
 					{
-						Image<Gray, Byte> grayImage = FSource.Img.Convert<Gray, Byte>();
+						if (FSource == null || FSource.Image == null) return;
+
+						Image<Gray, Byte> grayImage = FSource.Image.Convert<Gray, Byte>();
 
 						var stride = (grayImage.Width * 3);
 						var align = stride % 4;

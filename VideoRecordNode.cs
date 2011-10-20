@@ -41,7 +41,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			while (RunCaptureThread)
 			{
-				FVideoWriter.WriteFrame(Image.Img);
+				FVideoWriter.WriteFrame(Image.Image);
 			}
 		}
 	}

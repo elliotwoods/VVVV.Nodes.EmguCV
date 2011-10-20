@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using VVVV.Core.Logging;
@@ -32,13 +31,13 @@ namespace VVVV.Nodes.EmguCV
 			FPrevFilename = new Spread<string>(1);
 		}
 
-		public void Evaluate(int SpreadMax)
+		public void Evaluate(int spreadMax)
 		{
 			if (!FPinInFilename.IsChanged || FPinInFilename.SliceCount < 1) return;
 
-			FPinOutImage.SliceCount = SpreadMax;
+			FPinOutImage.SliceCount = spreadMax;
 
-			for (int i = 0; i < SpreadMax; i++)
+			for (int i = 0; i < spreadMax; i++)
 			{
 				if(FPinInFilename[i] == FPrevFilename[i]) continue;
 
@@ -46,7 +45,7 @@ namespace VVVV.Nodes.EmguCV
 				
 				try
 				{
-					FPinOutImage[i].Img = new Image<Bgr, byte>(FPinInFilename[i]);
+					FPinOutImage[i].SetImage(new Image<Bgr, byte>(FPinInFilename[i]));
 				}
 				catch
 				{
