@@ -62,15 +62,16 @@ namespace VVVV.Nodes.EmguCV
 			{
 				
 				FBuffer = FCapture.QueryFrame();
-
+					
 				lock (Image.GetLock())
 					Image.SetImage(FBuffer);
+
 				//allow a gap where we're not locked
 				Thread.Sleep(5);
 			}
 		}
 
-		public void SetSize(int width, int height)
+		void SetSize(int width, int height)
 		{
 			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
 			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
@@ -103,10 +104,13 @@ namespace VVVV.Nodes.EmguCV
 		IDiffSpread<int> FPinInCameraID;
 
 		[Input("Width", DefaultValue = 640, MinValue = 0)]
-		IDiffSpread<int> FWidth;
+		ISpread<int> FWidth;
 
 		[Input("Height", DefaultValue = 480, MinValue = 0)] 
-		IDiffSpread<int> FHeight;
+		ISpread<int> FHeight;
+
+		[Input("SetResolution", DefaultValue = 0, IsBang = true)] 
+		ISpread<bool> FSetResolution;
 
 		[Output("Image")]
 		ISpread<ImageRGB> FPinOutImage;
@@ -127,8 +131,6 @@ namespace VVVV.Nodes.EmguCV
 		public CaptureVideoNode(IPluginHost host)
 		{
 			FHost = host;
-//			FWidth.Changed += SizeChangedHandler;
-//			FHeight.Changed += SizeChangedHandler;
 		}
 
 		public void Dispose()
@@ -145,18 +147,14 @@ namespace VVVV.Nodes.EmguCV
 			Resize(spreadMax);
 			GiveOutputs();
 
-			if(FWidth.IsChanged || FHeight.IsChanged)
-			{
-				ChangeInputProperties(spreadMax);
-			}
-		}
-
-		private void ChangeInputProperties(int spreadMax)
-		{
 			for (int i = 0; i < spreadMax; i++)
 			{
-				FCaptures[i].SetSize(FWidth[i], FHeight[i]);
+				if(FSetResolution[i])
+				{
+					FCaptures[i].Initialise(FPinInCameraID[i], FWidth[i], FHeight[i]);
+				}
 			}
+			
 		}
 
 		void GiveOutputs()

@@ -67,7 +67,7 @@ namespace VVVV.Nodes.EmguCV
 		void imgIn_ImageUpdate(object sender, EventArgs e)
 		{
 			var imageRGB = sender as ImageRGB;
-			if (imageRGB != null)
+			if (imageRGB != null && imageRGB.Initialised)
 			{
 				try
 				{

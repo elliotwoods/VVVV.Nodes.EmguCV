@@ -34,7 +34,14 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return FImage != null;
+				try
+				{
+					return FImage.Bitmap != null;
+				}
+				catch
+				{
+					return false;
+				}
 			}
 		}
 		#region Events
@@ -98,7 +105,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				bool changedAttributes = FImageAttributes.CheckChanges(TColourData.RGB8, value.Size);
 
-				if (ImageAttributes.Initialised)
+				if (FImageAttributes.Initialised)
 				{
 					if (changedAttributes)
 					{
@@ -106,7 +113,7 @@ namespace VVVV.Nodes.EmguCV
 						OnImageAttributesUpdate(ImageAttributes);
 					}
 
-					this.FImage = value;
+					FImage = value;
 
 					if (ImageUpdate != null)
 						OnImageUpdate();

@@ -75,8 +75,8 @@ namespace VVVV.Nodes.EmguCV
 			{
 					lock (this)
 					{
-						if (FSource == null || FSource.Image == null) return;
-
+						if (!FSource.Initialised) continue;
+						
 						Image<Gray, Byte> grayImage = FSource.Image.Convert<Gray, Byte>();
 
 						var stride = (grayImage.Width * 3);
