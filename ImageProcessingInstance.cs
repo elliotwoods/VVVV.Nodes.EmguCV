@@ -9,7 +9,7 @@ namespace VVVV.Nodes.EmguCV
 		protected bool IsRunning;
 
 		protected string Status;
-		
+
 		public virtual void Close()
 		{
 			RunCaptureThread = false;

@@ -169,9 +169,9 @@
    </PIN>
    <PIN pinname="Image" visible="1">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="640">
+   <PIN pinname="Width" slicecount="1" values="100">
    </PIN>
-   <PIN pinname="Height" slicecount="1" values="480">
+   <PIN pinname="Height" slicecount="1" values="100">
    </PIN>
    <PIN pinname="SetResolution" slicecount="1" values="0">
    </PIN>
@@ -354,42 +354,6 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="Enabled" srcnodeid="24" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="10230" top="5160" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="10230" top="5160" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="10365" top="4530" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="10365" top="4530" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Height">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="27" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
-   <BOUNDS height="100" left="10215" top="3840" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="27" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="Y Input Value" srcnodeid="27" srcpinname="Width">
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="Y Input Value" srcnodeid="27" srcpinname="Height">
-   </LINK>
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="28" nodename="ObjectTracking (EmguCV)" systemname="ObjectTracking (EmguCV)">
    <BOUNDS height="100" left="12990" top="2370" type="Node" width="100">
    </BOUNDS>
@@ -498,6 +462,14 @@
    </LINK>
    <LINK dstnodeid="28" dstpinname="Enabled" srcnodeid="24" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="5" dstpinname="Image">
+   <LINK dstnodeid="5" dstpinname="Image" srcnodeid="0" srcpinname="Image">
    </LINK>
+   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="34">
+   <BOUNDS type="Node" left="9585" top="5580" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9585" top="5580" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14040" top="2745" width="6240" height="5010">
+   </BOUNDS>
+   </NODE>
    </PATCH>

@@ -1,58 +1,85 @@
 ﻿#region usings
+
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
-
 using SlimDX;
 using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 using VVVV.Utils.SlimDX;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
 
 #endregion usings
 
 //here you can change the vertex type
-using VertexType = VVVV.Utils.SlimDX.TexturedVertex;
 using System.Collections.Generic;
 using Emgu.CV.CvEnum;
 
 namespace VVVV.Nodes.EmguCV
 {
-    class ImageInstance
-    {
-        public int Width, Height;
-		Image<Rgba, byte> Image;
-		public bool Initialised = false;
+	class ImageInstance
+	{
+		public int Width { get; private set; } 
+		public int Height { get; private set; }
+		
+		Image<Rgba, byte> FBufferImage;
+		
+		public bool Initialised { get; private set; }
+		public bool ReinitialiseTexture { get; private set; }
+
+		bool FIsFresh;
+		public bool IsFresh
+		{
+			get
+			{
+				if (FIsFresh)
+				{
+					FIsFresh = false;
+					return true;
+				}
+				return false;
+			}
+			/*set
+			{
+				FIsFresh = IsFresh;
+			}*/
+		}
+
+		public IntPtr Ptr
+		{
+			get
+			{
+				return FBufferImage.MIplImage.imageData;
+			}
+		}
+		
 		public Object Lock = new Object();
 
-        public void InitialiseImage(ImageRGB imgIn)
-        {
+		public void InitialiseImage(ImageRGB image)
+		{
 			lock (Lock)
 			{
-				if (imgIn == null || !imgIn.Initialised)
+				if (image == null || !image.Initialised)
 				{
-					Image = null;
+					FBufferImage = null;
 					Initialised = false;
 					return;
 				}
-				imgIn.ImageUpdate += new EventHandler(imgIn_ImageUpdate);
-				imgIn.ImageAttributesUpdate += new EventHandler<ImageAttributesChangedEventArgs>(imgIn_ImageAttributesUpdate);
 
-				Allocate(imgIn.ImageAttributes);
+				image.ImageUpdate += ImageUpdate;
+				image.ImageAttributesUpdate += ImageAttributesUpdate;
+
+				Allocate(image.ImageAttributes);
 			}
-        }
+		}
 
-		void imgIn_ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
+		public void Reinitialized()
 		{
-			Allocate(e.Attributes);
+			ReinitialiseTexture = false;
 		}
 
 		void Allocate(CVImageAttributes imageAttributes)
@@ -60,116 +87,97 @@ namespace VVVV.Nodes.EmguCV
 			Width = imageAttributes.Width;
 			Height = imageAttributes.Height;
 
-			Image = new Image<Rgba, byte>(Width, Height);
+			FBufferImage = new Image<Rgba, byte>(Width, Height);
 			Initialised = true;
 		}
 
-		void imgIn_ImageUpdate(object sender, EventArgs e)
+		void ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
+		{
+			Allocate(e.Attributes);
+			ReinitialiseTexture = true;
+		}
+
+		void ImageUpdate(object sender, EventArgs e)
 		{
 			var imageRGB = sender as ImageRGB;
-			if (imageRGB != null && imageRGB.Initialised)
+			
+			if (imageRGB == null || !imageRGB.Initialised) return;
+			
+			try
 			{
-				try
-				{
-					lock (Lock)
-						lock (imageRGB.GetLock())
-							if (imageRGB.Ptr != null)
-							{
-								_isFresh = true;
-								CvInvoke.cvCvtColor(imageRGB.Ptr, Image.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
-							}
-				}
-				catch
-				{
+				lock (Lock)
+					lock (imageRGB.GetLock())
+						if (imageRGB.Ptr != null)
+						{
+							FIsFresh = true;
+							CvInvoke.cvCvtColor(imageRGB.Ptr, FBufferImage.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+						}
+			}
+			catch
+			{
 
-				}
 			}
 		}
 
 		public void Close()
 		{
-			Image = null;
+			FBufferImage = null;
 			Initialised = false;
 		}
+	}
 
-		bool _isFresh;
-		public bool isFresh
+	#region PluginInfo
+	[PluginInfo(Name = "AsTexture",
+			  Category = "EmguCV",
+			  Version = "RGB",
+			  Help = "Converts IPLImage to Texture",
+			  Tags = "")]
+	#endregion PluginInfo
+	public class AsTextureNode : DXTextureOutPluginBase, IPluginEvaluate
+	{
+		#region fields & pins
+		[Input("Image")]
+		IDiffSpread<ImageRGB> FPinInImage;
+
+		[Import]
+		ILogger FLogger;
+
+		readonly Dictionary<int, ImageInstance> FImageInstances = new Dictionary<int, ImageInstance>();
+		#endregion fields & pins
+
+		// import host and hand it to base constructor
+		[ImportingConstructor]
+		public AsTextureNode(IPluginHost host)
+			: base(host)
 		{
-			get
-			{
-				if (_isFresh)
-				{
-					_isFresh = false;
-					return true;
-				} else
-					return false;
-			}
-			set
-			{
-				_isFresh = isFresh;
-			}
 		}
 
-		public IntPtr Ptr
+		//called when data for any output pin is requested
+		public void Evaluate(int spreadMax)
 		{
-			get
+			for (int i = 0; i < FImageInstances.Count; i++)
 			{
-				return Image.MIplImage.imageData;
+				if (!FImageInstances[i].ReinitialiseTexture) continue;
+				
+				Reinitialize();
+				FImageInstances[i].Reinitialized();
 			}
-		}
-    }
 
-    #region PluginInfo
-    [PluginInfo(Name = "AsTexture",
-                Category = "EmguCV",
-                Version = "RGB",
-                Help = "Converts IPLImage to Texture",
-                Tags = "")]
-    #endregion PluginInfo
-    public class AsTextureNode : DXTextureOutPluginBase, IPluginEvaluate
-    {
-        #region fields & pins
-        [Input("Image")]
-        IDiffSpread<ImageRGB> FPinInImage;
-
-        [Import]
-        ILogger FLogger;
-
-        //track the current texture slice
-        int FCurrentSlice;
-
-		Dictionary<int, ImageInstance> FImageInstances = new Dictionary<int, ImageInstance>();
-
-        bool FTexReady = false;
-        #endregion fields & pins
-
-        // import host and hand it to base constructor
-        [ImportingConstructor()]
-        public AsTextureNode(IPluginHost host)
-            : base(host)
-        {
-        }
-
-        //called when data for any output pin is requested
-        public void Evaluate(int SpreadMax)
-        {
-            CheckChanges(SpreadMax);
+			CheckChanges();
 			Update();
-        }
+		}
 
-		private void CheckChanges(int FImageInstancescount)
-        {
+		private void CheckChanges()
+		{
 			bool needsInit = false;
-			ImageRGB imgIn;
 
 			if (FPinInImage[0] == null)
 			{
 				FImageInstances.Clear();
 				needsInit = true;
-			} else if (FImageInstances.Count != FPinInImage.SliceCount)
+			}
+			else if (FImageInstances.Count != FPinInImage.SliceCount)
 			{
-				needsInit = false;
-
 				//shrink local
 				if (FImageInstances.Count > FPinInImage.SliceCount)
 				{
@@ -201,57 +209,43 @@ namespace VVVV.Nodes.EmguCV
 			//seems a shame to have to reinitialise absolutely everything..
 			if (needsInit)
 				Reinitialize();
+		}
 
-			//check for data changes
-			bool needsUpdate = false;
-			for (int i = 0; i < FImageInstances.Count; i++)
-			{
-				if (FImageInstances[i].isFresh)
-					needsUpdate = true;
-			}
-			//if (needsUpdate)
-				//Update();
-        }
-
-        //this method gets called, when Reinitialize() was called in evaluate,
-        //or a graphics device asks for its data
-        protected override Texture CreateTexture(int Slice, Device device)
-        {
-            FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
+		//this method gets called, when Reinitialize() was called in evaluate,
+		//or a graphics device asks for its data
+		protected override Texture CreateTexture(int slice, Device device)
+		{
+			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + slice);
 
 			if (FImageInstances.Count > 0)
 			{
-				if (FImageInstances[Slice].Initialised)
-					//return new Texture(device,  Math.Max(FWidths[Slice], 1), Math.Max(FHeights[Slice], 1), 1, Usage.None, Format.R8G8B8, Pool.Managed);
-					return TextureUtils.CreateTexture(device, Math.Max(FImageInstances[Slice].Width, 1), Math.Max(FImageInstances[Slice].Height, 1));
-				else
-					return TextureUtils.CreateTexture(device, 1, 1);
-			}
-			else
-			{
+				if (FImageInstances[slice].Initialised)
+					return TextureUtils.CreateTexture(device, Math.Max(FImageInstances[slice].Width, 1), Math.Max(FImageInstances[slice].Height, 1));
+				
 				return TextureUtils.CreateTexture(device, 1, 1);
 			}
-        }
+			return TextureUtils.CreateTexture(device, 1, 1);
+		}
 
-        //this method gets called, when Update() was called in evaluate,
-        //or a graphics device asks for its texture, here you fill the texture with the actual data
-        //this is called for each renderer, careful here with multiscreen setups, in that case
-        //calculate the pixels in evaluate and just copy the data to the device texture here
-        protected unsafe override void UpdateTexture(int Slice, Texture texture)
-        {
-			if (FImageInstances.Count < Slice)
+		//this method gets called, when Update() was called in evaluate,
+		//or a graphics device asks for its texture, here you fill the texture with the actual data
+		//this is called for each renderer, careful here with multiscreen setups, in that case
+		//calculate the pixels in evaluate and just copy the data to the device texture here
+		protected unsafe override void UpdateTexture(int slice, Texture texture)
+		{
+			if (FImageInstances.Count < slice)
 				return;
 
-			if (FImageInstances[Slice].Initialised)
+			if (FImageInstances[slice].Initialised)
 			{
-                Surface srf = texture.GetSurfaceLevel(0);
-                DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+				Surface srf = texture.GetSurfaceLevel(0);
+				DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-				lock(FImageInstances[Slice].Lock)
-					rect.Data.WriteRange(FImageInstances[Slice].Ptr, FImageInstances[Slice].Width * FImageInstances[Slice].Height * 4);
+				lock (FImageInstances[slice].Lock)
+					rect.Data.WriteRange(FImageInstances[slice].Ptr, FImageInstances[slice].Width * FImageInstances[slice].Height * 4);
 
-                srf.UnlockRectangle();
-            }
-        }
-    }
+				srf.UnlockRectangle();
+			}
+		}
+	}
 }
