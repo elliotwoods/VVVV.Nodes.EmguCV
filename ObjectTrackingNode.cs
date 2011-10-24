@@ -33,6 +33,13 @@ namespace VVVV.Nodes.EmguCV
 		private HaarCascade FHaarCascade;
 
 		private readonly List<TrackingObject> FTrackingObjects = new List<TrackingObject>();
+
+		#region tracking params
+		public double ScaleFactor { private get; set; }
+		public int MinNeighbors { private get; set; }
+		public int MinWidht { private get; set; }
+		public int MinHeight { private get; set; }
+		#endregion
 		
 		public List<TrackingObject> TrackingObjects
 		{
@@ -89,7 +96,8 @@ namespace VVVV.Nodes.EmguCV
 
 						grayImage._EqualizeHist();
 
-						MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, 1.8, 1, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayImage.Width / 10, grayImage.Height / 10));
+						//MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, 1.8, 1, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayImage.Width / 10, grayImage.Height / 10));
+						MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, ScaleFactor, 1, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(MinWidht, MinHeight));
 
 						FTrackingObjects.Clear();
 
@@ -122,6 +130,18 @@ namespace VVVV.Nodes.EmguCV
 		[Input("Haar Table", DefaultString = "haarcascade_frontalface_alt2.xml", IsSingle = true, StringType = StringType.Filename)] 
 		IDiffSpread<string> FHaarPath;
 
+		[Input("Scale Factor", DefaultValue = 1.8)] 
+		private IDiffSpread<double> FScaleFactor;
+
+		[Input("Min Neighbors", DefaultValue = 1)] 
+		private IDiffSpread<int> FMinNeighbors;
+
+		[Input("Min Width", DefaultValue = 64)] 
+		private IDiffSpread<int> FMinWidth;
+
+		[Input("Min Height", DefaultValue = 48)] 
+		private IDiffSpread<int> FMinHeight;
+
 		[Input("Enabled", DefaultValue = 1)]
 		ISpread<bool> FEnabled;
 
@@ -152,6 +172,11 @@ namespace VVVV.Nodes.EmguCV
 				{
 					InstancesByIndex[i].Close();
 				}
+
+				if(FScaleFactor.IsChanged) InstancesByIndex[i].ScaleFactor = FScaleFactor[i];
+				if(FMinNeighbors.IsChanged) InstancesByIndex[i].MinNeighbors = FMinNeighbors[i];
+				if(FMinWidth.IsChanged) InstancesByIndex[i].MinWidht = FMinWidth[i];
+				if(FMinHeight.IsChanged) InstancesByIndex[i].MinHeight = FMinHeight[i];
 			}
 
 			OutputFaces();
