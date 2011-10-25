@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.EmguCV
+namespace VVVV.Nodes.EmguCV.Abstract
 {
-	public abstract class ImageProcessingNode<T>: IPluginEvaluate, IDisposable where T : ImageProcessingInstance, new()
+	public abstract class ThreadedNode<T>: IPluginEvaluate, IDisposable where T : AbstractInstance, new()
 	{
 		protected Dictionary<int, T> InstancesByIndex = new Dictionary<int, T>();
 		

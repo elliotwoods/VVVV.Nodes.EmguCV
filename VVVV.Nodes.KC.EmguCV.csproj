@@ -100,12 +100,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ImageProcessingInstance.cs" />
+    <Compile Include="ImageResizeNode.cs" />
     <Compile Include="FindBoardNode.cs" />
     <Compile Include="CVImageAttributes.cs" />
     <Compile Include="ImageLoadNode.cs" />
-    <Compile Include="ImageProcessingInstance.cs" />
-    <Compile Include="ImageProcessingNode.cs" />
+    <Compile Include="Abstract\AbstractInstance.cs" />
+    <Compile Include="Abstract\ThreadedNode.cs" />
     <Compile Include="ObjectTrackingNode.cs" />
+    <Compile Include="Abstract\ThreadedAbstractInstance.cs" />
     <Compile Include="VideoInNode.cs" />
     <Compile Include="AsTextureNode.cs" />
     <Compile Include="ImageRGB.cs" />
@@ -133,6 +136,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

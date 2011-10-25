@@ -1,23 +1,22 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class ImageProcessingInstance
+	public abstract class ThreadedAbstractInstance: AbstractInstance
 	{
 		protected Thread CaptureThread;
 		protected bool RunCaptureThread;
 		protected bool IsRunning;
 
-		protected string Status;
-
-		public virtual void Close()
+		public override void Close()
 		{
 			RunCaptureThread = false;
 			CaptureThread.Join(100);
 			IsRunning = false;
 		}
-
-		public abstract void Process();
-		
 	}
 }

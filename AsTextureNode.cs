@@ -43,10 +43,6 @@ namespace VVVV.Nodes.EmguCV
 				}
 				return false;
 			}
-			/*set
-			{
-				FIsFresh = IsFresh;
-			}*/
 		}
 
 		public IntPtr Ptr
@@ -59,7 +55,7 @@ namespace VVVV.Nodes.EmguCV
 		
 		public Object Lock = new Object();
 
-		public void InitialiseImage(ImageRGB image)
+		public void Initialise(ImageRGB image)
 		{
 			lock (Lock)
 			{
@@ -196,7 +192,7 @@ namespace VVVV.Nodes.EmguCV
 						ImageInstance attribs = new ImageInstance();
 
 						//presume BGR input
-						attribs.InitialiseImage(FPinInImage[i]);
+						attribs.Initialise(FPinInImage[i]);
 						FImageInstances.Add(i, attribs);
 					}
 					needsInit = true;

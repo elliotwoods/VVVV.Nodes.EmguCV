@@ -1,10 +1,11 @@
 ﻿using System.Threading;
 using Emgu.CV;
+using VVVV.Nodes.EmguCV.Abstract;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class VideoRecordInstance : ImageProcessingInstance
+	public class VideoRecordInstance : ThreadedAbstractInstance
 	{
 		private VideoWriter FVideoWriter;
 		
@@ -37,19 +38,24 @@ namespace VVVV.Nodes.EmguCV
 			FVideoWriter.Dispose();
 		}
 
-		public override void Process()
+		protected override void Process()
 		{
 			while (RunCaptureThread)
 			{
 				FVideoWriter.WriteFrame(Image.Image);
 			}
 		}
+
+		public override void Initialise()
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 
 	#region PluginInfo
 	[PluginInfo(Name = "VideoRecord", Category = "EmguCV", Help = "RecordsVideo", Author = "alg", Credits = "sugokuGENKI", Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class VideoRecordNode : ImageProcessingNode<VideoRecordInstance>
+	public class VideoRecordNode : ThreadedNode<VideoRecordInstance>
 	{
 		[Input("ImageIn")] 
 		private ISpread<ImageRGB> FInput;

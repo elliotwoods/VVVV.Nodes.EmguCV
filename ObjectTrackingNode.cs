@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Threading;
-
+using VVVV.Nodes.EmguCV.Abstract;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
@@ -23,7 +23,7 @@ namespace VVVV.Nodes.EmguCV
 		public Vector2D Scale;
 	}
 
-	public class TrackingInstance : ImageProcessingInstance
+	public class TrackingInstance : ThreadedAbstractInstance
 	{
 		private readonly Vector2D FMinimumSourceXY = new Vector2D(0, 0);
 		private readonly Vector2D FMinimumDestXY = new Vector2D(-0.5, 0.5);
@@ -76,7 +76,7 @@ namespace VVVV.Nodes.EmguCV
 			FHaarCascade.Dispose();
 		}
 
-		public override void Process()
+		protected override void Process()
 		{
 			while (RunCaptureThread)
 			{
@@ -97,7 +97,7 @@ namespace VVVV.Nodes.EmguCV
 						grayImage._EqualizeHist();
 
 						//MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, 1.8, 1, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(grayImage.Width / 10, grayImage.Height / 10));
-						MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, ScaleFactor, 1, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(MinWidht, MinHeight));
+						MCvAvgComp[] objectsDetected = FHaarCascade.Detect(grayImage, ScaleFactor, MinNeighbors, HAAR_DETECTION_TYPE.DO_CANNY_PRUNING, new Size(MinWidht, MinHeight));
 
 						FTrackingObjects.Clear();
 
@@ -116,12 +116,17 @@ namespace VVVV.Nodes.EmguCV
 					}
 			}
 		}
+
+		public override void Initialise()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	#region PluginInfo
 	[PluginInfo(Name = "ObjectTracking", Category = "EmguCV", Help = "Tracks faces and eyes", Author = "alg, sugokuGENKI", Tags = "")]
 	#endregion PluginInfo
-	public class ObjectTrackingNode : ImageProcessingNode<TrackingInstance>
+	public class ObjectTrackingNode : ThreadedNode<TrackingInstance>
 	{
 		#region fields & pins
 		[Input("Image")]
