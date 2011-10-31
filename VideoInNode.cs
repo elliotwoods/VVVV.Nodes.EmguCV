@@ -1,21 +1,13 @@
 ﻿#region usings
+
 using System;
 using System.ComponentModel.Composition;
-using System.Runtime.InteropServices;
-
-using SlimDX;
-using SlimDX.Direct3D9;
+using Emgu.CV.CvEnum;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V2.EX9;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
-using VVVV.Utils.SlimDX;
-
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.Util;
 using System.Threading;
 using System.Collections.Generic;
 
@@ -29,20 +21,21 @@ namespace VVVV.Nodes.EmguCV
 		public string Status;
 
 		Thread FCaptureThread;
-		bool FRunCaptureThread = false;
+		bool FRunCaptureThread;
 
 		public ImageRGB Image = new ImageRGB();
 		Capture FCapture;
-		public bool IsRunning = false;
+		public bool IsRunning;
 
-		Image<Bgr, byte> FBuffer = null;
+		Image<Bgr, byte> FBuffer;
 
-		public void Initialise(int id)
+		public void Initialise(int id, int width, int height)
 		{
 			Close();
 			try
 			{
 				FCapture = new Capture(id); //create a camera captue
+				SetSize(width, height);
 			}
 			catch
 			{
@@ -59,72 +52,86 @@ namespace VVVV.Nodes.EmguCV
 			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FCapture.Width, FCapture.Height));
 
 			FRunCaptureThread = true;
-			FCaptureThread = new Thread(fnCapture);
+			FCaptureThread = new Thread(Capture);
 			FCaptureThread.Start();
 		}
 
-		private void fnCapture()
+		private void Capture()
 		{
 			while (FRunCaptureThread)
 			{
+				
 				FBuffer = FCapture.QueryFrame();
-
+					
 				lock (Image.GetLock())
 					Image.SetImage(FBuffer);
+
 				//allow a gap where we're not locked
 				Thread.Sleep(5);
 			}
 		}
 
+		void SetSize(int width, int height)
+		{
+			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
+			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
+		}
+
 		public void Close()
 		{
-			if (IsRunning)
-			{
+			if (!IsRunning) return;
 
-				FRunCaptureThread = false;
-				FCaptureThread.Join(100);
-				FCapture.Dispose();
-				FBuffer.Dispose();
-				IsRunning = false;
-			}
+			FRunCaptureThread = false;
+			FCaptureThread.Join(100);
+			FCapture.Dispose();
+			FBuffer.Dispose();
+			IsRunning = false;
 		}
 
 	}
-    #region PluginInfo
-    [PluginInfo(Name = "VideoIn",
-                Category = "EmguCV",
-                Version = "",
-                Help = "Captures from DShow device to IPLImage",
-                Tags = "")]
-    #endregion PluginInfo
-    public class CaptureVideoNode : IPluginEvaluate, IDisposable
-    {
-        #region fields & pins
+	#region PluginInfo
+	[PluginInfo(Name = "VideoIn",
+			  Category = "EmguCV",
+			  Version = "",
+			  Help = "Captures from DShow device to IPLImage",
+			  Tags = "")]
+	#endregion PluginInfo
+	public class CaptureVideoNode : IPluginEvaluate, IDisposable
+	{
+		#region fields & pins
 
-        [Input("Camera ID", DefaultValue = 0, MinValue=0)]
-        IDiffSpread<int> FPinInCameraID;
+		[Input("Camera ID", DefaultValue = 0, MinValue = 0)]
+		IDiffSpread<int> FPinInCameraID;
 
-        [Output("Image")]
-        ISpread<ImageRGB> FPinOutImage;
+		[Input("Width", DefaultValue = 640, MinValue = 0)]
+		ISpread<int> FWidth;
 
-        [Output("Status")]
-        ISpread<string> FPinOutStatus;
+		[Input("Height", DefaultValue = 480, MinValue = 0)] 
+		ISpread<int> FHeight;
 
-        [Import]
-        ILogger FLogger;
+		[Input("SetResolution", DefaultValue = 0, IsBang = true)] 
+		ISpread<bool> FSetResolution;
 
-        IPluginHost FHost;
+		[Output("Image")]
+		ISpread<ImageRGB> FPinOutImage;
 
+		[Output("Status")]
+		ISpread<string> FPinOutStatus;
+
+		[Import]
+		ILogger FLogger;
+
+		IPluginHost FHost;
 		Dictionary<int, CaptureVideoInstance> FCaptures = new Dictionary<int, CaptureVideoInstance>();
 
-        #endregion fields & pins
+		#endregion fields & pins
 
-        // import host and hand it to base constructor
-        [ImportingConstructor()]
+		// import host and hand it to base constructor
+		[ImportingConstructor]
 		public CaptureVideoNode(IPluginHost host)
-        {
-            FHost = host;
-        }
+		{
+			FHost = host;
+		}
 
 		public void Dispose()
 		{
@@ -134,13 +141,21 @@ namespace VVVV.Nodes.EmguCV
 			GC.SuppressFinalize(this);
 		}
 
-        //called when data for any output pin is requested
-        public void Evaluate(int SpreadMax)
-        {
-			Resize(SpreadMax);
-
+		//called when data for any output pin is requested
+		public void Evaluate(int spreadMax)
+		{
+			Resize(spreadMax);
 			GiveOutputs();
-        }
+
+			for (int i = 0; i < spreadMax; i++)
+			{
+				if(FSetResolution[i])
+				{
+					FCaptures[i].Initialise(FPinInCameraID[i], FWidth[i], FHeight[i]);
+				}
+			}
+			
+		}
 
 		void GiveOutputs()
 		{
@@ -150,34 +165,34 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		private void Resize(int SpreadMax)
+		private void Resize(int spreadMax)
 		{
-			FPinOutStatus.SliceCount = SpreadMax;
-			FPinOutImage.SliceCount = SpreadMax;
+			FPinOutStatus.SliceCount = spreadMax;
+			FPinOutImage.SliceCount = spreadMax;
 
-			if (SpreadMax == 0)
+			if (spreadMax == 0)
 			{
 				FCaptures.Clear();
 				return;
 			}
 
-			for (int i = 0; i < SpreadMax; i++)
+			for (int i = 0; i < spreadMax; i++)
 			{
 				if (!FCaptures.ContainsKey(i))
 				{
 					FCaptures.Add(i, new CaptureVideoInstance());
-					FCaptures[i].Initialise(FPinInCameraID[i]);
+					FCaptures[i].Initialise(FPinInCameraID[i], FWidth[i], FHeight[i]);
 					FPinOutImage[i] = FCaptures[i].Image;
 				}
 			}
 
-			if (FCaptures.Count > SpreadMax)
+			if (FCaptures.Count > spreadMax)
 			{
-				for (int i = SpreadMax; i < FCaptures.Count; i++)
+				for (int i = spreadMax; i < FCaptures.Count; i++)
 				{
 					FCaptures.Remove(i);
 				}
 			}
 		}
-    }
+	}
 }
