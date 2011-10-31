@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public enum TColourData { UnInitialised, RGB8, RGBA8, L8 };
+	public enum TColourData { UnInitialised, RGB8, RGBA8, L8, L16};
 
 	public class CVImageAttributes
 	{

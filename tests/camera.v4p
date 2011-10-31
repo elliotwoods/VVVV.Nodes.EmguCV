@@ -9,6 +9,8 @@
    </PIN>
    <PIN pinname="Status" visible="1">
    </PIN>
+   <PIN pinname="Camera ID" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="1" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
    <BOUNDS height="100" left="3660" top="2010" type="Node" width="100">
@@ -96,6 +98,6 @@
    </NODE>
    <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="9" srcpinname="frames per second">
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Image" srcnodeid="0" srcpinname="Image">
+   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="1" dstpinname="Image">
    </LINK>
    </PATCH>

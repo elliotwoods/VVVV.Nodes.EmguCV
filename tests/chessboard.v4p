@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\chessboard.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\camera.v4p" systemname="camera">
-   <BOUNDS height="11535" left="1065" top="1575" type="Window" width="14415">
+   <BOUNDS height="11535" left="1065" top="1575" type="Window" width="18285">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="0" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
    <BOUNDS height="100" left="3645" top="1215" type="Node" width="100">
@@ -64,7 +64,7 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Image" srcnodeid="0" srcpinname="Image" linkstyle="VHV">
+   <LINK dstnodeid="5" dstpinname="Image" linkstyle="VHV" srcnodeid="0" srcpinname="Image">
    <LINKPOINT x="3705" y="1733">
    </LINKPOINT>
    <LINKPOINT x="8550" y="1733">
@@ -107,15 +107,15 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="Enabled" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="2175" top="4095" width="2835" height="270">
+   <NODE componentmode="Hidden" id="9" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="270" left="2175" top="4095" type="Node" width="2835">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -124,10 +124,10 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="9" dstpinname="Layer 1">
+   <LINK dstnodeid="9" dstpinname="Layer 1" srcnodeid="2" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Marker (DX9)" filename="subpatches\Marker (DX9).v4p" nodename="Marker (DX9)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="3555" top="3645" width="100" height="100">
+   <NODE componentmode="Hidden" filename="subpatches\Marker (DX9).v4p" id="12" nodename="Marker (DX9)" systemname="Marker (DX9)">
+   <BOUNDS height="100" left="3555" top="3645" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -137,13 +137,13 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="15990" top="5820" width="6465" height="5700">
+   <BOUNDS height="5700" left="15990" top="5820" type="Window" width="6465">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="9" dstpinname="Layer 2">
+   <LINK dstnodeid="9" dstpinname="Layer 2" srcnodeid="12" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="13">
-   <BOUNDS type="Node" left="6810" top="10185" width="855" height="270">
+   <NODE componentmode="Hidden" id="13" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="270" left="6810" top="10185" type="Node" width="855">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -152,37 +152,37 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Actual Backbuffer Width" dstnodeid="13" dstpinname="Input">
+   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="3" srcpinname="Actual Backbuffer Width">
    </LINK>
-   <LINK srcnodeid="3" srcpinname="Actual Backbuffer Height" dstnodeid="13" dstpinname="Input 2">
+   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="3" srcpinname="Actual Backbuffer Height">
    </LINK>
-   <NODE systemname="CameraCoordsView (Transform)" filename="subpatches\CameraCoordsView (Transform).v4p" nodename="CameraCoordsView (Transform)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="6975" top="3960" width="100" height="100">
+   <NODE componentmode="Hidden" filename="subpatches\CameraCoordsView (Transform).v4p" id="19" nodename="CameraCoordsView (Transform)" systemname="CameraCoordsView (Transform)">
+   <BOUNDS height="100" left="6975" top="3960" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="16260" top="5985" width="3810" height="7140">
+   <BOUNDS height="7140" left="16260" top="5985" type="Window" width="3810">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Transform Out" dstnodeid="3" dstpinname="View">
+   <LINK dstnodeid="3" dstpinname="View" srcnodeid="19" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="CameraCoordsImage (Transform)" filename="subpatches\CameraCoordsImage (Transform).v4p" nodename="CameraCoordsImage (Transform)" componentmode="Hidden" id="20">
-   <BOUNDS type="Node" left="2910" top="900" width="100" height="100">
+   <NODE componentmode="Hidden" filename="subpatches\CameraCoordsImage (Transform).v4p" id="20" nodename="CameraCoordsImage (Transform)" systemname="CameraCoordsImage (Transform)">
+   <BOUNDS height="100" left="2910" top="900" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform">
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="20" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="12" dstpinname="Aspect Ratio" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINK dstnodeid="12" dstpinname="Aspect Ratio" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output">
    <LINKPOINT x="6825" y="7050">
    </LINKPOINT>
    <LINKPOINT x="4005" y="7050">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="5" srcpinname="PositionXY" dstnodeid="12" dstpinname="XY" linkstyle="VHV">
+   <LINK dstnodeid="12" dstpinname="XY" linkstyle="VHV" srcnodeid="5" srcpinname="PositionXY">
    <LINKPOINT x="8550" y="2948">
    </LINKPOINT>
    <LINKPOINT x="3615" y="2948">
