@@ -24,22 +24,30 @@ namespace VVVV.Nodes.EmguCV
 		readonly Vector2D CMinimumDestXY = new Vector2D(-1, 1);
 		readonly Vector2D CMaximumDestXY = new Vector2D(1, -1);
 
-		bool IsRunning;
 		ImageRGB FSource = null;
-		Image<Gray, byte> FGrayImage;
+		Image<Gray, byte> FGrayImageFront, FGrayImageBack;
+
 		Size BoardSize = new Size(10, 7);
-		PointF[] FFoundPoints;
+		PointF[] FFoundPointsFront, FFoundPointsBack;
+
+		private Object FLockGreyFront = new Object();
+		private Object FLockGreyBack = new Object();
+		private Object FLockFoundPointsFront = new Object();
+		private Object FLockFoundPointsBack = new Object();
+		private Thread FFindThread;
 
 		public bool Enabled = true;
+		private bool isRunning = false;
 
 		public FindBoardInstance(ImageRGB image, bool enabled)
 		{
 			FSource = image;
 
 			FSource.ImageUpdate += new EventHandler(FSource_ImageUpdate);
-
-			IsRunning = true;
+			this.isRunning = true;
 			this.Enabled = enabled;
+			this.FFindThread = new Thread(fnThread);
+			this.FFindThread.Start();
 		}
 
 		void FSource_ImageUpdate(object sender, EventArgs e)
@@ -49,40 +57,72 @@ namespace VVVV.Nodes.EmguCV
 			if (imageRGB != null)
 			{
 				if (Enabled)
-					findBoards(imageRGB);
+					updateGrey(imageRGB);
 			}
 		}
 
 		public void Close()
 		{
-			if (IsRunning)
-			{
-				IsRunning = false;
-			}
+			isRunning = false;
 		}
 
 		public void SetSize(int x, int y)
 		{
 			BoardSize.Width = x;
 			BoardSize.Height = y;
-			FFoundPoints = new PointF[x * y];
+
+			FFoundPointsFront = new PointF[x * y];
+			FFoundPointsBack = new PointF[x * y];
 		}
 
-		void findBoards(ImageRGB image)
+		void updateGrey(ImageRGB image)
 		{
-			lock (this)
+			lock (FLockGreyBack)
 			{
-				FGrayImage = image.Image.Convert<Gray, Byte>();
+				FGrayImageBack = image.Image.Convert<Gray, Byte>();
+			}
+		}
 
-				var stride = (FGrayImage.Width * 3);
-				var align = stride % 4;
-
-				if (align != 0)
+		void findBoards()
+		{
+			lock (FLockGreyFront)
+			{
+				lock (FLockGreyBack)
 				{
-					stride += 4 - align;
+					Image<Gray, byte> swap = FGrayImageBack;
+					FGrayImageBack = FGrayImageFront;
+					FGrayImageFront = swap;
 				}
+			}
 
-				FFoundPoints = CameraCalibration.FindChessboardCorners(FGrayImage, BoardSize, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+			//no image yet
+			if (FGrayImageFront == null)
+				return;
+
+			lock (FLockFoundPointsFront)
+			{
+				lock (FLockFoundPointsBack)
+				{
+					PointF[] swap = FFoundPointsBack;
+					FFoundPointsFront = FFoundPointsBack;
+					FFoundPointsFront = swap;
+				}
+			}
+
+			lock (FLockGreyFront)
+			{
+				FFoundPointsBack = CameraCalibration.FindChessboardCorners(FGrayImageFront, BoardSize, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+			}
+		}
+
+		void fnThread()
+		{
+			while (isRunning)
+			{
+				if (Enabled)
+					findBoards();
+
+				Thread.Sleep(1);
 			}
 		}
 
@@ -90,15 +130,16 @@ namespace VVVV.Nodes.EmguCV
 
 			points.Clear();
 
-			lock(this) {
-				if (FFoundPoints == null) {
+			lock (FLockFoundPointsFront)
+			{
+				if (FFoundPointsFront == null) {
 					return false;
 				}
 				
 
 				for (int i = 0; i < BoardSize.Width * BoardSize.Height; i++)
 				{
-					points.Add(new Vector2D(FFoundPoints[i].X, FFoundPoints[i].Y));
+					points.Add(new Vector2D(FFoundPointsFront[i].X, FFoundPointsFront[i].Y));
 				}
 
 				return true;

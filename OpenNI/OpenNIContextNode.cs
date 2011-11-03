@@ -76,6 +76,7 @@ namespace VVVV.Nodes.EmguCV
 				{
 					FContext = new Context();
 					FContext.RunXmlScriptFromFileEx(FPinInFilename[0]);
+					FContext.GlobalMirror = false;
 
 					FOutput.context = FContext;
 					FOutput.running = true;

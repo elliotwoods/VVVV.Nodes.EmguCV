@@ -13,6 +13,8 @@ float4x4 tV: VIEW;         //view matrix as set via Renderer (EX9)
 float4x4 tP: PROJECTION;
 float4x4 tWVP: WORLDVIEWPROJECTION;
 
+float4x4 tScreen;
+
 //texture
 texture Tex <string uiname="XYZ";>;
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
@@ -92,15 +94,19 @@ vs2ps VS(
 	
 	float4 TexCdl = float4(TexCd.x, TexCd.y, 0, 0);
 	float4 PosO = tex2Dlod(Samp, TexCdl);
-	Out.Pos = mul(PosO,tWVP);
 	
-	
+	float4 p = mul(PosO,tWVP);
 	bool zero = jumps(TexCd);
 	
-	Out.existence = !zero;
+	p.w *= !zero;
+	p.z = zero ? 5 : p.z;
 	
-	Out.Pos.w *= Out.existence;
-	Out.Pos.z = zero ? 5 : Out.Pos.z;
+	float4 s = mul(p, tScreen);
+	Out.Pos = s;
+	
+	
+	Out.existence = !zero;
+
 	
 	Out.PosW = Out.Pos.xyz;
     return Out;

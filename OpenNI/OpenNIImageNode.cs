@@ -22,7 +22,6 @@ using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.EmguCV
 {
-
 	#region PluginInfo
 	[PluginInfo(Name = "Images", Category = "OpenNI", Help = "OpenNI Image generator", Tags = "")]
 	#endregion PluginInfo
