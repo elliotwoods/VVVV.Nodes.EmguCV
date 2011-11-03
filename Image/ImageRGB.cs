@@ -12,7 +12,7 @@ namespace VVVV.Nodes.EmguCV
 {
 
 
-	class ImageRGB : ImageBase
+	public class ImageRGB : ImageBase
 	{
 
 		private Image<Bgr, byte> FImage;

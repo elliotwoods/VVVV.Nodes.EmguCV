@@ -12,7 +12,7 @@ namespace VVVV.Nodes.EmguCV
 {
 
 
-	class ImageL16: ImageBase
+	public class ImageL16: ImageBase
 	{
 
 		private Image<Gray, ushort> FImage;

@@ -21,7 +21,7 @@ namespace VVVV.Nodes.EmguCV
 		}
 	}
 
-	abstract class ImageBase
+	public abstract class ImageBase
 	{
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
 		static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
