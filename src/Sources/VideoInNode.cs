@@ -10,6 +10,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 #endregion usings
 
@@ -28,9 +29,14 @@ namespace VVVV.Nodes.EmguCV
 
 		public ImageRGB Image = new ImageRGB();
 		Capture FCapture;
+		Object FLockCapture = new Object();
+
 		public bool IsRunning;
 
 		Image<Bgr, byte> FBuffer;
+
+		Stopwatch FTimer = new Stopwatch();
+		TimeSpan FFramePeriod = new TimeSpan(0);
 
 		public int CameraID
 		{
@@ -56,31 +62,42 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
+		public int FramesPerSecond
+		{
+			get
+			{
+				return (int) (1.0 / FFramePeriod.TotalSeconds);
+			}
+		}
+
 		public void Initialise(int id, int width, int height)
 		{
 			Close();
-			try
+			lock (FLockCapture)
 			{
-				FCapture = new Capture(id); //create a camera captue
-				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
-				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
+				try
+				{
+					FCapture = new Capture(id);
+					FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
+					FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
+				}
+				catch
+				{
+					Status = "Camera open failed";
+					IsRunning = false;
+					return;
+				}
+
+				Status = "OK";
+				IsRunning = true;
+
+				FCameraID = id;
+
+				FWidth = FCapture.Width;
+				FHeight = FCapture.Height;
+
+				FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FWidth, FHeight));
 			}
-			catch
-			{
-				Status = "Camera open failed";
-				IsRunning = false;
-				return;
-			}
-
-			Status = "OK";
-			IsRunning = true;
-
-			FCameraID = id;
-
-			FWidth = FCapture.Width;
-			FHeight = FCapture.Height;
-
-			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FWidth, FHeight));
 
 			FRunCaptureThread = true;
 			FCaptureThread = new Thread(Capture);
@@ -89,16 +106,27 @@ namespace VVVV.Nodes.EmguCV
 
 		private void Capture()
 		{
+
+			FTimer.Start();
+
 			while (FRunCaptureThread)
 			{
-				
-				FBuffer = FCapture.QueryFrame();
-					
-				lock (Image.GetLock())
-					Image.SetImage(FBuffer);
+				FTimer.Reset();
+				FTimer.Start();
+
+				lock (FLockCapture)
+				{
+					FBuffer = FCapture.QueryFrame();
+
+					if (FBuffer != null)
+						lock (Image.GetLock())
+							Image.SetImage(FBuffer);
+				}
+
+				FFramePeriod = FTimer.Elapsed;
 
 				//allow a gap where we're not locked
-				Thread.Sleep(5);
+				Thread.Sleep(1);
 			}
 		}
 
@@ -141,6 +169,9 @@ namespace VVVV.Nodes.EmguCV
 		[Output("Image")]
 		ISpread<ImageRGB> FPinOutImage;
 
+		[Output("FPS")]
+		ISpread<int> FPinOutFPS;
+
 		[Output("Status")]
 		ISpread<string> FPinOutStatus;
 
@@ -161,6 +192,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
+			for (int i = 0; i < FCaptures.SliceCount; i++)
+				FCaptures[i].Close();
+
 			FCaptures.SliceCount = 0;
 
 			GC.SuppressFinalize(this);
@@ -179,11 +213,13 @@ namespace VVVV.Nodes.EmguCV
 			int count = FCaptures.SliceCount;
 
 			FPinOutImage.SliceCount = count;
+			FPinOutFPS.SliceCount = count;
 			FPinOutStatus.SliceCount = count;
 
 			for (int i=0; i<count; i++)
 			{
 				FPinOutStatus[i] = FCaptures[i].Status;
+				FPinOutFPS[i] = FCaptures[i].FramesPerSecond;
 				FPinOutImage[i] = FCaptures[i].Image;
 			}
 		}

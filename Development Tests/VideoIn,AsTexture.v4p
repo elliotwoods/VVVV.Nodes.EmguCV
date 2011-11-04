@@ -53,13 +53,15 @@
    </PIN>
    <PIN pinname="Height" slicecount="1" values="480">
    </PIN>
+   <PIN pinname="FPS" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Image" srcnodeid="18" srcpinname="Image">
    </LINK>
    <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="4890" top="4860" type="Node" width="100">
+   <BOUNDS height="100" left="4890" top="4920" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="4890" top="4860" type="Box" width="1920">
+   <BOUNDS height="240" left="4890" top="4920" type="Box" width="1920">
    </BOUNDS>
    <PIN pinname="Input String" visible="1">
    </PIN>
@@ -75,5 +77,17 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3120" top="4920" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3120" top="4920" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="FPS">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Y Input Value" srcnodeid="18" srcpinname="FPS">
    </LINK>
    </PATCH>

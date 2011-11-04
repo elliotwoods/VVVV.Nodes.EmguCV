@@ -86,7 +86,10 @@ namespace VVVV.Nodes.EmguCV
 				Allocate();
 
 				if (Initialised)
+				{
 					AddListeners();
+					Load(image);
+				}
 			}
 		}
 
@@ -134,17 +137,22 @@ namespace VVVV.Nodes.EmguCV
 			try
 			{
 				lock (Lock)
-					lock (imageRGB.GetLock())
-						if (imageRGB.Ptr != null)
-						{
-							FIsFresh = true;
-							CvInvoke.cvCvtColor(imageRGB.Ptr, FBufferImage.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
-						}
+					Load(imageRGB);
 			}
 			catch
 			{
 
 			}
+		}
+
+		public void Load(ImageRGB image)
+		{
+			lock (image.GetLock())
+				if (image.Ptr != null)
+				{
+					FIsFresh = true;
+					CvInvoke.cvCvtColor(image.Ptr, FBufferImage.Ptr, COLOR_CONVERSION.CV_RGB2RGBA);
+				}
 		}
 
 		public void Close()
