@@ -1,0 +1,189 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\OpenNI.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\OpenNI.v4p" systemname="OpenNI">
+   <BOUNDS height="5835" left="5745" top="4005" type="Window" width="16035">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="12" nodename="Context (OpenNI)" systemname="Context (OpenNI)">
+   <BOUNDS height="270" left="915" top="960" type="Node" width="12435">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="..\SamplesConfig.xml">
+   </PIN>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Open" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="11" nodename="Images (OpenNI)" systemname="Images (OpenNI)">
+   <BOUNDS height="270" left="915" top="2085" type="Node" width="12045">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="RGB" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   <PIN pinname="World" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="13275" top="1425" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="13275" top="1425" type="Box" width="1635">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="8" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
+   <BOUNDS height="100" left="2085" top="2565" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS left="2085" top="2565" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Image" linkstyle="VHV" srcnodeid="11" srcpinname="RGB">
+   <LINKPOINT x="975" y="2475">
+   </LINKPOINT>
+   <LINKPOINT x="2085" y="2475">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="13290" top="150" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="13290" top="150" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Open">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Open" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input String" srcnodeid="12" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="4" nodename="AsTexture (EmguCV L16)" systemname="AsTexture (EmguCV L16)">
+   <BOUNDS height="100" left="5940" top="2565" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS left="5940" top="2565" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Image" linkstyle="VHV" srcnodeid="11" srcpinname="Depth">
+   <LINKPOINT x="4965" y="2423">
+   </LINKPOINT>
+   <LINKPOINT x="5940" y="2423">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Context" srcnodeid="12" srcpinname="Context">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="4920" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4920" top="2565" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Depth Image|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input Node" srcnodeid="11" srcpinname="Depth">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="915" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="915" top="2565" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|RGB Image|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input Node" srcnodeid="11" srcpinname="RGB">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="8910" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="8910" top="2565" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|World Image|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input Node" srcnodeid="11" srcpinname="World">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="2085" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2085" top="4080" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|RGB Texture|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input Node" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="5955" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5955" top="4080" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Depth Texture|">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input Node" srcnodeid="4" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="DepthToWorldAndNormals.v4p" id="20" nodename="DepthToWorldAndNormals.v4p" systemname="DepthToWorldAndNormals" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\">
+   <BOUNDS height="100" left="9840" top="3720" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Depth Texture" visible="1">
+   </PIN>
+   <PIN pinname="World Texture" visible="1">
+   </PIN>
+   <PIN pinname="Normals Texture" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Depth Texture" linkstyle="VHV" srcnodeid="4" srcpinname="Texture Out">
+   <LINKPOINT x="6750" y="3163">
+   </LINKPOINT>
+   <LINKPOINT x="9090" y="3363">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="9840" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="9840" top="4080" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|World Texture|">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input Node" srcnodeid="20" srcpinname="World Texture">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="11925" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="11925" top="4080" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Normals Texture|">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input Node" srcnodeid="20" srcpinname="Normals Texture">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,95 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\test-videoin (single).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\test-videoin (single).v4p" systemname="test-videoin (single)">
+   <BOUNDS height="7365" left="10215" top="5415" type="Window" width="6675">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="0" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="100" left="1455" top="1005" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Camera ID" visible="1">
+   </PIN>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1440" top="120" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1440" top="120" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Camera ID|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Camera ID" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="2" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
+   <BOUNDS height="100" left="1440" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Image" srcnodeid="0" srcpinname="Image">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="1110" top="1905" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="1110" top="2835" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3855" left="1110" top="2835" type="Box" width="4695">
+   </BOUNDS>
+   <BOUNDS height="5010" left="14055" top="8745" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="195" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Transform" linkstyle="VHV" srcnodeid="5" srcpinname="Transform Out">
+   <LINKPOINT x="255" y="1800">
+   </LINKPOINT>
+   <LINKPOINT x="1275" y="1800">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="PerfMeter (Debug)" filename="%VVVV%\modules\catweasel\Debug\PerfMeter (Debug).v4p" nodename="PerfMeter (Debug)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="2535" top="1890" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="1125" top="2310" width="2880" height="270">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 2">
+   </LINK>
+   </PATCH>

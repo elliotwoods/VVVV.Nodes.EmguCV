@@ -1,0 +1,95 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\ViewWorld.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\ViewWorld.v4p" systemname="ViewWorld">
+   <BOUNDS height="3555" left="17085" top="8880" type="Window" width="6630">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\effects\PointCloud.fx" id="8" nodename="PointCloud (EX9.Effect)" systemname="PointCloud (EX9.Effect)">
+   <BOUNDS height="270" left="495" top="1365" type="Node" width="5760">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="deadzone" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="drop" slicecount="1" values="0.96399998664856">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="RGB" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="maxjump" slicecount="1" visible="1" values="0.0700000002980232">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" visible="1" values="| TPreview|">
+   </PIN>
+   <PIN pinname="Normals" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="LightDirection XYZ" slicecount="3" visible="1" values="-0.847476363182068,-1.74845538936097E-007,0.530832946300507">
+   </PIN>
+   <PIN pinname="LightPosition XYZ" slicecount="3" visible="1" values="0,0,0.21">
+   </PIN>
+   <PIN pinname="MaxRange" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="MaxDepth" slicecount="1" values="1.49">
+   </PIN>
+   <PIN pinname="Mult" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="100" left="810" top="330" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="640">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="480">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="2715" top="510" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="2715" top="510" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="XYZ">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="XYZ" linkstyle="Bezier" srcnodeid="11" srcpinname="Output Node">
+   <LINKPOINT x="2715" y="1043">
+   </LINKPOINT>
+   <LINKPOINT x="1560" y="1043">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="1665" top="510" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1665" top="510" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="RGB">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="RGB" linkstyle="Bezier" srcnodeid="12" srcpinname="Output Node">
+   <LINKPOINT x="1695" y="1058">
+   </LINKPOINT>
+   <LINKPOINT x="1845" y="1058">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="495" top="2430" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="495" top="2430" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Layer">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input Node" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   </PATCH>

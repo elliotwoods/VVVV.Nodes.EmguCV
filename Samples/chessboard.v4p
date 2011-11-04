@@ -1,0 +1,191 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\chessboard.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\camera.v4p" systemname="camera">
+   <BOUNDS height="11535" left="1065" top="1575" type="Window" width="18285">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="0" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="100" left="3645" top="1215" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="1" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
+   <BOUNDS height="100" left="3660" top="2010" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Image" srcnodeid="0" srcpinname="Image">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="270" left="2175" top="2535" type="Node" width="5250">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Texture" srcnodeid="1" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="2175" top="4530" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="5445" left="2175" top="4530" type="Box" width="6240">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8820" top="5430" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="5" nodename="FindBoard (EmguCV)" systemname="FindBoard (EmguCV)">
+   <BOUNDS height="270" left="8550" top="2010" type="Node" width="2070">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Board size X" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Board size Y" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Image" linkstyle="VHV" srcnodeid="0" srcpinname="Image">
+   <LINKPOINT x="3705" y="1733">
+   </LINKPOINT>
+   <LINKPOINT x="8550" y="1733">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="10560" top="2490" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="10560" top="2490" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="5" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="8550" top="3090" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6870" left="8550" top="3090" type="Box" width="1335">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="70">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="5" srcpinname="PositionXY">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="10545" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="10545" top="960" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Enabled" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="270" left="2175" top="4095" type="Node" width="2835">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Layer 1" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="subpatches\Marker (DX9).v4p" id="12" nodename="Marker (DX9)" systemname="Marker (DX9)">
+   <BOUNDS height="100" left="3555" top="3645" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <BOUNDS height="5700" left="15990" top="5820" type="Window" width="6465">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Layer 2" srcnodeid="12" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="270" left="6810" top="10185" type="Node" width="855">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="3" srcpinname="Actual Backbuffer Width">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="3" srcpinname="Actual Backbuffer Height">
+   </LINK>
+   <NODE componentmode="Hidden" filename="subpatches\CameraCoordsView (Transform).v4p" id="19" nodename="CameraCoordsView (Transform)" systemname="CameraCoordsView (Transform)">
+   <BOUNDS height="100" left="6975" top="3960" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <BOUNDS height="7140" left="16260" top="5985" type="Window" width="3810">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="View" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="subpatches\CameraCoordsImage (Transform).v4p" id="20" nodename="CameraCoordsImage (Transform)" systemname="CameraCoordsImage (Transform)">
+   <BOUNDS height="100" left="2910" top="900" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Aspect Ratio" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="13" srcpinname="Output">
+   <LINKPOINT x="6825" y="7050">
+   </LINKPOINT>
+   <LINKPOINT x="4005" y="7050">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="XY" linkstyle="VHV" srcnodeid="5" srcpinname="PositionXY">
+   <LINKPOINT x="8550" y="2948">
+   </LINKPOINT>
+   <LINKPOINT x="3615" y="2948">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

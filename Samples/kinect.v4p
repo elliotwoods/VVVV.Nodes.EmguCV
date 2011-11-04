@@ -1,0 +1,57 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\kinect.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\kinect.v4p" systemname="kinect">
+   <BOUNDS height="6000" left="4815" top="1395" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="0" nodename="OpenNI (EmguCV)" systemname="OpenNI (EmguCV)">
+   <BOUNDS height="100" left="3585" top="1650" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="RGB" visible="1">
+   </PIN>
+   <PIN pinname="Config" visible="1">
+   </PIN>
+   <PIN pinname="Depth 16" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="3825" top="2385" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="Reader (File)" systemname="Reader (File)">
+   <BOUNDS height="100" left="3570" top="1095" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="SamplesConfig.xml">
+   </PIN>
+   <PIN pinname="Read" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="3840" top="2850" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3840" top="2850" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8970" top="5010" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InAWindow" id="4" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="7995" top="2670" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="7995" top="2670" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="15825" top="5280" type="Window" width="6240">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Config" srcnodeid="2" srcpinname="Content">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Texture" srcnodeid="0" srcpinname="RGB">
+   </LINK>
+   </PATCH>
