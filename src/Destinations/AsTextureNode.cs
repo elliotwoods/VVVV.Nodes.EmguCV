@@ -25,7 +25,8 @@ namespace VVVV.Nodes.EmguCV
 	{
 		public int Width { get; private set; } 
 		public int Height { get; private set; }
-		
+
+		ImageRGB FImage;
 		Image<Rgba, byte> FBufferImage;
 		
 		public bool Initialised { get; private set; }
@@ -55,10 +56,25 @@ namespace VVVV.Nodes.EmguCV
 		
 		public Object Lock = new Object();
 
-		public void Initialise(ImageRGB image)
+		public ImageRGB Image
+		{
+			get
+			{
+				return FImage;
+			}
+
+			set
+			{
+				Initialise(value);
+			}
+		}
+
+		private void Initialise(ImageRGB image)
 		{
 			lock (Lock)
 			{
+				RemoveListeners();
+
 				if (image == null || !image.Initialised)
 				{
 					FBufferImage = null;
@@ -66,10 +82,26 @@ namespace VVVV.Nodes.EmguCV
 					return;
 				}
 
-				image.ImageUpdate += ImageUpdate;
-				image.ImageAttributesUpdate += ImageAttributesUpdate;
+				FImage = image;
+				Allocate();
 
-				Allocate(image.ImageAttributes);
+				if (Initialised)
+					AddListeners();
+			}
+		}
+
+		private void AddListeners()
+		{
+			FImage.ImageUpdate += ImageUpdate;
+			FImage.ImageAttributesUpdate += ImageAttributesUpdate;
+		}
+
+		private void RemoveListeners()
+		{
+			if (Initialised)
+			{
+				FImage.ImageUpdate -= ImageUpdate;
+				FImage.ImageAttributesUpdate -= ImageAttributesUpdate;
 			}
 		}
 
@@ -78,22 +110,22 @@ namespace VVVV.Nodes.EmguCV
 			ReinitialiseTexture = false;
 		}
 
-		void Allocate(CVImageAttributes imageAttributes)
+		private void Allocate()
 		{
-			Width = imageAttributes.Width;
-			Height = imageAttributes.Height;
+			Width = FImage.Width;
+			Height = FImage.Height;
 
 			FBufferImage = new Image<Rgba, byte>(Width, Height);
 			Initialised = true;
 		}
 
-		void ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
+		private void ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
 		{
-			Allocate(e.Attributes);
+			Allocate();
 			ReinitialiseTexture = true;
 		}
 
-		void ImageUpdate(object sender, EventArgs e)
+		private void ImageUpdate(object sender, EventArgs e)
 		{
 			var imageRGB = sender as ImageRGB;
 			
@@ -138,7 +170,7 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		readonly Dictionary<int, ImageInstance> FImageInstances = new Dictionary<int, ImageInstance>();
+		private Spread<ImageInstance> FImageInstances = new Spread<ImageInstance>(0);
 		#endregion fields & pins
 
 		// import host and hand it to base constructor
@@ -151,7 +183,7 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int spreadMax)
 		{
-			for (int i = 0; i < FImageInstances.Count; i++)
+			for (int i = 0; i < FImageInstances.SliceCount; i++)
 			{
 				if (!FImageInstances[i].ReinitialiseTexture) continue;
 				
@@ -165,47 +197,54 @@ namespace VVVV.Nodes.EmguCV
 
 		private void CheckChanges()
 		{
-			bool needsInit = false;
+			bool reinitialiseTexture = false;
 
+			//if nothing is connected, our first slice is null
 			if (FPinInImage[0] == null)
 			{
-				FImageInstances.Clear();
-				needsInit = true;
+				FImageInstances.SliceCount = 0;
+				reinitialiseTexture = true;
 			}
-			else if (FImageInstances.Count != FPinInImage.SliceCount)
+			else
 			{
-				//shrink local
-				if (FImageInstances.Count > FPinInImage.SliceCount)
-				{
-					for (int i = FPinInImage.SliceCount; i < FImageInstances.Count; i++)
-						FImageInstances.Remove(i);
-					needsInit = true;
-				}
-				//grow local
-				else
-				{
-					for (int i = FImageInstances.Count; i < FPinInImage.SliceCount; i++)
-					{
-						if (FPinInImage[i] == null || !FPinInImage[0].Initialised)
-							break;
-
-						ImageInstance attribs = new ImageInstance();
-
-						//presume BGR input
-						attribs.Initialise(FPinInImage[i]);
-						FImageInstances.Add(i, attribs);
-					}
-					needsInit = true;
-				}
-
+				reinitialiseTexture |= LoadInputs();
 			}
 
-			SetSliceCount(FImageInstances.Count);
+			SetSliceCount(FImageInstances.SliceCount);
 
 			//seems a shame to have to reinitialise absolutely everything..
-			if (needsInit)
+			if (reinitialiseTexture)
 				Reinitialize();
 		}
+
+		private bool LoadInputs()
+		{
+			bool hasChanges = false;
+
+			if (FImageInstances.SliceCount != FPinInImage.SliceCount)
+			{
+				FImageInstances.SliceCount = FPinInImage.SliceCount;
+				hasChanges = true;
+			}
+
+			for (int i = 0; i < FImageInstances.SliceCount; i++)
+			{
+				if (FImageInstances[i] == null)
+				{
+					FImageInstances[i] = new ImageInstance();
+				}
+
+				//check whether image has changed
+				//if so reinitialise
+				if (FImageInstances[i].Image != FPinInImage[i])
+				{
+					FImageInstances[i].Image = FPinInImage[i];
+					hasChanges = true;
+				}
+			}
+
+			return hasChanges;
+	}
 
 		//this method gets called, when Reinitialize() was called in evaluate,
 		//or a graphics device asks for its data
@@ -213,7 +252,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + slice);
 
-			if (FImageInstances.Count > 0)
+			if (FImageInstances.SliceCount > 0)
 			{
 				if (FImageInstances[slice].Initialised)
 					return TextureUtils.CreateTexture(device, Math.Max(FImageInstances[slice].Width, 1), Math.Max(FImageInstances[slice].Height, 1));
@@ -229,7 +268,7 @@ namespace VVVV.Nodes.EmguCV
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		protected unsafe override void UpdateTexture(int slice, Texture texture)
 		{
-			if (FImageInstances.Count < slice)
+			if (FImageInstances.SliceCount == 0)
 				return;
 
 			if (FImageInstances[slice].Initialised)

@@ -15,9 +15,12 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CaptureVideoInstance
+	class CaptureVideoInstance : IDisposable
 	{
-		public int CameraID = -1;
+		private int FCameraID = -1;
+		private int FWidth = 0;
+		private int FHeight = 0;
+
 		public string Status;
 
 		Thread FCaptureThread;
@@ -29,13 +32,38 @@ namespace VVVV.Nodes.EmguCV
 
 		Image<Bgr, byte> FBuffer;
 
+		public int CameraID
+		{
+			get
+			{
+				return FCameraID;
+			}
+		}
+
+		public int Width
+		{
+			get
+			{
+				return FWidth;
+			}
+		}
+
+		public int Height
+		{
+			get
+			{
+				return FHeight;
+			}
+		}
+
 		public void Initialise(int id, int width, int height)
 		{
 			Close();
 			try
 			{
 				FCapture = new Capture(id); //create a camera captue
-				SetSize(width, height);
+				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
+				FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
 			}
 			catch
 			{
@@ -44,12 +72,15 @@ namespace VVVV.Nodes.EmguCV
 				return;
 			}
 
-			Status = "Camera open success";
+			Status = "OK";
 			IsRunning = true;
 
-			CameraID = id;
+			FCameraID = id;
 
-			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FCapture.Width, FCapture.Height));
+			FWidth = FCapture.Width;
+			FHeight = FCapture.Height;
+
+			FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FWidth, FHeight));
 
 			FRunCaptureThread = true;
 			FCaptureThread = new Thread(Capture);
@@ -71,12 +102,6 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		void SetSize(int width, int height)
-		{
-			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
-			FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
-		}
-
 		public void Close()
 		{
 			if (!IsRunning) return;
@@ -88,7 +113,11 @@ namespace VVVV.Nodes.EmguCV
 			IsRunning = false;
 		}
 
-	}
+		public void  Dispose()
+		{
+			Close();
+		}
+}
 	#region PluginInfo
 	[PluginInfo(Name = "VideoIn",
 			  Category = "EmguCV",
@@ -104,13 +133,10 @@ namespace VVVV.Nodes.EmguCV
 		IDiffSpread<int> FPinInCameraID;
 
 		[Input("Width", DefaultValue = 640, MinValue = 0)]
-		ISpread<int> FWidth;
+		IDiffSpread<int> FPinInWidth;
 
-		[Input("Height", DefaultValue = 480, MinValue = 0)] 
-		ISpread<int> FHeight;
-
-		[Input("SetResolution", DefaultValue = 0, IsBang = true)] 
-		ISpread<bool> FSetResolution;
+		[Input("Height", DefaultValue = 480, MinValue = 0)]
+		IDiffSpread<int> FPinInHeight;
 
 		[Output("Image")]
 		ISpread<ImageRGB> FPinOutImage;
@@ -122,7 +148,7 @@ namespace VVVV.Nodes.EmguCV
 		ILogger FLogger;
 
 		IPluginHost FHost;
-		Dictionary<int, CaptureVideoInstance> FCaptures = new Dictionary<int, CaptureVideoInstance>();
+		private Spread<CaptureVideoInstance> FCaptures = new Spread<CaptureVideoInstance>(0);
 
 		#endregion fields & pins
 
@@ -135,8 +161,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
-			foreach (KeyValuePair<int, CaptureVideoInstance> capture in FCaptures)
-				capture.Value.Close();
+			FCaptures.SliceCount = 0;
 
 			GC.SuppressFinalize(this);
 		}
@@ -144,54 +169,44 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int spreadMax)
 		{
-			Resize(spreadMax);
-			GiveOutputs();
-
-			for (int i = 0; i < spreadMax; i++)
-			{
-				if(FSetResolution[i])
-				{
-					FCaptures[i].Initialise(FPinInCameraID[i], FWidth[i], FHeight[i]);
-				}
-			}
+			CheckChanges();
 			
+			GiveOutputs();
 		}
 
 		void GiveOutputs()
 		{
-			foreach (KeyValuePair<int, CaptureVideoInstance> capture in FCaptures)
+			int count = FCaptures.SliceCount;
+
+			FPinOutImage.SliceCount = count;
+			FPinOutStatus.SliceCount = count;
+
+			for (int i=0; i<count; i++)
 			{
-				FPinOutStatus[capture.Key] = capture.Value.Status;
+				FPinOutStatus[i] = FCaptures[i].Status;
+				FPinOutImage[i] = FCaptures[i].Image;
 			}
 		}
 
-		private void Resize(int spreadMax)
+		private void CheckChanges()
 		{
-			FPinOutStatus.SliceCount = spreadMax;
-			FPinOutImage.SliceCount = spreadMax;
+			if (FCaptures.SliceCount != FPinInCameraID.SliceCount)
+				FCaptures.SliceCount = FPinInCameraID.SliceCount;
 
-			if (spreadMax == 0)
+			for (int i = 0; i < FPinInCameraID.SliceCount; i++)
 			{
-				FCaptures.Clear();
-				return;
-			}
+				if (FCaptures[i] == null)
+					FCaptures[i] = new CaptureVideoInstance();
 
-			for (int i = 0; i < spreadMax; i++)
-			{
-				if (!FCaptures.ContainsKey(i))
-				{
-					FCaptures.Add(i, new CaptureVideoInstance());
-					FCaptures[i].Initialise(FPinInCameraID[i], FWidth[i], FHeight[i]);
-					FPinOutImage[i] = FCaptures[i].Image;
-				}
-			}
+				bool change = false;
+				change |= FCaptures[i].CameraID != FPinInCameraID[i];
+				change |= FCaptures[i].Width != FPinInWidth[i] && FPinInWidth.IsChanged;
+				change |= FCaptures[i].Height != FPinInHeight[i] && FPinInHeight.IsChanged;
 
-			if (FCaptures.Count > spreadMax)
-			{
-				for (int i = spreadMax; i < FCaptures.Count; i++)
-				{
-					FCaptures.Remove(i);
-				}
+				if (change)
+					FCaptures[i].Initialise(FPinInCameraID[i], FPinInWidth[i], FPinInHeight[i]);
+
+
 			}
 		}
 	}
