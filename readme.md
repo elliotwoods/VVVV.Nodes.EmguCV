@@ -52,25 +52,25 @@ Node suggestions
 
 General
 -------
-+						adds colour values
--						subtracts colour values
-Queue
-Cons
+* +						adds colour values
+* -						subtracts colour values
+* Queue
+* Cons
 
 Files
 -----
-ImageLoad				Loads a set of images into RAM as ImageRGB's. Either use OpenCV's image loader or .NET's Bitmap class (probably quicker)
-ImageSave
-VideoSave				Built into CV so should be decent performance
+* ImageLoad				Loads a set of images into RAM as ImageRGB's. Either use OpenCV's image loader or .NET's Bitmap class (probably quicker)
+* ImageSave
+* VideoSave				Built into CV so should be decent performance
 
 Tracking
 --------
-Contour
+* Contour
 
 CameraCalibration
 -----------------
-StereoCalibrate
+* StereoCalibrate
 
 Future
 ------
-AsImage					Convert texture to image (AsVideo in existing DirectShow). - requires texture input on plugins (i.e. not possible yet)
+* AsImage				Convert texture to image (AsVideo in existing DirectShow). - requires texture input on plugins (i.e. not possible yet)
