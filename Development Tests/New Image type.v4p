@@ -63,6 +63,8 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="6" srcpinname="Transform Out">
    </LINK>
@@ -76,12 +78,6 @@
    <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Texture" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="Texture Out">
-   <LINKPOINT x="1380" y="1373">
-   </LINKPOINT>
-   <LINKPOINT x="4620" y="1373">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4620" top="1875" type="Node" width="0">
    </BOUNDS>
@@ -134,6 +130,12 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Input String" srcnodeid="7" srcpinname="Format Description">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Image" dstnodeid="0" dstpinname="Image">
+   <LINK dstnodeid="0" dstpinname="Image" srcnodeid="1" srcpinname="Image">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Texture Out" dstnodeid="7" dstpinname="Texture" linkstyle="VHV">
+   <LINKPOINT x="1380" y="1373">
+   </LINKPOINT>
+   <LINKPOINT x="4620" y="1373">
+   </LINKPOINT>
    </LINK>
    </PATCH>

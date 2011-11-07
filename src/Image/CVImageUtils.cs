@@ -39,20 +39,6 @@ namespace VVVV.Nodes.EmguCV
 			return COLOR_CONVERSION.CV_COLORCVT_MAX;
 		}
 
-		public static IImage CreateConverted(IImage src, TColourFormat targetFormat)
-		{
-			COLOR_CONVERSION route = ConvertRoute(GetFormat(src), targetFormat);
-
-			if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
-			{
-				throw(new Exception("Unsupported conversion"));
-			} else {
-				IImage converted = CVImageUtils.CreateImage(src.Size.Width, src.Size.Height, targetFormat);
-				CvInvoke.cvCvtColor(src.Ptr, converted.Ptr, route);
-				return converted;
-			}
-		}
-
 		public static IImage CreateImage(int width, int height, TColourFormat format)
 		{
 			switch(format)
@@ -167,6 +153,31 @@ namespace VVVV.Nodes.EmguCV
 					targetFormat = TColourFormat.UnInitialised;
 					return false;
 			}
+		}
+
+		public static void CopyImage(CVImage source, CVImage target)
+		{
+			if (source.Size != target.Size)
+				throw (new Exception("Can't copy between these 2 images, they differ in dimensions"));
+
+			if (source.NativeFormat != target.NativeFormat)
+				throw (new Exception("Can't copy between these 2 images, they differ in pixel colour format"));
+
+			lock(source.GetLock())
+				lock(target.GetLock())
+					CvInvoke.cvCopy(source.Ptr, target.Ptr, new Image<Gray, bool>(source.Width, source.Height));
+		}
+
+		public static void CopyImageConverted(CVImage source, CVImage target)
+		{
+			COLOR_CONVERSION route = ConvertRoute(source.NativeFormat, target.NativeFormat);
+
+			if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
+				throw(new Exception("Unsupported conversion"));
+
+			lock (source.GetLock())
+				lock (target.GetLock())
+					CvInvoke.cvCvtColor(source.Ptr, target.Ptr, route);
 		}
 	}
 }

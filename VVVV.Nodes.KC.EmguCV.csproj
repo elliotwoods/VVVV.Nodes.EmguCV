@@ -108,6 +108,7 @@
     <Compile Include="src\Dead\ImageProcessingInstance.cs" />
     <Compile Include="src\Dead\ThreadedAbstractInstance.cs" />
     <Compile Include="src\Dead\ThreadedNode.cs" />
+    <Compile Include="src\Destinations\AsTextureImageInstance.cs" />
     <Compile Include="src\Destinations\AsTextureL16Node.cs" />
     <Compile Include="src\Destinations\AsTextureRGB8Node.cs" />
     <Compile Include="src\Destinations\AsTextureNode.cs" />

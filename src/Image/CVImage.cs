@@ -35,48 +35,40 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		public IImage GetImage(TColourFormat format)
+		public void GetImage(TColourFormat format, CVImage target)
 		{
 			if (format == this.NativeFormat)
-				return this.GetImage();
+				CVImageUtils.CopyImage(this, target);
 			else
-			{
-				return CVImageUtils.CreateConverted(FImage, format);
-			}
+				CVImageUtils.CopyImageConverted(this, target);
 		}
 
 		public unsafe void SetImage(IImage source)
 		{
+			TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
+			Initialise(source.Size, sourceFormat);
+
 			lock (FLock)
 			{
-				TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
-				Initialise(source.Size, sourceFormat);
-
 				CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height,new Gray(1.0d))).Ptr);
-
-				OnImageUpdate();
 			}
+
+			OnImageUpdate();
 		}
 
 		public void SetImage(CVImage source)
 		{
-			lock (FLock)
-			{
-				lock (source.FLock)
-				{
-					Initialise(source.Size, source.NativeFormat);
+			Initialise(source.Size, source.NativeFormat);
 
-					CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height, new Gray(1.0d))).Ptr);
+			CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height, new Gray(1.0d))).Ptr);
 
-					OnImageUpdate();
-				}
-			}
+			OnImageUpdate();
 		}
 
 		override public void Allocate()
 		{
-			// perhaps this.GetImage cannot be assigned to?
-			FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
+			lock (FLock)
+				FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
 		}
 	}
 }
