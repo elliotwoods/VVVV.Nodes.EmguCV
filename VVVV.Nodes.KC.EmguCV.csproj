@@ -154,7 +154,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="readme" />
+    <None Include="readme.md" />
     <None Include="src\Dead\Readme.md" />
   </ItemGroup>
   <ItemGroup>

@@ -66,6 +66,7 @@ namespace VVVV.Nodes.EmguCV
 			if (FPinInImage[0] == null)
 			{
 				FImageInstances.SliceCount = 0;
+				SetSliceCount(0);
 				Reinitialize();
 				return;
 			}
@@ -80,6 +81,12 @@ namespace VVVV.Nodes.EmguCV
 
 			for (int i = 0; i < count; i++)
 			{
+				if (FPinInImage[i] == null)
+				{
+					FImageInstances[i] = null;
+					continue;
+				}
+				
 				if (FImageInstances[i] == null)
 				{
 					FImageInstances[i] = new AsTextureImageInstance();
