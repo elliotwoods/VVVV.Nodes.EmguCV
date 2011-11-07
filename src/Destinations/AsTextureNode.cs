@@ -57,11 +57,11 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			CheckChanges(SpreadMax);
-			Update();
+			CheckReinitialise(SpreadMax);
+			CheckUpdate(SpreadMax);
 		}
 
-		private void CheckChanges(int count)
+		private void CheckReinitialise(int count)
 		{
 			if (FPinInImage[0] == null)
 			{
@@ -78,7 +78,6 @@ namespace VVVV.Nodes.EmguCV
 				needsInit = true;
 			}
 
-
 			for (int i = 0; i < count; i++)
 			{
 				if (FImageInstances[i] == null)
@@ -88,7 +87,12 @@ namespace VVVV.Nodes.EmguCV
 
 				FImageInstances[i].Initialise(FPinInImage[i]);
 
-				needsInit |= FImageInstances[i].ReinitialiseTexture;
+				if (FImageInstances[i].ReinitialiseTexture)
+				{
+					needsInit = true;
+					FImageInstances[i].Reinitialized();
+				}
+
 			}
 
 			SetSliceCount(count);
@@ -96,6 +100,23 @@ namespace VVVV.Nodes.EmguCV
 			//seems a shame to have to reinitialise absolutely everything..
 			if (needsInit)
 				Reinitialize();
+		}
+
+		private void CheckUpdate(int count)
+		{
+			bool needsUpdate = false;
+
+			for (int i = 0; i < count; i++)
+			{
+				if (FImageInstances[i].UpdateTexture)
+				{
+					needsUpdate = true;
+					FImageInstances[i].Updated();
+				}
+			}
+
+			if (needsUpdate)
+				Update();
 		}
 
 		//this method gets called, when Reinitialize() was called in evaluate,
@@ -108,6 +129,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 
 				if (FImageInstances[Slice].Initialised && FImageInstances[Slice].Attributes.Initialised)
+
 					return CVImageUtils.CreateTexture(FImageInstances[Slice].Attributes, device);
 				else
 					return TextureUtils.CreateTexture(device, 1, 1);

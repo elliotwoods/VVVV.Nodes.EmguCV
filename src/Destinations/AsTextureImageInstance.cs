@@ -24,6 +24,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public bool Initialised { get; private set; }
 		public bool ReinitialiseTexture { get; private set; }
+		public bool UpdateTexture { get; private set; }
 
 		public Object Lock = new Object();
 
@@ -39,12 +40,16 @@ namespace VVVV.Nodes.EmguCV
 				if (image == null || !image.HasAllocatedImage)
 				{
 					FBuffer = null;
+					FImage = null;
 					Initialised = false;
 					return;
 				}
-
-				FImage = image;
-				Allocate();
+				else
+				{
+					FImage = image;
+					AddListeners();
+					Allocate();
+				}
 			}
 		}
 
@@ -69,6 +74,10 @@ namespace VVVV.Nodes.EmguCV
 		public void Reinitialized()
 		{
 			ReinitialiseTexture = false;
+		}
+		public void Updated()
+		{
+			UpdateTexture = false;
 		}
 
 		void Allocate()
@@ -98,25 +107,18 @@ namespace VVVV.Nodes.EmguCV
 
 		unsafe void ImageUpdate(object sender, EventArgs e)
 		{
-			var image = sender as CVImage;
-
-			if (image == null)
-				return;
-
 			try
 			{
-				lock (Lock)
+				if (FImage.Ptr != null)
 				{
-					lock (image.GetLock())
-						if (image.Ptr != null)
-						{
-							_isFresh = true;
-							FBuffer.SetImage(image);
-						}
-
-					if (FNeedsConversion)
-						FBuffer.GetImage(FConvertedFormat, FBufferConverted);
+					_isFresh = true;
+					FBuffer.SetImage(FImage);
 				}
+
+				if (FNeedsConversion)
+					FBuffer.GetImage(FConvertedFormat, FBufferConverted);
+
+				UpdateTexture = true;
 			}
 			catch
 			{
