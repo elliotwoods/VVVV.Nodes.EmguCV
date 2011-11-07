@@ -24,7 +24,7 @@ namespace VVVV.Nodes.EmguCV
 	public abstract class ImageBase
 	{
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
-		static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
+		static extern protected void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
 
 		protected Object FLock = new Object();
 		protected CVImageAttributes FImageAttributes = new CVImageAttributes();
@@ -83,7 +83,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return ImageAttributes.ColourType;
+				return ImageAttributes.ColourFormat;
 			}
 		}
 

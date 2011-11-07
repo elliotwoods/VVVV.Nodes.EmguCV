@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kimchi and Chips")]
 [assembly: AssemblyProduct("VVVV.Nodes.EmguCV")]
-[assembly: AssemblyCopyright("Copyright ©  2011")]
+[assembly: AssemblyCopyright("Copyright ©  2011 Elliot Woods")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

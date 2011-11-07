@@ -118,6 +118,8 @@
     <None Include="src\Dead\DifferenceFilterNode.cs" />
     <Compile Include="src\Filters\ImageResizeNode.cs" />
     <Compile Include="src\Image\CVImageAttributes.cs" />
+    <Compile Include="src\Image\CVImage.cs" />
+    <Compile Include="src\Image\CVImageConversion.cs" />
     <Compile Include="src\Image\ImageBase.cs" />
     <Compile Include="src\Image\ImageL16.cs" />
     <Compile Include="src\Image\ImageRGB.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="src\Sources\VideoInNode.cs" />
     <None Include="src\Dead\VideoPlayerNode.cs" />
     <None Include="src\Dead\FaceTrackingNode.cs" />
+    <None Include="src\StructuredLight\EncodeGreycode.cs" />
     <Compile Include="src\Tracking\ObjectTrackingNode.cs" />
   </ItemGroup>
   <ItemGroup>
