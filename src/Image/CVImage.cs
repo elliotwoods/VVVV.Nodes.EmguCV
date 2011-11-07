@@ -13,9 +13,6 @@ namespace VVVV.Nodes.EmguCV
 {
 	class CVImage : ImageBase
 	{
-		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
-		static extern protected void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
-
 		IImage FImage;
 
 		public override IImage GetImage()
@@ -23,40 +20,53 @@ namespace VVVV.Nodes.EmguCV
 			return FImage;
 		}
 
-		public IImage GetImage(TColourData format)
+		public void Initialise(CVImageAttributes attributes)
 		{
-			if (format == this.NativeType)
-				return this.GetImage();
-			else
+			Initialise(attributes.Size, attributes.ColourFormat);
+		}
+		public void Initialise(System.Drawing.Size size, TColourFormat format)
+		{
+			bool changedAttributes = FImageAttributes.CheckChanges(format, size);
+
+			if (changedAttributes)
 			{
-				COLOR_CONVERSION route = CVImageConversion.Convert(this.NativeType, format);
-				if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
-				{
-					throw(new Exception("Unsupported conversion"));
-				} else {
-					IImage converted = CVImageConversion.CreateImage(this.Width, this.Height, this.NativeType);
-					CvInvoke.cvCvtColor(this.Ptr, converted.Ptr, route);
-					return converted;
-				}
+				Allocate();
+				OnImageAttributesUpdate(ImageAttributes);
 			}
 		}
 
-		public void SetImage(IImage source)
+		public IImage GetImage(TColourFormat format)
+		{
+			if (format == this.NativeFormat)
+				return this.GetImage();
+			else
+			{
+				return CVImageUtils.CreateConverted(FImage, format);
+			}
+		}
+
+		public unsafe void SetImage(IImage source)
 		{
 			lock (FLock)
 			{
-				if (ImageAttributes.Initialised)
+				TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
+				Initialise(source.Size, sourceFormat);
+
+				CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height,new Gray(1.0d))).Ptr);
+
+				OnImageUpdate();
+			}
+		}
+
+		public void SetImage(CVImage source)
+		{
+			lock (FLock)
+			{
+				lock (source.FLock)
 				{
-					TColourData sourceFormat = CVImageConversion.GetFormat(source);
-					bool changedAttributes = FImageAttributes.CheckChanges(sourceFormat, source.Size);
+					Initialise(source.Size, source.NativeFormat);
 
-					if (changedAttributes)
-					{
-						Allocate();
-						OnImageAttributesUpdate(ImageAttributes);
-					}
-
-					CopyMemory(this.GetImage().Ptr, source.Ptr, FImageAttributes.SizeInBytes);
+					CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height, new Gray(1.0d))).Ptr);
 
 					OnImageUpdate();
 				}
@@ -66,7 +76,7 @@ namespace VVVV.Nodes.EmguCV
 		override public void Allocate()
 		{
 			// perhaps this.GetImage cannot be assigned to?
-			FImage = CVImageConversion.CreateImage(this.Width, this.Height, this.NativeType);
+			FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
 		}
 	}
 }

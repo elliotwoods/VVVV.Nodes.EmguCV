@@ -82,7 +82,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 					lock (this)
 					{
-						if (!FSource.Initialised) continue;
+						if (!FSource.HasAllocatedImage) continue;
 						
 						Image<Gray, Byte> grayImage = FSource.Image.Convert<Gray, Byte>();
 

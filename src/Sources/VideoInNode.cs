@@ -11,6 +11,7 @@ using Emgu.CV.Structure;
 using System.Threading;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 
 #endregion usings
 
@@ -27,7 +28,7 @@ namespace VVVV.Nodes.EmguCV
 		Thread FCaptureThread;
 		bool FRunCaptureThread;
 
-		public ImageRGB Image = new ImageRGB();
+		public CVImage Image = new CVImage();
 		Capture FCapture;
 		Object FLockCapture = new Object();
 
@@ -96,7 +97,7 @@ namespace VVVV.Nodes.EmguCV
 				FWidth = FCapture.Width;
 				FHeight = FCapture.Height;
 
-				FBuffer = new Image<Bgr, byte>(new System.Drawing.Size(FWidth, FHeight));
+				FBuffer = new Image<Bgr, byte>(new Size(FWidth, FHeight));
 			}
 
 			FRunCaptureThread = true;
@@ -167,7 +168,7 @@ namespace VVVV.Nodes.EmguCV
 		IDiffSpread<int> FPinInHeight;
 
 		[Output("Image")]
-		ISpread<ImageRGB> FPinOutImage;
+		ISpread<CVImage> FPinOutImage;
 
 		[Output("FPS")]
 		ISpread<int> FPinOutFPS;

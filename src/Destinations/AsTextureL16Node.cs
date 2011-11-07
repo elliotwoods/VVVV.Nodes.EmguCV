@@ -40,7 +40,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			lock (Lock)
 			{
-				if (imgIn == null || !imgIn.Initialised)
+				if (imgIn == null || !imgIn.HasAllocatedImage)
 				{
 					Image = null;
 					Initialised = false;
@@ -190,7 +190,7 @@ namespace VVVV.Nodes.EmguCV
 				{
 					for (int i = FImageInstances.Count; i < FPinInImage.SliceCount; i++)
 					{
-						if (FPinInImage[i] == null || !FPinInImage[0].Initialised)
+						if (FPinInImage[i] == null || !FPinInImage[0].HasAllocatedImage)
 							break;
 
 						ImageL16Instance attribs = new ImageL16Instance();

@@ -6,27 +6,27 @@ using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public enum TColourData { UnInitialised, RGB8, RGB32F, RGBA8, L8, L16};
+	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, L8, L16};
 
 	public class CVImageAttributes
 	{
-		public TColourData ColourFormat;
-		public Size Dimensions = new Size();
+		public TColourFormat ColourFormat;
+		public Size FSize = new Size();
 
 		public CVImageAttributes()
 		{
-			ColourFormat = TColourData.UnInitialised;
-			Dimensions = new Size(0, 0);
+			ColourFormat = TColourFormat.UnInitialised;
+			FSize = new Size(0, 0);
 		}
 
-		public CVImageAttributes(TColourData c, int w, int h)
+		public CVImageAttributes(TColourFormat c, int w, int h)
 		{
 			ColourFormat = c;
-			Dimensions.Width = w;
-			Dimensions.Height = h;
+			FSize.Width = w;
+			FSize.Height = h;
 		}
 
-		public bool CheckChanges(TColourData c, Size s)
+		public bool CheckChanges(TColourFormat c, Size s)
 		{
 			bool changed = false;
 			if (c != ColourFormat)
@@ -35,9 +35,9 @@ namespace VVVV.Nodes.EmguCV
 				changed = true;
 			}
 
-			if (s != Dimensions)
+			if (s != FSize)
 			{
-				Dimensions = s;
+				FSize = s;
 				changed = true;
 			}
 			return changed;
@@ -47,14 +47,14 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return ColourFormat != TColourData.UnInitialised;
+				return ColourFormat != TColourFormat.UnInitialised;
 			}
 		}
 		public int Width
 		{
 			get
 			{
-				return Dimensions.Width;
+				return FSize.Width;
 			}
 		}
 
@@ -62,7 +62,15 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return Dimensions.Height;
+				return FSize.Height;
+			}
+		}
+
+		public Size Size
+		{
+			get
+			{
+				return FSize;
 			}
 		}
 
@@ -70,11 +78,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return CVImageConversion.BytesPerPixel(ColourFormat);
+				return CVImageUtils.BytesPerPixel(ColourFormat);
 			}
 		}
 
-		public uint SizeInBytes
+		public uint BytesPerFrame
 		{
 			get
 			{

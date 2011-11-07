@@ -24,13 +24,13 @@ namespace VVVV.Nodes.EmguCV
 	public abstract class ImageBase
 	{
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
-		static extern protected void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
+		static extern private void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
 
 		protected Object FLock = new Object();
 		protected CVImageAttributes FImageAttributes = new CVImageAttributes();
 
 
-		public bool Initialised
+		public bool HasAllocatedImage
 		{
 			get
 			{
@@ -79,7 +79,7 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		public TColourData NativeType
+		public TColourFormat NativeFormat
 		{
 			get
 			{
@@ -93,10 +93,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				if (GetImage() == null)
-					return 0;
-				else
-					return GetImage().Size.Width;
+				return FImageAttributes.Width;
 			}
 		}
 
@@ -104,10 +101,18 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
+				return FImageAttributes.Height;
+			}
+		}
+
+		public System.Drawing.Size Size
+		{
+			get
+			{
 				if (GetImage() == null)
-					return 0;
+					return new System.Drawing.Size(0,0);
 				else
-					return GetImage().Size.Height;
+					return GetImage().Size;
 			}
 		}
 

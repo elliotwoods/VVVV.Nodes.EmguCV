@@ -1,0 +1,172 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Emgu.CV.CvEnum;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using SlimDX.Direct3D9;
+
+namespace VVVV.Nodes.EmguCV
+{
+	class CVImageUtils
+	{
+		public static COLOR_CONVERSION ConvertRoute(TColourFormat src, TColourFormat dst)
+		{
+			switch (src)
+			{
+				case TColourFormat.L8:
+					{
+						switch (dst)
+						{
+							case TColourFormat.RGBA8:
+								return COLOR_CONVERSION.CV_GRAY2RGBA;
+						}
+						break;
+					}
+
+				case TColourFormat.RGB8:
+					{
+						switch (dst)
+						{
+							case TColourFormat.RGBA8:
+								return COLOR_CONVERSION.CV_RGB2RGBA;
+						}
+						break;
+					}
+			}
+
+			return COLOR_CONVERSION.CV_COLORCVT_MAX;
+		}
+
+		public static IImage CreateConverted(IImage src, TColourFormat targetFormat)
+		{
+			COLOR_CONVERSION route = ConvertRoute(GetFormat(src), targetFormat);
+
+			if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
+			{
+				throw(new Exception("Unsupported conversion"));
+			} else {
+				IImage converted = CVImageUtils.CreateImage(src.Size.Width, src.Size.Height, targetFormat);
+				CvInvoke.cvCvtColor(src.Ptr, converted.Ptr, route);
+				return converted;
+			}
+		}
+
+		public static IImage CreateImage(int width, int height, TColourFormat format)
+		{
+			switch(format)
+			{
+				case TColourFormat.L8:
+					return new Image<Gray, byte>(width, height);
+				case TColourFormat.L16:
+					return new Image<Gray, ushort>(width, height);
+
+
+				case TColourFormat.RGB8:
+					return new Image<Rgb, byte>(width, height);
+				case TColourFormat.RGB32F:
+					return new Image<Rgb, float>(width, height);
+
+				case TColourFormat.RGBA8:
+					return new Image<Rgba, byte>(width, height);
+			}
+
+			throw (new NotImplementedException("We have not implemented the automatic creation of this image type"));
+		}
+
+		public static TColourFormat GetFormat(IImage image)
+		{
+			Image<Gray, byte> ImageL8 = image as Image<Gray, byte>;
+			if (ImageL8 != null)
+				return TColourFormat.L8;
+
+			Image<Gray, ushort> ImageL16 = image as Image<Gray, ushort>;
+			if (ImageL16 != null)
+				return TColourFormat.L16;
+			
+			Image<Rgb, byte> ImageRGB8 = image as Image<Rgb, byte>;
+			if (ImageRGB8 != null)
+				return TColourFormat.RGB8;
+			//camera captures seem to arrive as bgr even though rgb
+			//may need to revisit this later on
+			Image<Bgr, byte> ImageBGR8 = image as Image<Bgr, byte>;
+			if (ImageBGR8 != null)
+				return TColourFormat.RGB8;
+
+			Image<Rgb, float> ImageRGB32F = image as Image<Rgb, float>;
+			if (ImageRGB32F != null)
+				return TColourFormat.RGB32F;
+
+			Image<Rgba, byte> ImageRGBA8 = image as Image<Rgba, byte>;
+			if (ImageRGBA8 != null)
+				return TColourFormat.RGBA8;
+
+			return TColourFormat.UnInitialised;
+		}
+
+		public static uint BytesPerPixel(TColourFormat format)
+		{
+			switch (format)
+			{
+				case TColourFormat.L8:
+					return 1;
+				case TColourFormat.L16:
+					return 2;
+
+				case TColourFormat.RGB8:
+					return 3;
+				case TColourFormat.RGB32F:
+					return 3 * sizeof(float);
+
+				case TColourFormat.RGBA8:
+					return 4 * sizeof(float);
+
+				default:
+					throw(new NotImplementedException("We haven't implemented BytesPerPixel for this type"));
+			}
+		}
+
+
+		public static Format GetDXFormat(TColourFormat format)
+		{
+			switch (format)
+			{
+				case TColourFormat.L8:
+					return Format.L8;
+				case TColourFormat.L16:
+					return Format.L16;
+
+				case TColourFormat.RGBA8:
+					return Format.A8R8G8B8;
+
+				default:
+					throw (new NotImplementedException("Cannot create a texture to match Image's format"));
+			}
+
+		}
+
+		public static Texture CreateTexture(CVImageAttributes attributes, Device device)
+		{
+			TColourFormat format = attributes.ColourFormat;
+			TColourFormat newFormat;
+			bool useConverted = NeedsConversion(format, out newFormat);
+
+			return new Texture(device, Math.Max(attributes.Width, 1), Math.Max(attributes.Height, 1), 1, Usage.None, GetDXFormat(useConverted ? newFormat : format), Pool.Managed);
+		}
+
+		public static bool NeedsConversion(TColourFormat format, out TColourFormat targetFormat)
+		{
+			switch(format)
+			{
+				case TColourFormat.RGB8:
+					targetFormat = TColourFormat.RGBA8;
+					return true;
+
+				default:
+					targetFormat = TColourFormat.UnInitialised;
+					return false;
+			}
+		}
+	}
+}

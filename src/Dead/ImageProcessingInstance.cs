@@ -28,7 +28,7 @@ namespace VVVV.Nodes.EmguCV.Abstract
 
 			lock(Lock)
 			{
-				if (Image == null || !Image.Initialised)
+				if (Image == null || !Image.HasAllocatedImage)
 				{
 					Image = null;
 					Initialised = false;

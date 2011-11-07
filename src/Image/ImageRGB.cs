@@ -34,7 +34,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			lock (FLock)
 			{
-				bool changedAttributes = FImageAttributes.CheckChanges(TColourData.RGB8, value.Size);
+				bool changedAttributes = FImageAttributes.CheckChanges(TColourFormat.RGB8, value.Size);
 
 				if (ImageAttributes.Initialised)
 				{

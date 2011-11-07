@@ -19,13 +19,13 @@ namespace VVVV.Nodes.EmguCV
 			set
 			{
 				FSize = value;
-				Allocate(new CVImageAttributes(TColourData.RGB8, FSize.Width, FSize.Height));
+				Allocate(new CVImageAttributes(TColourFormat.RGB8, FSize.Width, FSize.Height));
 			}
 		}
 
 		protected override void Process()
 		{
-			if (Image == null || !Image.Initialised || BufferImage == null) return;
+			if (Image == null || !Image.HasAllocatedImage || BufferImage == null) return;
 			try
 			{
 				lock (Lock)
