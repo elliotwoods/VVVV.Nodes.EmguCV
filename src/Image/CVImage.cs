@@ -45,6 +45,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public unsafe void SetImage(IImage source)
 		{
+			if (source == null)
+				return;
+
 			TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
 			Initialise(source.Size, sourceFormat);
 

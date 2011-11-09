@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\New Image type.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\New Image type.v4p" systemname="New Image type">
-   <BOUNDS height="8685" left="4815" top="1395" type="Window" width="10275">
+   <BOUNDS height="10590" left="4815" top="1395" type="Window" width="10275">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="0" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
    <BOUNDS height="100" left="1320" top="1005" type="Node" width="100">
@@ -33,7 +33,7 @@
    <NODE componentmode="InABox" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="990" top="3000" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="4650" left="990" top="3000" type="Box" width="5670">
+   <BOUNDS height="6735" left="990" top="3000" type="Box" width="8670">
    </BOUNDS>
    <BOUNDS height="5010" left="11010" top="6840" type="Window" width="6240">
    </BOUNDS>
@@ -136,6 +136,6 @@
    <LINKPOINT x="4620" y="1373">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Image" dstnodeid="0" dstpinname="Image">
+   <LINK dstnodeid="0" dstpinname="Image" srcnodeid="1" srcpinname="Image">
    </LINK>
    </PATCH>

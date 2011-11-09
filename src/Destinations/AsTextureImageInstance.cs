@@ -177,7 +177,6 @@ namespace VVVV.Nodes.EmguCV
 				int step;
 				Size size;
 
-
 				CvInvoke.cvGetRawData(GetBuffer().Ptr, out data, out step, out size);
 
 				return data;
@@ -188,7 +187,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return (FNeedsConversion ? FBuffer.ImageAttributes.BytesPerFrame * 4 / 3 : FBuffer.ImageAttributes.BytesPerFrame);
+				return (FNeedsConversion ? FBufferConverted.ImageAttributes.BytesPerFrame : FBuffer.ImageAttributes.BytesPerFrame);
 			}
 		}
 

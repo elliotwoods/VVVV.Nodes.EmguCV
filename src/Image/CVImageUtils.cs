@@ -102,11 +102,12 @@ namespace VVVV.Nodes.EmguCV
 
 				case TColourFormat.RGB8:
 					return 3;
+
 				case TColourFormat.RGB32F:
 					return 3 * sizeof(float);
 
 				case TColourFormat.RGBA8:
-					return 4 * sizeof(float);
+					return 4;
 
 				default:
 					throw(new NotImplementedException("We haven't implemented BytesPerPixel for this type"));

@@ -34,8 +34,6 @@ namespace VVVV.Nodes.EmguCV
 
 		public bool IsRunning;
 
-		Image<Bgr, byte> FBuffer;
-
 		Stopwatch FTimer = new Stopwatch();
 		TimeSpan FFramePeriod = new TimeSpan(0);
 
@@ -96,8 +94,6 @@ namespace VVVV.Nodes.EmguCV
 
 				FWidth = FCapture.Width;
 				FHeight = FCapture.Height;
-
-				FBuffer = new Image<Bgr, byte>(new Size(FWidth, FHeight));
 			}
 
 			FRunCaptureThread = true;
@@ -112,19 +108,14 @@ namespace VVVV.Nodes.EmguCV
 
 			while (FRunCaptureThread)
 			{
+				FFramePeriod = FTimer.Elapsed;
 				FTimer.Reset();
 				FTimer.Start();
 
 				lock (FLockCapture)
 				{
-					FBuffer = FCapture.QueryFrame();
-
-					if (FBuffer != null)
-						lock (Image.GetLock())
-							Image.SetImage(FBuffer);
+					Image.SetImage(FCapture.QueryFrame());
 				}
-
-				FFramePeriod = FTimer.Elapsed;
 
 				//allow a gap where we're not locked
 				Thread.Sleep(1);
@@ -138,7 +129,6 @@ namespace VVVV.Nodes.EmguCV
 			FRunCaptureThread = false;
 			FCaptureThread.Join(100);
 			FCapture.Dispose();
-			FBuffer.Dispose();
 			IsRunning = false;
 		}
 
