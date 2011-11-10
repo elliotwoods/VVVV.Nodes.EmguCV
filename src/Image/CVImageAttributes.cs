@@ -8,6 +8,16 @@ namespace VVVV.Nodes.EmguCV
 {
 	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, L8, L16};
 
+	public class ImageAttributesChangedEventArgs : EventArgs
+	{
+		public CVImageAttributes Attributes { get; private set; }
+
+		public ImageAttributesChangedEventArgs(CVImageAttributes attributes)
+		{
+			this.Attributes = attributes;
+		}
+	}
+
 	public class CVImageAttributes
 	{
 		public TColourFormat ColourFormat;

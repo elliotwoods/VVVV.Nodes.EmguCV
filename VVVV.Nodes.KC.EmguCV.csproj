@@ -121,11 +121,13 @@
     <Compile Include="src\Filters\ImageResizeNode.cs" />
     <Compile Include="src\Image\CVImageAttributes.cs" />
     <Compile Include="src\Image\CVImage.cs" />
+    <Compile Include="src\Image\CVImageDoubleBuffer.cs" />
+    <Compile Include="src\Image\CVImageLink.cs" />
     <Compile Include="src\Image\CVImageUtils.cs" />
     <Compile Include="src\Image\ImageBase.cs" />
-    <Compile Include="src\Image\ImageL16.cs" />
-    <Compile Include="src\Image\ImageRGB.cs" />
-    <Compile Include="src\Image\ImageRGB32F.cs" />
+    <Compile Include="src\Dead\ImageL16.cs" />
+    <Compile Include="src\Dead\ImageRGB.cs" />
+    <Compile Include="src\Dead\ImageRGB32F.cs" />
     <Compile Include="src\Sources\ImageLoadNode.cs" />
     <Compile Include="src\Sources\VideoInNode.cs" />
     <None Include="src\Dead\VideoPlayerNode.cs" />

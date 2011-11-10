@@ -37,6 +37,20 @@ CVImage wraps an EmguCV IImage
 It can be used for lots of things. We can make nodes in minutes to supply video from lots of sources (e.g. CLEye, Point Grey, BlackMagic) and then use them with the full chain of CV / texture utils.
 
 
+Threading
+---------
+Current design is 'Highly Threaded' or 'Background' as described in the threading options list at
+http://vvvv.org/forum/replacing-directshow-with-managed-opencv.-video-playback-capture-cv
+
+Each node has it's own thread, every exchange of image data between threads results in a double buffer
+This obviously leads to many threads + much memory usage (perhaps in the future users will be able to select the global threading model at runtime)
+
+The node thread has an output buffer (single).
+When the thread is ready to send (i.e. all of its inputs are fresh) then it calls FOutputBuffer.SetImage(...) which pushes the image downstream.
+FOutput should not have any internal buffers, instead passing through its input directly
+
+Links are double buffers
+
 Todo
 ====
 

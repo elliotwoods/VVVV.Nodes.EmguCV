@@ -6,11 +6,16 @@ using Emgu.CV.CvEnum;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using SlimDX.Direct3D9;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.EmguCV
 {
 	class CVImageUtils
 	{
+		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
+		public static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
+
 		public static COLOR_CONVERSION ConvertRoute(TColourFormat src, TColourFormat dst)
 		{
 			switch (src)
@@ -164,9 +169,41 @@ namespace VVVV.Nodes.EmguCV
 			if (source.NativeFormat != target.NativeFormat)
 				throw (new Exception("Can't copy between these 2 images, they differ in pixel colour format"));
 
-			lock(source.GetLock())
-				lock(target.GetLock())
-					CvInvoke.cvCopy(source.Ptr, target.Ptr, new Image<Gray, bool>(source.Width, source.Height));
+			lock (source.GetLock())
+				lock (target.GetLock())
+					CopyImage(source.Ptr, target.Ptr, target.ImageAttributes.BytesPerFrame);
+		}
+
+		public static void CopyImage(IImage source, CVImage target)
+		{
+			if (source.Size != target.Size)
+				throw (new Exception("Can't copy between these 2 images, they differ in dimensions"));
+
+			if (GetFormat(source) != target.NativeFormat)
+				throw (new Exception("Can't copy between these 2 images, they differ in pixel colour format"));
+
+			lock (target.GetLock())
+				CopyImage(source.Ptr, target.Ptr, target.ImageAttributes.BytesPerFrame);
+		}
+
+		/// <summary>
+		/// Copys by hand raw image data from source to target
+		/// </summary>
+		/// <param name="source">CvArray object</param>
+		/// <param name="target">CvArray object</param>
+		/// <param name="size">Size in bytes</param>
+		public static void CopyImage(IntPtr source, IntPtr target, uint size)
+		{
+			IntPtr sourceRaw;
+			IntPtr targetRaw;
+
+			int step;
+			Size dims;
+
+			CvInvoke.cvGetRawData(source, out sourceRaw, out step, out dims);
+			CvInvoke.cvGetRawData(target, out targetRaw, out step, out dims);
+
+			CopyMemory(targetRaw, sourceRaw, size);
 		}
 
 		public static void CopyImageConverted(CVImage source, CVImage target)

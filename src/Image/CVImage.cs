@@ -24,6 +24,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			Initialise(attributes.Size, attributes.ColourFormat);
 		}
+
 		public void Initialise(System.Drawing.Size size, TColourFormat format)
 		{
 			bool changedAttributes = FImageAttributes.CheckChanges(format, size);
@@ -51,10 +52,7 @@ namespace VVVV.Nodes.EmguCV
 			TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
 			Initialise(source.Size, sourceFormat);
 
-			lock (FLock)
-			{
-				CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height,new Gray(1.0d))).Ptr);
-			}
+			CVImageUtils.CopyImage(source, this);
 
 			OnImageUpdate();
 		}
@@ -63,7 +61,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			Initialise(source.Size, source.NativeFormat);
 
-			CvInvoke.cvCopy(source.Ptr, FImage.Ptr, (new Image<Gray, byte>(Width, Height, new Gray(1.0d))).Ptr);
+			CVImageUtils.CopyImage(source, this);
 
 			OnImageUpdate();
 		}

@@ -10,17 +10,6 @@ using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.EmguCV
 {
-
-	public class ImageAttributesChangedEventArgs : EventArgs
-	{
-		public CVImageAttributes Attributes { get; private set; }
-
-		public ImageAttributesChangedEventArgs(CVImageAttributes attributes)
-		{
-			this.Attributes = attributes;
-		}
-	}
-
 	public abstract class ImageBase
 	{
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
@@ -28,7 +17,6 @@ namespace VVVV.Nodes.EmguCV
 
 		protected Object FLock = new Object();
 		protected CVImageAttributes FImageAttributes = new CVImageAttributes();
-
 
 		public bool HasAllocatedImage
 		{
