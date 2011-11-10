@@ -25,15 +25,17 @@ namespace VVVV.Nodes.EmguCV
 			Initialise(attributes.Size, attributes.ColourFormat);
 		}
 
-		public void Initialise(System.Drawing.Size size, TColourFormat format)
+		public bool Initialise(System.Drawing.Size size, TColourFormat format)
 		{
 			bool changedAttributes = FImageAttributes.CheckChanges(format, size);
 
 			if (changedAttributes)
 			{
 				Allocate();
-				OnImageAttributesUpdate(ImageAttributes);
+				return true;
 			}
+			else
+				return false;
 		}
 
 		public void GetImage(TColourFormat format, CVImage target)
@@ -44,32 +46,34 @@ namespace VVVV.Nodes.EmguCV
 				CVImageUtils.CopyImageConverted(this, target);
 		}
 
-		public unsafe void SetImage(IImage source)
+		public unsafe bool SetImage(IImage source)
 		{
 			if (source == null)
-				return;
+				return false;
 
 			TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
-			Initialise(source.Size, sourceFormat);
+			bool Reinitialise = Initialise(source.Size, sourceFormat);
 
 			CVImageUtils.CopyImage(source, this);
 
-			OnImageUpdate();
+			return Reinitialise;
 		}
 
-		public void SetImage(CVImage source)
+		public bool SetImage(CVImage source)
 		{
-			Initialise(source.Size, source.NativeFormat);
+			if (source == null)
+				return false;
+
+			bool Reinitialise = Initialise(source.Size, source.NativeFormat);
 
 			CVImageUtils.CopyImage(source, this);
 
-			OnImageUpdate();
+			return Reinitialise;
 		}
 
 		override public void Allocate()
 		{
-			lock (FLock)
-				FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
+			FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
 		}
 	}
 }

@@ -38,7 +38,7 @@ namespace VVVV.Nodes.EmguCV
 	{
 		#region fields & pins
 		[Input("Image")]
-		ISpread<CVImage> FPinInImage;
+		ISpread<CVImageLink> FPinInImage;
 
 		[Import]
 		ILogger FLogger;
@@ -57,12 +57,15 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			CheckReinitialise(SpreadMax);
-			CheckUpdate(SpreadMax);
+			CheckSpread(SpreadMax);
+
+			Update();
 		}
 
-		private void CheckReinitialise(int count)
+		private void CheckSpread(int count)
 		{
+			bool needsInit = false;
+
 			if (FPinInImage[0] == null)
 			{
 				FImageInstances.SliceCount = 0;
@@ -70,8 +73,6 @@ namespace VVVV.Nodes.EmguCV
 				Reinitialize();
 				return;
 			}
-
-			bool needsInit = false;
 
 			if (FImageInstances.SliceCount != count)
 			{
@@ -90,61 +91,31 @@ namespace VVVV.Nodes.EmguCV
 				if (FImageInstances[i] == null)
 				{
 					FImageInstances[i] = new AsTextureImageInstance();
+					needsInit = true;
 				}
+
+				if (FImageInstances[i].ImageAttributesChanged)
+					needsInit = true;
 
 				FImageInstances[i].Initialise(FPinInImage[i]);
-
-				if (FImageInstances[i].ReinitialiseTexture)
-				{
-					needsInit = true;
-					FImageInstances[i].Reinitialized();
-				}
-
 			}
 
 			SetSliceCount(count);
 
-			//seems a shame to have to reinitialise absolutely everything..
 			if (needsInit)
 				Reinitialize();
-		}
-
-		private void CheckUpdate(int count)
-		{
-			bool needsUpdate = false;
-
-			for (int i = 0; i < count; i++)
-			{
-				if (FImageInstances[i].UpdateTexture)
-				{
-					needsUpdate = true;
-					FImageInstances[i].Updated();
-				}
-			}
-
-			if (needsUpdate)
-				Update();
 		}
 
 		//this method gets called, when Reinitialize() was called in evaluate,
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, Device device)
 		{
-			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
-
-			if (FImageInstances.SliceCount > 0)
-			{
-
-				if (FImageInstances[Slice].Initialised && FImageInstances[Slice].Attributes.Initialised)
-
-					return CVImageUtils.CreateTexture(FImageInstances[Slice].Attributes, device);
-				else
-					return TextureUtils.CreateTexture(device, 1, 1);
-			}
-			else
-			{
-				return TextureUtils.CreateTexture(device, 1, 1);
-			}
+			if (FImageInstances.SliceCount > Slice)
+				if (FImageInstances[Slice] != null) // we do have a connected input for this slice
+					return FImageInstances[Slice].CreateTexture(device);
+			
+			return TextureUtils.CreateTexture(device, 1, 1);
+				
 		}
 
 		//this method gets called, when Update() was called in evaluate,
@@ -156,16 +127,7 @@ namespace VVVV.Nodes.EmguCV
 			if (FImageInstances.SliceCount < Slice)
 				return;
 
-			if (FImageInstances[Slice].IsReady())
-			{
-				Surface srf = texture.GetSurfaceLevel(0);
-				DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-				lock (FImageInstances[Slice].Lock)
-					rect.Data.WriteRange(FImageInstances[Slice].Ptr, FImageInstances[Slice].BytesPerFrame);
-
-				srf.UnlockRectangle();
-			}
+			FImageInstances[Slice].UpdateTexture(texture);
 		}
 	}
 }

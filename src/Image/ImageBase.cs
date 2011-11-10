@@ -15,7 +15,6 @@ namespace VVVV.Nodes.EmguCV
 		[DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
 		static extern private void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
 
-		protected Object FLock = new Object();
 		protected CVImageAttributes FImageAttributes = new CVImageAttributes();
 
 		public bool HasAllocatedImage
@@ -24,37 +23,6 @@ namespace VVVV.Nodes.EmguCV
 			{
 				return GetImage() != null;
 			}
-		}
-
-		#region Events
-
-		#region ImageUpdate
-		public event EventHandler ImageUpdate;
-
-		protected void OnImageUpdate()
-		{
-			if (ImageUpdate == null)
-				return;
-			ImageUpdate(this, EventArgs.Empty);
-		}
-		#endregion
-
-		#region ImageAttributesUpdate
-		public event EventHandler<ImageAttributesChangedEventArgs> ImageAttributesUpdate;
-
-		protected void OnImageAttributesUpdate(CVImageAttributes attributes)
-		{
-			if (ImageAttributesUpdate == null)
-				return;
-			ImageAttributesUpdate(this, new ImageAttributesChangedEventArgs(attributes));
-		}
-		#endregion
-
-		#endregion
-
-		public object GetLock()
-		{
-			return FLock;
 		}
 
 		abstract public IImage GetImage();
@@ -104,11 +72,29 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		public IntPtr Ptr
+		public IntPtr CvMat
 		{
 			get
 			{
 				return GetImage().Ptr;
+			}
+		}
+
+		/// <summary>
+		/// Returns a pointer to the raw pixel data
+		/// </summary>
+		public IntPtr Data
+		{
+			get
+			{
+				IntPtr value;
+
+				int step;
+				System.Drawing.Size dims;
+
+				CvInvoke.cvGetRawData(CvMat, out value, out step, out dims);
+
+				return value;
 			}
 		}
 	}

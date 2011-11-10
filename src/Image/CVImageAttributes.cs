@@ -18,7 +18,7 @@ namespace VVVV.Nodes.EmguCV
 		}
 	}
 
-	public class CVImageAttributes
+	public class CVImageAttributes : ICloneable
 	{
 		public TColourFormat ColourFormat;
 		public Size FSize = new Size();
@@ -98,6 +98,11 @@ namespace VVVV.Nodes.EmguCV
 			{
 				return this.BytesPerPixel * (uint)this.Width * (uint)this.Height;
 			}
+		}
+
+		public object Clone()
+		{
+			return this.MemberwiseClone();
 		}
 	}
 }

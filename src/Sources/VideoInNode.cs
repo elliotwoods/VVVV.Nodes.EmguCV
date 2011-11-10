@@ -19,18 +19,18 @@ namespace VVVV.Nodes.EmguCV
 {
 	class CaptureVideoInstance : IDisposable
 	{
+		public string Status;
+		public CVImageLink Output = new CVImageLink();
+
 		private int FCameraID = -1;
 		private int FWidth = 0;
 		private int FHeight = 0;
 
-		public string Status;
-
 		Thread FCaptureThread;
-		bool FRunCaptureThread;
+		bool FCaptureRunThread;
+		Object FCaptureLock = new Object();
 
-		public CVImage Image = new CVImage();
 		Capture FCapture;
-		Object FLockCapture = new Object();
 
 		public bool IsRunning;
 
@@ -72,7 +72,7 @@ namespace VVVV.Nodes.EmguCV
 		public void Initialise(int id, int width, int height)
 		{
 			Close();
-			lock (FLockCapture)
+			lock (FCaptureLock)
 			{
 				try
 				{
@@ -96,7 +96,7 @@ namespace VVVV.Nodes.EmguCV
 				FHeight = FCapture.Height;
 			}
 
-			FRunCaptureThread = true;
+			FCaptureRunThread = true;
 			FCaptureThread = new Thread(Capture);
 			FCaptureThread.Start();
 		}
@@ -106,15 +106,15 @@ namespace VVVV.Nodes.EmguCV
 
 			FTimer.Start();
 
-			while (FRunCaptureThread)
+			while (FCaptureRunThread)
 			{
 				FFramePeriod = FTimer.Elapsed;
 				FTimer.Reset();
 				FTimer.Start();
 
-				lock (FLockCapture)
+				lock (FCaptureLock)
 				{
-					Image.SetImage(FCapture.QueryFrame());
+					Output.SetImage(FCapture.QueryFrame());
 				}
 
 				//allow a gap where we're not locked
@@ -126,7 +126,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (!IsRunning) return;
 
-			FRunCaptureThread = false;
+			FCaptureRunThread = false;
 			FCaptureThread.Join(100);
 			FCapture.Dispose();
 			IsRunning = false;
@@ -158,7 +158,7 @@ namespace VVVV.Nodes.EmguCV
 		IDiffSpread<int> FPinInHeight;
 
 		[Output("Image")]
-		ISpread<CVImage> FPinOutImage;
+		ISpread<CVImageLink> FPinOutImage;
 
 		[Output("FPS")]
 		ISpread<int> FPinOutFPS;
@@ -211,7 +211,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				FPinOutStatus[i] = FCaptures[i].Status;
 				FPinOutFPS[i] = FCaptures[i].FramesPerSecond;
-				FPinOutImage[i] = FCaptures[i].Image;
+				FPinOutImage[i] = FCaptures[i].Output;
 			}
 		}
 

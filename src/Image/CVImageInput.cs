@@ -1,0 +1,215 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace VVVV.Nodes.EmguCV
+{
+	class CVImageInput
+	{
+		private CVImageLink FLink = null;
+		private bool FImageFresh = false;
+		private bool FImageAttributesFresh = false;
+
+		#region Destructor
+		~CVImageInput()
+		{
+			Disconnect();
+		}
+		#endregion
+
+		#region Events
+
+		#region ImageUpdate
+		public event EventHandler ImageUpdate;
+
+		protected void OnImageUpdate()
+		{
+			if (ImageUpdate == null)
+				return;
+			ImageUpdate(this, EventArgs.Empty);
+		}
+		#endregion
+
+		#region ImageAttributesUpdate
+		public event EventHandler<ImageAttributesChangedEventArgs> ImageAttributesUpdate;
+
+		protected void OnImageAttributesUpdate(CVImageAttributes attributes)
+		{
+			if (ImageAttributesUpdate == null)
+				return;
+			ImageAttributesUpdate(this, new ImageAttributesChangedEventArgs(attributes));
+		}
+		#endregion
+
+		private void AddListeners()
+		{
+			FLink.ImageUpdate += ImageUpdated;
+			FLink.ImageAttributesUpdate += ImageAttributesUpdated;
+		}
+
+		private void RemoveListeners()
+		{
+			if (Connected)
+			{
+				FLink.ImageUpdate -= ImageUpdated;
+				FLink.ImageAttributesUpdate -= ImageAttributesUpdated;
+			}
+		}
+
+		private void ImageUpdated(object sender, EventArgs e)
+		{
+			FImageFresh = true;
+			OnImageUpdate();
+		}
+
+		private void ImageAttributesUpdated(object sender, ImageAttributesChangedEventArgs e)
+		{
+			FImageAttributesFresh = true;
+			OnImageAttributesUpdate(FLink.ImageAttributes);
+		}
+		#endregion
+
+		#region Accessors
+		public CVImageLink Link
+		{
+			get
+			{
+				return FLink;
+			}
+		}
+
+		public CVImageAttributes ImageAttributes
+		{
+			get
+			{
+				return FLink.ImageAttributes;
+			}
+		}
+
+		public int Width
+		{
+			get
+			{
+				return ImageAttributes.Width;
+			}
+		}
+
+		public int Height
+		{
+			get
+			{
+				return ImageAttributes.Height;
+			}
+		}
+
+		public CVImage Image
+		{
+			get
+			{
+				return FLink.Image;
+			}
+		}
+
+		public bool Allocated
+		{
+			get
+			{
+				if (FLink == null)
+					return false;
+
+				return FLink.Allocated;
+			}
+		}
+		public bool ImageChanged
+		{
+			get
+			{
+				if (FImageFresh)
+				{
+					FImageFresh = false;
+					return true;
+				}
+				else
+					return false;
+			}
+		}
+
+		public bool ImageAttributesChanged
+		{
+			get
+			{
+				if (!Allocated)
+					return false;
+
+				if (FImageAttributesFresh)
+				{
+					FImageAttributesFresh = false;
+					return true;
+				}
+				else
+					return false;
+			}
+			set
+			{
+				FImageAttributesFresh = value;
+			}
+		}
+
+		public IntPtr Data
+		{
+			get
+			{
+				return FLink.Image.Data;
+			}
+		}
+
+		public uint BytesPerFrame
+		{
+			get
+			{
+				return FLink.ImageAttributes.BytesPerFrame;
+			}
+		}
+		#endregion
+
+		#region Connection
+		public void Connect(CVImageLink input)
+		{
+			Disconnect();
+
+			FLink = input;
+			FImageAttributesFresh = true;
+
+			AddListeners();
+		}
+
+		public void Disconnect()
+		{
+			RemoveListeners();
+
+			FLink = null;
+		}
+
+		public bool Connected
+		{
+			get
+			{
+				return FLink != null;
+			}
+		}
+		#endregion
+
+		#region Locking
+		public void LockForReading()
+		{
+			FLink.FrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
+		}
+
+		public void UnlockForReading()
+		{
+			FLink.FrontLock.ReleaseReaderLock();	
+		}
+		#endregion
+	}
+}

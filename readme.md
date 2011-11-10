@@ -51,6 +51,18 @@ FOutput should not have any internal buffers, instead passing through its input 
 
 Links are double buffers
 
+
+Memory usage
+------------
+
+Examples of memory usage:
+# 640*480 ~= 300KB (VGA mono)
+# 640*480*3 ~= 1MB (VGA colour)
+# 640*480*16 ~= 5MB (VGA colour + alpha, 32bit float)
+# 1920*1080*3 ~= 6MB (HD colour video frame)
+
+Generally each slice at each node = 2 * the above (double buffered)
+
 Todo
 ====
 

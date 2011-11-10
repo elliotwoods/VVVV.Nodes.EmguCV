@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using Emgu.CV;
 using System.Drawing;
+using SlimDX.Direct3D9;
+using SlimDX;
+using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes.EmguCV
 {
@@ -15,188 +18,87 @@ namespace VVVV.Nodes.EmguCV
 		public int Width { get; private set; }
 		public int Height { get; private set; }
 
-		CVImage FImage;
-		CVImage FBuffer;
-		CVImage FBufferConverted;
+		CVImageInput FImageInput = new CVImageInput();
 
+		CVImage FBufferConverted;
 		TColourFormat FConvertedFormat;
 		bool FNeedsConversion = false;
 
-		public bool Initialised { get; private set; }
-		public bool ReinitialiseTexture { get; private set; }
-		public bool UpdateTexture { get; private set; }
-
 		public Object Lock = new Object();
 
-		public void Initialise(CVImage image)
+		public void Initialise(CVImageLink input)
 		{
-			if (image == FImage && Initialised)
+			//are we already initialised to this input?
+			if (input == FImageInput.Link && Initialised)
 				return;
 
 			lock (Lock)
 			{
-				RemoveListeners();
-
-				if (image == null || !image.HasAllocatedImage)
+				if (input == null)
 				{
-					FBuffer = null;
-					FImage = null;
-					Initialised = false;
-					return;
+					FImageInput.Disconnect();
 				}
 				else
 				{
-					FImage = image;
-					AddListeners();
-					Allocate();
+					FImageInput.Connect(input);
 				}
 			}
 		}
 
-		#region events
-		
-		private void AddListeners()
+		public bool Initialised
 		{
-			FImage.ImageUpdate += ImageUpdate;
-			FImage.ImageAttributesUpdate += ImageAttributesUpdate;
-		}
-
-		private void RemoveListeners()
-		{
-			if (Initialised)
+			get
 			{
-				FImage.ImageUpdate -= ImageUpdate;
-				FImage.ImageAttributesUpdate -= ImageAttributesUpdate;
-			}
-		}
-		#endregion
-
-		public void Reinitialized()
-		{
-			ReinitialiseTexture = false;
-		}
-		public void Updated()
-		{
-			UpdateTexture = false;
-		}
-
-		void Allocate()
-		{
-			Width = FImage.Width;
-			Height = FImage.Height;
-
-			FBuffer = new CVImage();
-			FBuffer.SetImage(FImage);
-
-			CheckNeedsConversion();
-			Initialised = true;
-			ReinitialiseTexture = true;
-		}
-
-		void CheckNeedsConversion()
-		{
-			FNeedsConversion = CVImageUtils.NeedsConversion(FBuffer.NativeFormat, out FConvertedFormat);
-			
-			if (FNeedsConversion)
-			{
-				FBufferConverted = new CVImage();
-				FBufferConverted.Initialise(FBuffer.Size, FConvertedFormat);
-				FBuffer.GetImage(FConvertedFormat, FBufferConverted);
+				//do we need other checks here as well?
+				return FImageInput.Connected;
 			}
 		}
 
-		unsafe void ImageUpdate(object sender, EventArgs e)
+		public bool ImageAttributesChanged
 		{
+			get
+			{
+				return FImageInput.ImageAttributesChanged;
+			}
+		}
+
+		public Texture CreateTexture(Device device)
+		{
+			if (Initialised && FImageInput.ImageAttributesChanged)
+				return CVImageUtils.CreateTexture(FImageInput.ImageAttributes, device);
+			else
+				return TextureUtils.CreateTexture(device, 1, 1);
+		}
+
+		public void UpdateTexture(Texture texture)
+		{
+			if (!Initialised)
+				return;
+
+			if (!FImageInput.ImageChanged)
+				return;
+
+			if (FImageInput.ImageAttributesChanged)
+			{
+				FImageInput.ImageAttributesChanged = true; //reset flag as it will now have dropped
+				return;
+			}
+
+			Surface srf = texture.GetSurfaceLevel(0);
+			DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+
+			FImageInput.LockForReading();
 			try
 			{
-				if (FImage.Ptr != null)
-				{
-					_isFresh = true;
-					FBuffer.SetImage(FImage);
-				}
-
-				if (FNeedsConversion)
-					FBuffer.GetImage(FConvertedFormat, FBufferConverted);
-
-				UpdateTexture = true;
+				CVImage frontBuffer = FImageInput.Image;
+				rect.Data.WriteRange(FImageInput.Data, FImageInput.BytesPerFrame);
 			}
-			catch
+			finally
 			{
-
+				FImageInput.UnlockForReading();
 			}
-		}
-
-		void ImageAttributesUpdate(object sender, ImageAttributesChangedEventArgs e)
-		{
-			Allocate();
-		}
-
-		public void Close()
-		{
-			FBuffer = null;
-			Initialised = false;
-		}
-
-		bool _isFresh;
-		public bool isFresh
-		{
-			get
-			{
-				if (_isFresh && IsReady())
-				{
-					_isFresh = false;
-					return true;
-				}
-				else
-					return false;
-			}
-			set
-			{
-				_isFresh = isFresh;
-			}
-		}
-
-		private CVImage GetBuffer()
-		{
-			if (FNeedsConversion)
-				return FBufferConverted;
-			else
-				return FBuffer;
-		}
-
-		public bool IsReady()
-		{
-			return Initialised;
-		}
-
-		public IntPtr Ptr
-		{
-			get
-			{
-				IntPtr data;
-				int step;
-				Size size;
-
-				CvInvoke.cvGetRawData(GetBuffer().Ptr, out data, out step, out size);
-
-				return data;
-			}
-		}
-
-		public uint BytesPerFrame
-		{
-			get
-			{
-				return (FNeedsConversion ? FBufferConverted.ImageAttributes.BytesPerFrame : FBuffer.ImageAttributes.BytesPerFrame);
-			}
-		}
-
-		public CVImageAttributes Attributes
-		{
-			get
-			{
-				return FBuffer.ImageAttributes;
-			}
+				
+			srf.UnlockRectangle();
 		}
 	}
 }

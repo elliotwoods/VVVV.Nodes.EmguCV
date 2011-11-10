@@ -169,9 +169,7 @@ namespace VVVV.Nodes.EmguCV
 			if (source.NativeFormat != target.NativeFormat)
 				throw (new Exception("Can't copy between these 2 images, they differ in pixel colour format"));
 
-			lock (source.GetLock())
-				lock (target.GetLock())
-					CopyImage(source.Ptr, target.Ptr, target.ImageAttributes.BytesPerFrame);
+			CopyImage(source.CvMat, target.CvMat, target.ImageAttributes.BytesPerFrame);
 		}
 
 		public static void CopyImage(IImage source, CVImage target)
@@ -182,8 +180,7 @@ namespace VVVV.Nodes.EmguCV
 			if (GetFormat(source) != target.NativeFormat)
 				throw (new Exception("Can't copy between these 2 images, they differ in pixel colour format"));
 
-			lock (target.GetLock())
-				CopyImage(source.Ptr, target.Ptr, target.ImageAttributes.BytesPerFrame);
+			CopyImage(source.Ptr, target.CvMat, target.ImageAttributes.BytesPerFrame);
 		}
 
 		/// <summary>
@@ -213,9 +210,7 @@ namespace VVVV.Nodes.EmguCV
 			if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
 				throw(new Exception("Unsupported conversion"));
 
-			lock (source.GetLock())
-				lock (target.GetLock())
-					CvInvoke.cvCvtColor(source.Ptr, target.Ptr, route);
+			CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
 		}
 	}
 }
