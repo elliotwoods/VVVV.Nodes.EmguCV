@@ -26,6 +26,9 @@ namespace VVVV.Nodes.EmguCV
 		private int FWidth = 0;
 		private int FHeight = 0;
 
+		private int FRequestedWidth = 0;
+		private int FRequestedHeight = 0;
+
 		Thread FCaptureThread;
 		bool FCaptureRunThread;
 		Object FCaptureLock = new Object();
@@ -71,6 +74,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Initialise(int id, int width, int height)
 		{
+			if (id == FCameraID && width == FRequestedWidth && height == FRequestedHeight)
+				return;
+
 			Close();
 			lock (FCaptureLock)
 			{
@@ -94,6 +100,9 @@ namespace VVVV.Nodes.EmguCV
 
 				FWidth = FCapture.Width;
 				FHeight = FCapture.Height;
+
+				FRequestedWidth = width;
+				FRequestedHeight = height;
 			}
 
 			FCaptureRunThread = true;
@@ -114,7 +123,9 @@ namespace VVVV.Nodes.EmguCV
 
 				lock (FCaptureLock)
 				{
-					Output.SetImage(FCapture.QueryFrame());
+					IImage capbuffer = FCapture.QueryFrame();
+					if (CVImageUtils.IsIntialised(capbuffer))
+						Output.SetImage(capbuffer);
 				}
 
 				//allow a gap where we're not locked
@@ -218,22 +229,21 @@ namespace VVVV.Nodes.EmguCV
 		private void CheckChanges()
 		{
 			if (FCaptures.SliceCount != FPinInCameraID.SliceCount)
+			{
+				while (FCaptures.SliceCount < FPinInCameraID.SliceCount)
+					FCaptures.Add<CaptureVideoInstance>(new CaptureVideoInstance());
+				for (int iDispose = FPinInCameraID.SliceCount; iDispose < FCaptures.SliceCount; iDispose++)
+					FCaptures[iDispose].Dispose();
 				FCaptures.SliceCount = FPinInCameraID.SliceCount;
+			}
 
 			for (int i = 0; i < FPinInCameraID.SliceCount; i++)
 			{
 				if (FCaptures[i] == null)
 					FCaptures[i] = new CaptureVideoInstance();
 
-				bool change = false;
-				change |= FCaptures[i].CameraID != FPinInCameraID[i];
-				change |= FCaptures[i].Width != FPinInWidth[i] && FPinInWidth.IsChanged;
-				change |= FCaptures[i].Height != FPinInHeight[i] && FPinInHeight.IsChanged;
 
-				if (change)
-					FCaptures[i].Initialise(FPinInCameraID[i], FPinInWidth[i], FPinInHeight[i]);
-
-
+				FCaptures[i].Initialise(FPinInCameraID[i], FPinInWidth[i], FPinInHeight[i]);
 			}
 		}
 	}

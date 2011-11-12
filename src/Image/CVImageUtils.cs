@@ -135,7 +135,29 @@ namespace VVVV.Nodes.EmguCV
 				default:
 					throw (new NotImplementedException("Cannot create a texture to match Image's format"));
 			}
+		}
 
+		public static string AsString(TColourFormat format)
+		{
+			switch (format)
+			{
+				case TColourFormat.L8:
+					return "L8";
+				case TColourFormat.L16:
+					return "L16";
+
+				case TColourFormat.RGB8:
+					return "RGB8";
+
+				case TColourFormat.RGB32F:
+					return "RGB32F";
+
+				case TColourFormat.RGBA8:
+					return "RGBA8";
+
+				default:
+					throw (new NotImplementedException("We haven't implemented AsString for this type"));
+			}
 		}
 
 		public static Texture CreateTexture(CVImageAttributes attributes, Device device)
@@ -197,10 +219,17 @@ namespace VVVV.Nodes.EmguCV
 			int step;
 			Size dims;
 
-			CvInvoke.cvGetRawData(source, out sourceRaw, out step, out dims);
-			CvInvoke.cvGetRawData(target, out targetRaw, out step, out dims);
+			try
+			{
+				CvInvoke.cvGetRawData(source, out sourceRaw, out step, out dims);
+				CvInvoke.cvGetRawData(target, out targetRaw, out step, out dims);
 
-			CopyMemory(targetRaw, sourceRaw, size);
+				CopyMemory(targetRaw, sourceRaw, size);
+			}
+			catch
+			{
+				step = 0;
+			}
 		}
 
 		public static void CopyImageConverted(CVImage source, CVImage target)
@@ -211,6 +240,17 @@ namespace VVVV.Nodes.EmguCV
 				throw(new Exception("Unsupported conversion"));
 
 			CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
+		}
+
+		public static bool IsIntialised(IImage image)
+		{
+			if (image == null)
+				return false;
+
+			if (image.Size.Width==0 || image.Size.Height==0)
+				return false;
+
+			return true;
 		}
 	}
 }

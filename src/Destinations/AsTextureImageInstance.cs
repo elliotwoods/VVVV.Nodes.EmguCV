@@ -10,7 +10,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class AsTextureImageInstance
+	class AsTextureImageInstance : IDisposable
 	{
 		//    [DllImport("msvcrt.dll", EntryPoint = "memcpy")]
 		//    public unsafe static extern void CopyMemory(IntPtr pDest, IntPtr pSrc, int length);
@@ -83,7 +83,7 @@ namespace VVVV.Nodes.EmguCV
 			if (!Initialised)
 				return;
 
-			if (!FImageInput.ImageChanged)
+			if (!FImageInput.ImageChanged || !FImageInput.Allocated)
 				return;
 
 			if (FImageInput.ImageAttributesChanged)
@@ -116,6 +116,11 @@ namespace VVVV.Nodes.EmguCV
 			}
 				
 			srf.UnlockRectangle();
+		}
+
+		public void Dispose()
+		{
+
 		}
 	}
 }

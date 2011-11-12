@@ -43,7 +43,7 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		private Spread<AsTextureImageInstance> FImageInstances = new Spread<AsTextureImageInstance>(0);
+		private CVImageInputSpreadWith<AsTextureImageInstance> FInput;
 
 		#endregion fields & pins
 
@@ -57,53 +57,15 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			CheckSpread(SpreadMax);
+			if (FInput == null)
+				FInput = new CVImageInputSpreadWith<AsTextureImageInstance>(FPinInImage);
+
+			FInput.CheckInputSize();
+			SetSliceCount(SpreadMax);
+			if (FInput.ImageAttributesChanged)
+				Reinitialize();
 
 			Update();
-		}
-
-		private void CheckSpread(int count)
-		{
-			bool needsInit = false;
-
-			if (FPinInImage[0] == null)
-			{
-				FImageInstances.SliceCount = 0;
-				SetSliceCount(0);
-				Reinitialize();
-				return;
-			}
-
-			if (FImageInstances.SliceCount != count)
-			{
-				FImageInstances.SliceCount = count;
-				needsInit = true;
-			}
-
-			for (int i = 0; i < count; i++)
-			{
-				if (FPinInImage[i] == null)
-				{
-					FImageInstances[i] = null;
-					continue;
-				}
-				
-				if (FImageInstances[i] == null)
-				{
-					FImageInstances[i] = new AsTextureImageInstance();
-					needsInit = true;
-				}
-
-				if (FImageInstances[i].ImageAttributesChanged)
-					needsInit = true;
-
-				FImageInstances[i].Initialise(FPinInImage[i]);
-			}
-
-			SetSliceCount(count);
-
-			if (needsInit)
-				Reinitialize();
 		}
 
 		//this method gets called, when Reinitialize() was called in evaluate,

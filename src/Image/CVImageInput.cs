@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CVImageInput
+	class CVImageInput : IDisposable
 	{
 		private CVImageLink FLink = null;
 		private bool FImageFresh = false;
@@ -87,22 +87,6 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		public int Width
-		{
-			get
-			{
-				return ImageAttributes.Width;
-			}
-		}
-
-		public int Height
-		{
-			get
-			{
-				return ImageAttributes.Height;
-			}
-		}
-
 		public CVImage Image
 		{
 			get
@@ -121,6 +105,7 @@ namespace VVVV.Nodes.EmguCV
 				return FLink.Allocated;
 			}
 		}
+
 		public bool ImageChanged
 		{
 			get
@@ -198,6 +183,11 @@ namespace VVVV.Nodes.EmguCV
 				return FLink != null;
 			}
 		}
+
+		public bool ConnectedTo(CVImageLink input)
+		{
+			return (input == FLink);
+		}
 		#endregion
 
 		#region Locking
@@ -211,5 +201,10 @@ namespace VVVV.Nodes.EmguCV
 			FLink.FrontLock.ReleaseReaderLock();	
 		}
 		#endregion
+
+		public void Dispose()
+		{
+			Disconnect();
+		}
 	}
 }
