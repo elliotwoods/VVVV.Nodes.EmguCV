@@ -20,7 +20,7 @@ Thanks to the VVVV devs for making such a lovely plugin architecture and a great
 
 Otherwise:
 Me - Elliot Woods
-Alg
+a - Vadim Smakhtin
 
 License
 =======
