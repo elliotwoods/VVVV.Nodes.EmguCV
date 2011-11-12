@@ -60,9 +60,9 @@ namespace VVVV.Nodes.EmguCV
 			if (FInput == null)
 				FInput = new CVImageInputSpreadWith<AsTextureImageInstance>(FPinInImage);
 
-			FInput.CheckInputSize();
 			SetSliceCount(SpreadMax);
-			if (FInput.ImageAttributesChanged)
+
+			if (FInput.CheckInputSize() || FInput.ImageAttributesChanged)
 				Reinitialize();
 
 			Update();
@@ -72,9 +72,9 @@ namespace VVVV.Nodes.EmguCV
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, Device device)
 		{
-			if (FImageInstances.SliceCount > Slice)
-				if (FImageInstances[Slice] != null) // we do have a connected input for this slice
-					return FImageInstances[Slice].CreateTexture(device);
+			if (FInput.SliceCount > Slice)
+				if (FInput.GetWith(Slice) != null) // we do have a connected input for this slice
+					return FInput.GetWith(Slice).CreateTexture(device);
 			
 			return TextureUtils.CreateTexture(device, 1, 1);
 				
@@ -86,10 +86,10 @@ namespace VVVV.Nodes.EmguCV
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		protected unsafe override void UpdateTexture(int Slice, Texture texture)
 		{
-			if (FImageInstances.SliceCount < Slice)
+			if (FInput.SliceCount < Slice)
 				return;
 
-			FImageInstances[Slice].UpdateTexture(texture);
+			FInput.GetWith(Slice).UpdateTexture(texture);
 		}
 	}
 }

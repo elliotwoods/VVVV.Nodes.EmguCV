@@ -2,10 +2,25 @@ Introduction
 ============
 https://github.com/elliotwoods/VVVV.Nodes.EmguCV
 
-Simple video playback / video capture using EmguCV in VVVV
-Options are open for full replacement of DirectShow, including spreadable video playback, CV manipulation, access to images in dynamic plugins, CV in dynamic plugins
+A new link type for VVVV 'CVImageLink' which lets you work with images on the CPU (previously achieved with DirectShow filters).
+CVImageLink includes lots of lovely magic, like threading, double buffering, automatic conversion, yada yada
+
+Perhaps all you want to know is 'is it f*&cking fast'?
+the answer is yes :)
 
 This is designed for general use of OpenCV functions + also video playback / capture.
+
+hearts and diamonds.
+Elliot
+
+Credits
+=======
+As always, big thanks for vux for his undeniable contribution to the VVVV plugin ecosystem, both in terms of generating plugins for users and making new things possible for plugin devs (like me!)
+Thanks to the VVVV devs for making such a lovely plugin architecture and a great piece of software (www.vvvv.org)
+
+Otherwise:
+Me - Elliot Woods
+Alg
 
 License
 =======
@@ -13,10 +28,13 @@ This plugin is distributed under the LGPL license (as much as it can be)
 
 Since we wrap EmguCV, currently we inherit the GPL license from EmguCV.
 
-EmguCV is dual license (GPL/commercial). So this code is GPL, and you should be wary that also your code must be GPL if it employs this.
+EmguCV is dual license (GPL/commercial). So to the extent to which that affects this code, this also implies that your code must be GPL if you utilise this plugin base
 Suggest move to opencvsharp http://code.google.com/p/opencvsharp/
 or discussion with EmguCV about a licensing model for the VVVV community. 
-Ensure that all the OpenCV dll's + Emgu.CV.dll and Emgu.Util.dll are in the same folder as the plugin. Check Prerequisites.zip (there's an old version of the plugins in there as well)
+
+Isntallation
+============
+TODO: make notes for quick installation :)
 
 Operating notes
 ===============
@@ -32,8 +50,10 @@ Notes for video playback:
 
 Types
 -----
-Currently we're moving to CVImage (rather than seperate types for each format: Image16L, ImageRGB, etc)
-CVImage wraps an EmguCV IImage
+We are now using CVImageLink which is a polymorphic (accepts different formats of image), double threaded (handles threading, locking) and auto converting (e.g. for RGBA8 for GPU) image type.
+
+To use this type yourself, check out examples of where we use CVImageInputSpread and CVImageInputSpreadWith<T>
+
 It can be used for lots of things. We can make nodes in minutes to supply video from lots of sources (e.g. CLEye, Point Grey, BlackMagic) and then use them with the full chain of CV / texture utils.
 
 

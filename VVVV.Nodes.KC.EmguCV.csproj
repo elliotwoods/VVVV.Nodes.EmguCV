@@ -133,7 +133,7 @@
     <None Include="src\Dead\ImageRGB.cs" />
     <None Include="src\Dead\ImageRGB32F.cs" />
     <None Include="src\Sources\ImageLoadNode.cs" />
-    <Compile Include="src\Image\inputPin.cs" />
+    <Compile Include="src\Image\INeedsCVImageLink.cs" />
     <Compile Include="src\Sources\VideoInNode.cs" />
     <None Include="src\Dead\VideoPlayerNode.cs" />
     <None Include="src\Dead\FaceTrackingNode.cs" />

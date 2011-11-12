@@ -10,7 +10,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class AsTextureImageInstance : IDisposable
+	class AsTextureImageInstance : INeedsCVImageLink, IDisposable
 	{
 		//    [DllImport("msvcrt.dll", EntryPoint = "memcpy")]
 		//    public unsafe static extern void CopyMemory(IntPtr pDest, IntPtr pSrc, int length);
@@ -18,7 +18,7 @@ namespace VVVV.Nodes.EmguCV
 		public int Width { get; private set; }
 		public int Height { get; private set; }
 
-		CVImageInput FImageInput = new CVImageInput();
+		CVImageInput FImageInput;
 
 		CVImage FBufferConverted;
 		TColourFormat FConvertedFormat;
@@ -26,23 +26,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public Object Lock = new Object();
 
-		public void Initialise(CVImageLink input)
+		public void Initialise(CVImageInput input)
 		{
-			//are we already initialised to this input?
-			if (input == FImageInput.Link && Initialised)
-				return;
-
-			lock (Lock)
-			{
-				if (input == null)
-				{
-					FImageInput.Disconnect();
-				}
-				else
-				{
-					FImageInput.Connect(input);
-				}
-			}
+			FImageInput = input;
 		}
 
 		public bool Initialised
@@ -51,14 +37,6 @@ namespace VVVV.Nodes.EmguCV
 			{
 				//do we need other checks here as well?
 				return FImageInput.Connected;
-			}
-		}
-
-		public bool ImageAttributesChanged
-		{
-			get
-			{
-				return FImageInput.ImageAttributesChanged;
 			}
 		}
 
