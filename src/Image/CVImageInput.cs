@@ -140,11 +140,25 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
+		/// <summary>
+		/// Returns a pointer to raw pixels
+		/// </summary>
 		public IntPtr Data
 		{
 			get
 			{
 				return FLink.Image.Data;
+			}
+		}
+
+		/// <summary>
+		/// Returns a pointer to OpenCV object
+		/// </summary>
+		public IntPtr CvMat
+		{
+			get
+			{
+				return FLink.Image.CvMat;
 			}
 		}
 

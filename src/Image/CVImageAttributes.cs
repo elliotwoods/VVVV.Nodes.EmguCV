@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, L8, L16};
+	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, RGBA32F, L8, L16, L32F};
 
 	public class ImageAttributesChangedEventArgs : EventArgs
 	{

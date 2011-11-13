@@ -119,15 +119,17 @@
     </None>
     <None Include="src\Destinations\VideoRecordNode.cs" />
     <None Include="src\Dead\DifferenceFilterNode.cs" />
-    <Compile Include="src\Filters\ImageResizeNode.cs" />
-    <Compile Include="src\Interfaces\IDestinationThreaded.cs" />
+    <Compile Include="src\Filters\GaussianBlur.cs" />
+    <Compile Include="src\Filters\ImageResize.cs" />
+    <Compile Include="src\Filters\OpticalFlow.cs" />
+    <Compile Include="src\Interfaces\IDestinationInstance.cs" />
     <Compile Include="src\Destinations\InfoNode.cs" />
     <Compile Include="src\Image\CVImageAttributes.cs" />
     <Compile Include="src\Image\CVImage.cs" />
     <Compile Include="src\Image\CVImageDoubleBuffer.cs" />
     <Compile Include="src\Image\CVImageInputSpread.cs" />
     <Compile Include="src\Interfaces\IFilterNode.cs" />
-    <Compile Include="src\Interfaces\IFilterThreaded.cs" />
+    <Compile Include="src\Interfaces\IFilterInstance.cs" />
     <Compile Include="src\Process\IInstance.cs" />
     <Compile Include="src\Process\IInstanceThreaded.cs" />
     <Compile Include="src\Process\ProcessInput.cs" />
@@ -135,7 +137,7 @@
     <Compile Include="src\Image\CVImageInput.cs" />
     <Compile Include="src\Image\CVImageOutput.cs" />
     <Compile Include="src\Image\CVImageOutputSpread.cs" />
-    <Compile Include="src\Image\CVImageUtils.cs" />
+    <Compile Include="src\Utilities\CVImageUtils.cs" />
     <Compile Include="src\Image\ImageBase.cs" />
     <None Include="src\Dead\ImageL16.cs" />
     <None Include="src\Dead\ImageRGB.cs" />

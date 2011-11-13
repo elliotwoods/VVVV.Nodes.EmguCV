@@ -54,8 +54,10 @@ namespace VVVV.Nodes.EmguCV
 				{
 					FBufferConverted = new CVImage();
 					FBufferConverted.Initialise(FImageInput.ImageAttributes.Size, FConvertedFormat);
-				}
-				return CVImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
+					return CVImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
+				} else
+					return CVImageUtils.CreateTexture(FImageInput.ImageAttributes, device);
+				
 			} 
 			else
 				return TextureUtils.CreateTexture(device, 1, 1);

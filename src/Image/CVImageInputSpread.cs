@@ -108,7 +108,13 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-
+		public bool Connected
+		{
+			get
+			{
+				return !(FInputPin[0] == null && FInputPin.SliceCount == 1);
+			}
+		}
 
 		#region IEnumerable
 		public IEnumerator GetEnumerator()
