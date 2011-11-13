@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CVImageInputSpread : IEnumerable
+	public class CVImageInputSpread : IEnumerable, IDisposable
 	{
 		ISpread<CVImageLink> FInputPin;
 		Spread<CVImageInput> FInput = new Spread<CVImageInput>(0);
@@ -16,6 +16,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			FInputPin = inputPin;
 			CheckInputSize();
+		}
+
+		public void Dispose()
+		{
+			FInput.SliceCount = 0;
 		}
 
 		public bool CheckInputSize()
@@ -42,7 +47,6 @@ namespace VVVV.Nodes.EmguCV
 					CVImageInput add = new CVImageInput();
 					add.Connect(FInputPin[iAdd]);
 					FInput.Add(add);
-					AddWith(add);
 				}
 
 				//remove
@@ -51,11 +55,9 @@ namespace VVVV.Nodes.EmguCV
 					for (int iDispose = FInputPin.SliceCount; iDispose < FInput.SliceCount; iDispose++)
 					{
 						FInput[iDispose].Dispose();
-						DisposeWith(iDispose);
 					}
 
 					FInput.SliceCount = FInputPin.SliceCount;
-					ResizeWith(FInputPin.SliceCount);
 				}
 			}
 
@@ -68,10 +70,6 @@ namespace VVVV.Nodes.EmguCV
 
 			return changed;
 		}
-
-		protected virtual void AddWith(CVImageInput input) { }
-		protected virtual void DisposeWith(int i) { }
-		protected virtual void ResizeWith(int count) { }
 
 		public Spread<CVImageInput> Spread
 		{
@@ -109,6 +107,9 @@ namespace VVVV.Nodes.EmguCV
 				return false;
 			}
 		}
+
+
+
 		#region IEnumerable
 		public IEnumerator GetEnumerator()
 		{

@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CVImageDoubleBuffer
+	public class CVImageDoubleBuffer
 	{
 		#region Data
 		private CVImage FBackBuffer = new CVImage();

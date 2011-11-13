@@ -34,6 +34,9 @@ namespace VVVV.Nodes.EmguCV
 					{
 						switch (dst)
 						{
+							case TColourFormat.L8:
+								return COLOR_CONVERSION.CV_RGB2GRAY;
+
 							case TColourFormat.RGBA8:
 								return COLOR_CONVERSION.CV_RGB2RGBA;
 						}
@@ -219,17 +222,10 @@ namespace VVVV.Nodes.EmguCV
 			int step;
 			Size dims;
 
-			try
-			{
-				CvInvoke.cvGetRawData(source, out sourceRaw, out step, out dims);
-				CvInvoke.cvGetRawData(target, out targetRaw, out step, out dims);
+			CvInvoke.cvGetRawData(source, out sourceRaw, out step, out dims);
+			CvInvoke.cvGetRawData(target, out targetRaw, out step, out dims);
 
-				CopyMemory(targetRaw, sourceRaw, size);
-			}
-			catch
-			{
-				step = 0;
-			}
+			CopyMemory(targetRaw, sourceRaw, size);
 		}
 
 		public static void CopyImageConverted(CVImage source, CVImage target)
@@ -239,7 +235,14 @@ namespace VVVV.Nodes.EmguCV
 			if (route==COLOR_CONVERSION.CV_COLORCVT_MAX)
 				throw(new Exception("Unsupported conversion"));
 
-			CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
+			try
+			{
+				CvInvoke.cvCvtColor(source.CvMat, target.CvMat, route);
+			}
+			catch
+			{
+				//CV likes to throw here sometimes, but the next frame it's fine
+			}
 		}
 
 		public static bool IsIntialised(IImage image)

@@ -11,7 +11,7 @@ using Emgu.CV.CvEnum;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CVImage : ImageBase
+	public class CVImage : ImageBase
 	{
 		IImage FImage;
 

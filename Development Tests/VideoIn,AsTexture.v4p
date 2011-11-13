@@ -86,8 +86,8 @@
    <BOUNDS left="1335" top="4920" type="Box">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Image" dstnodeid="8" dstpinname="Image">
+   <LINK dstnodeid="8" dstpinname="Image" srcnodeid="18" srcpinname="Image">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
+   <LINK dstnodeid="5" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
    </LINK>
    </PATCH>

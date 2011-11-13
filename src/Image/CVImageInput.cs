@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class CVImageInput : IDisposable
+	public class CVImageInput : IDisposable
 	{
 		private CVImageLink FLink = null;
 		private bool FImageFresh = false;
@@ -19,7 +19,6 @@ namespace VVVV.Nodes.EmguCV
 		#endregion
 
 		#region Events
-
 		#region ImageUpdate
 		public event EventHandler ImageUpdate;
 
@@ -196,7 +195,7 @@ namespace VVVV.Nodes.EmguCV
 			FLink.FrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
 		}
 
-		public void UnlockForReading()
+		public void ReleaseForReading()
 		{
 			FLink.FrontLock.ReleaseReaderLock();	
 		}

@@ -2,95 +2,67 @@
 using System.Drawing;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
-using VVVV.Nodes.EmguCV.Abstract;
 using VVVV.PluginInterfaces.V2;
+using System;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ResizeInstance:ImageProcessingInstance
+	public class ImageResizeInstance : IFilterInstance
 	{
-		public ImageRGB Output = new ImageRGB();
+		private Size FSize = new Size(640, 480);
 
-		private Size FSize;
-
-		public Size Size
+		public void SetSize(int Width, int Height)
 		{
-			get { return FSize; }
-			set
-			{
-				FSize = value;
-				Allocate(new CVImageAttributes(TColourFormat.RGB8, FSize.Width, FSize.Height));
-			}
+			FSize.Width = Width;
+			FSize.Height = Height;
+
+			if (FSize.Width < 1)
+				FSize.Width = 1;
+
+			if (FSize.Height < 1)
+				FSize.Height = 1;
+
+			//Call Allocate() whenever you need to change the properties of the output image
+			//not AllocateOutput()!
+			Allocate();
 		}
 
-		protected override void Process()
+		protected override void AllocateOutput()
 		{
-			if (Image == null || !Image.HasAllocatedImage || BufferImage == null) return;
+			FOutput.Image.Initialise(FSize, FInput.ImageAttributes.ColourFormat);
+			FOutput.Image.Allocate();
+		}
+
+		public override void Process()
+		{
 			try
 			{
-				lock (Lock)
-				{
-					lock (Image.GetLock())
-					{
-						CvInvoke.cvResize(Image.Ptr, BufferImage.Ptr, INTER.CV_INTER_LINEAR);
-						Output.SetImage(BufferImage);
-					}
-				}
-				
+				CvInvoke.cvResize(FInput.Image.CvMat, FOutput.Image.CvMat, INTER.CV_INTER_LINEAR);
+				FOutput.Send();
 			}
 			catch
 			{
-				Status = "Can't lock image";
+				
 			}
-			
 		}
 	}
-	
+
 	#region PluginInfo
-	[PluginInfo(Name = "ImageResize", Category = "EmguCV", Help = "Resize Image", Author = "alg", Credits = "", Tags = "")]
+	[PluginInfo(Name = "ImageResize", Category = "EmguCV", Help = "Resize Image", Author = "elliotwoods", Credits = "alg", Tags = "")]
 	#endregion PluginInfo
-	public class ImageResizeNode: ThreadedNode<ResizeInstance>
+	public class ImageResizeNode : IFilterNode<ImageResizeInstance>
 	{
-		[Input("Image")] 
-		private IDiffSpread<ImageRGB> FInput;
+		[Input("Width", DefaultValue = 640, MinValue = 1)]
+		private IDiffSpread<int> FWidth;
 
-		[Input("Width")] private ISpread<int> FWidth;
+		[Input("Height", DefaultValue = 480, MinValue = 1)]
+		private IDiffSpread<int> FHeight;
 
-		[Input("Height")] private ISpread<int> FHeight;
-
-		[Input("Init", IsSingle = true, IsBang = true)] 
-		private ISpread<bool> FInit;
-
-		[Output("Image")] private ISpread<ImageRGB> FImageOutput;
-
-		public override void Evaluate(int spreadMax)
+		protected override void Update(int SpreadMax)
 		{
-			base.Evaluate(spreadMax);
-
-			for (int i = 0; i < spreadMax; i++)
-			{
-				if(FInput[i] == null)
-				{
-					InstancesByIndex[i].Close();
-				}
-
-				if(FInit[0])
-				{
-					InstancesByIndex[i].SetImage(FInput[i]);
-					InstancesByIndex[i].Initialise();
-					InstancesByIndex[i].Size = new Size(FWidth[i], FHeight[i]);
-				}
-			}
-
-			Output();
-		}
-
-		private void Output()
-		{
-			foreach(KeyValuePair<int, ResizeInstance> pair in InstancesByIndex)
-			{
-				FImageOutput[pair.Key] = InstancesByIndex[pair.Key].Output;
-			}
+			if (FWidth.IsChanged || FHeight.IsChanged)
+				for (int i = 0; i < SpreadMax; i++)
+					FProcessor[i].SetSize(FWidth[i], FHeight[i]);
 		}
 	}
 }

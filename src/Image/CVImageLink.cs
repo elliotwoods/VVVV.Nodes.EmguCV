@@ -8,7 +8,7 @@ namespace VVVV.Nodes.EmguCV
 	/// <summary>
 	/// The link used between EmguCV nodes in the VVVV graph
 	/// </summary>
-	class CVImageLink : CVImageDoubleBuffer
+	public class CVImageLink : CVImageDoubleBuffer
 	{
 		#region Events
 

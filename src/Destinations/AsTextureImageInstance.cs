@@ -10,7 +10,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class AsTextureImageInstance : INeedsCVImageLink, IDisposable
+	class AsTextureImageInstance : IInstanceInput, IInstance, IDisposable
 	{
 		//    [DllImport("msvcrt.dll", EntryPoint = "memcpy")]
 		//    public unsafe static extern void CopyMemory(IntPtr pDest, IntPtr pSrc, int length);
@@ -26,7 +26,12 @@ namespace VVVV.Nodes.EmguCV
 
 		public Object Lock = new Object();
 
-		public void Initialise(CVImageInput input)
+		public void Initialise()
+		{
+			
+		}
+
+		public void SetInput(CVImageInput input)
 		{
 			FImageInput = input;
 		}
@@ -90,7 +95,7 @@ namespace VVVV.Nodes.EmguCV
 			}
 			finally
 			{
-				FImageInput.UnlockForReading();
+				FImageInput.ReleaseForReading();
 			}
 				
 			srf.UnlockRectangle();
