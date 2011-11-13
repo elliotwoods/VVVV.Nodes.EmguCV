@@ -37,6 +37,7 @@ namespace VVVV.Nodes.EmguCV
 				{
 					for (int i = 0; i < SliceCount; i++)
 					{
+						//remove this hack
 						FProcess[i].SetInput(FInput[i]);
 
 						if (FInput[i].ImageAttributesChanged || !FOutput[i].Link.Allocated)
