@@ -44,6 +44,7 @@ Video playback
 This isn't necessarilly the best route for video playback, but can also work quite nicely.
 
 Notes for video playback:
+
 * This doesn't employ any fancy hardware optimisation of video codecs. If you need to chunk big video files, suggest sticking with FileStream + clever codecs.
 * No audio, probably never will have (although other nodes which output CVImage type could give audio).
 * Works with pretty much all the AVI's i threw at it (which isn't that many on this PC). Feedback welcome!
@@ -76,6 +77,7 @@ Memory usage
 ------------
 
 Examples of memory usage:
+
 * 640*480 ~= 300KB (VGA mono)
 * 640*480*3 ~= 1MB (VGA colour)
 * 640*480*16 ~= 5MB (VGA colour + alpha, 32bit float)
@@ -88,10 +90,10 @@ Todo
 
 Interfaces
 ----------
-ICaptureNode
-ICaptureInstance
-IFilterNode
-IFilterInstance
+* ICaptureNode
+* ICaptureInstance
+* IFilterNode
+* IFilterInstance
 
 Node suggestions
 ================
