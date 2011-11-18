@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\FindBoards.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\FindBoards.v4p" systemname="FindBoards">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\FindBoards.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\FindBoards.v4p" systemname="FindBoards">
    <BOUNDS height="8910" left="12960" top="4890" type="Window" width="10140">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="28" nodename="Pipet (EmguCV RGB32F)" systemname="Pipet (EmguCV RGB32F)">
@@ -67,7 +67,7 @@
    </PIN>
    <PIN pinname="Columns" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -83,7 +83,7 @@
    <NODE componentmode="Hidden" filename="..\plugins\3DLength\3DLength.csproj" id="17" nodename="Length (3d)" systemname="Length (3d)">
    <BOUNDS height="100" left="3525" top="1965" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="InputXYZ" visible="1">
+   <PIN pinname="InputXYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -193,7 +193,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="5205" top="6045">
+   <BOUNDS left="5205" top="6045" type="Box">
    </BOUNDS>
    </NODE>
    <LINK dstnodeid="12" dstpinname="Input" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
@@ -219,7 +219,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="7050" top="6045">
+   <BOUNDS left="7050" top="6045" type="Box">
    </BOUNDS>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Input" srcnodeid="14" srcpinname="Output">
@@ -380,7 +380,7 @@
    <LINKPOINT x="7295" y="3120">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" filename="WaitForCalm.v4p" id="56" nodename="WaitForCalm.v4p" systemname="WaitForCalm" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\">
+   <NODE componentmode="Hidden" filename="WaitForCalm.v4p" id="56" nodename="WaitForCalm.v4p" systemname="WaitForCalm" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="100" left="5685" top="1530" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input XYZ" visible="1">
@@ -440,18 +440,18 @@
    <LINKPOINT x="6795" y="1673">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Marker (DX9, 3D)" filename="..\modules\Marker (DX9, 3D).v4p" nodename="Marker (DX9, 3D)" componentmode="Hidden" id="60">
-   <BOUNDS type="Node" left="2160" top="6045" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\modules\Marker (DX9, 3D).v4p" id="60" nodename="Marker (DX9, 3D)" systemname="Marker (DX9, 3D)">
+   <BOUNDS height="100" left="2160" top="6045" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="2160" top="6045">
+   <BOUNDS left="2160" top="6045" type="Box">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="60" dstpinname="XYZ">
+   <LINK dstnodeid="60" dstpinname="XYZ" srcnodeid="24" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="60" srcpinname="Layer" dstnodeid="36" dstpinname="Input Node">
+   <LINK dstnodeid="36" dstpinname="Input Node" srcnodeid="60" srcpinname="Layer">
    </LINK>
    </PATCH>

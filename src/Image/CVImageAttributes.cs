@@ -88,7 +88,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return CVImageUtils.BytesPerPixel(ColourFormat);
+				return ImageUtils.BytesPerPixel(ColourFormat);
 			}
 		}
 

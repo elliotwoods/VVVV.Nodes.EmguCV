@@ -7,24 +7,70 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.EmguCV
 {
+	public class ImageLoadInstance : IGeneratorInstance
+	{
+		string FLoadedImage = "";
+
+		private string FStatus = "";
+		public string Status
+		{
+			get
+			{
+				return FStatus;
+			}
+		}
+
+		public override bool NeedsThread()
+		{
+			return false;
+		}
+
+		public string Filename
+		{
+			set
+			{
+				if (FLoadedImage != value)
+				{
+					LoadImage(value);
+				}
+			}
+		}
+
+		public void Reload()
+		{
+			LoadImage(FLoadedImage);
+		}
+
+		private void LoadImage(string filename)
+		{
+			try
+			{
+				FOutput.Image.LoadFile(filename);
+				FLoadedImage = filename;
+				FOutput.Send();
+				FStatus = "OK";
+			}
+			catch
+			{
+				FStatus = "Image load failed";
+			}
+		}
+	}
 
 	#region PluginInfo
 	[PluginInfo(Name = "ImageLoad", Category = "EmguCV", Help = "Loads RGB texture", Author = "alg", Tags = "")]
 	#endregion PluginInfo
-	public class ImageLoadNode : IPluginEvaluate
+	public class ImageLoadNode : IGeneratorNode<ImageLoadInstance>
 	{
 		#region fields & pins
 		[Input("Filename", StringType = StringType.Filename, DefaultString = null)] 
 		IDiffSpread<string> FPinInFilename;
 
-		[Output("Image")] 
-		ISpread<ImageRGB> FPinOutImage;
+		[Input("Reload", IsBang = true)]
+		ISpread<bool> FPinInReload;
 
 		[Output("Status")]
 		ISpread<string> FPinOutStatus;
-
-		private Spread<string> FFilename;
-		private Spread<ImageRGB> FImages;
 
 		[Import]
 		ILogger FLogger;
@@ -33,41 +79,24 @@ namespace VVVV.Nodes.EmguCV
 		[ImportingConstructor]
 		public ImageLoadNode()
 		{
-			FFilename = new Spread<string>(1);
-			FImages = new Spread<ImageRGB>(1);
+
 		}
 
-		public void Evaluate(int spreadMax)
+		protected override void Update(int InstanceCount)
 		{
-			if (!FPinInFilename.IsChanged || FPinInFilename.SliceCount < 1) return;
+			FPinOutStatus.SliceCount = InstanceCount;
 
-			FPinOutImage.SliceCount = spreadMax;
-			FPinOutStatus.SliceCount = spreadMax;
-			FImages.SliceCount = spreadMax;
+			if (FPinInFilename.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].Filename = FPinInFilename[i];
 
-			for (int i = 0; i < spreadMax; i++)
+			for (int i = 0; i < InstanceCount; i++)
 			{
-				if(FPinInFilename[i] == FFilename[i]) continue;
+				if (FPinInReload[i])
+					FProcessor[i].Reload();
 
-				FPinOutImage[i] = new ImageRGB();
-				
-				try
-				{
-					FImages[i] = new ImageRGB();
-					FPinOutImage[i] = FImages[i];
-					Image<Bgr, byte> image = new Image<Bgr, byte>(FPinInFilename[i]);
-
-					FImages[i].SetImage(image);
-
-					FPinOutStatus[i] = "OK";
-				}
-				catch
-				{
-					FPinOutStatus[i] = "Failed";
-				}
+				FPinOutStatus[i] = FProcessor[i].Status;
 			}
-
-			FFilename = (Spread<string>) FPinInFilename.Clone();
 		}
 	}
 }

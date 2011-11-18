@@ -36,7 +36,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Prerequisites\</OutputPath>
+    <OutputPath>..\Prerequisites\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -119,17 +119,32 @@
     </None>
     <None Include="src\Destinations\VideoRecordNode.cs" />
     <None Include="src\Dead\DifferenceFilterNode.cs" />
+    <None Include="src\Filters\Template.cs" />
+    <None Include="src\Dead\BoundsNode.cs" />
+    <Compile Include="src\Destinations\AvgSdvNode.cs" />
+    <Compile Include="src\Filters\OpticalFlowHS.cs" />
+    <Compile Include="src\Filters\GT,LT.cs" />
+    <Compile Include="src\Filters\Dilate.cs" />
+    <Compile Include="src\Filters\Erode.cs" />
+    <Compile Include="src\Filters\FrameDifference.cs" />
+    <Compile Include="src\Filters\FrameDelay.cs" />
     <Compile Include="src\Filters\GaussianBlur.cs" />
     <Compile Include="src\Filters\ImageResize.cs" />
-    <Compile Include="src\Filters\OpticalFlow.cs" />
-    <Compile Include="src\Interfaces\IDestinationInstance.cs" />
+    <Compile Include="src\Filters\OpticalFlowLK.cs" />
+    <Compile Include="src\Filters\WithinRange.cs" />
+    <Compile Include="src\Process\ProcessDestination.cs" />
+    <Compile Include="src\Sources\NoiseNode.cs" />
+    <Compile Include="src\User Interfaces\IDestinationNode.cs" />
+    <Compile Include="src\User Interfaces\IDestinationInstance.cs" />
     <Compile Include="src\Destinations\InfoNode.cs" />
     <Compile Include="src\Image\CVImageAttributes.cs" />
     <Compile Include="src\Image\CVImage.cs" />
     <Compile Include="src\Image\CVImageDoubleBuffer.cs" />
     <Compile Include="src\Image\CVImageInputSpread.cs" />
-    <Compile Include="src\Interfaces\IFilterNode.cs" />
-    <Compile Include="src\Interfaces\IFilterInstance.cs" />
+    <Compile Include="src\User Interfaces\IFilterNode.cs" />
+    <Compile Include="src\User Interfaces\IFilterInstance.cs" />
+    <Compile Include="src\User Interfaces\IGeneratorInstance.cs" />
+    <Compile Include="src\User Interfaces\IGeneratorNode.cs" />
     <Compile Include="src\Process\IInstance.cs" />
     <Compile Include="src\Process\IInstanceThreaded.cs" />
     <Compile Include="src\Process\ProcessInput.cs" />
@@ -137,15 +152,16 @@
     <Compile Include="src\Image\CVImageInput.cs" />
     <Compile Include="src\Image\CVImageOutput.cs" />
     <Compile Include="src\Image\CVImageOutputSpread.cs" />
-    <Compile Include="src\Utilities\CVImageUtils.cs" />
+    <Compile Include="src\Process\ProcessGenerator.cs" />
+    <Compile Include="src\Utilities\ImageUtils.cs" />
     <Compile Include="src\Image\ImageBase.cs" />
     <None Include="src\Dead\ImageL16.cs" />
     <None Include="src\Dead\ImageRGB.cs" />
     <None Include="src\Dead\ImageRGB32F.cs" />
-    <None Include="src\Sources\ImageLoadNode.cs" />
+    <Compile Include="src\Sources\ImageLoadNode.cs" />
     <Compile Include="src\Process\IInstanceInput.cs" />
     <Compile Include="src\Process\IInstanceOutput.cs" />
-    <Compile Include="src\Process\ProcessInputOutputThreaded.cs" />
+    <Compile Include="src\Process\ProcessFilter.cs" />
     <Compile Include="src\Process\ProcessInputThreaded.cs" />
     <Compile Include="src\Sources\VideoInNode.cs" />
     <None Include="src\Dead\VideoPlayerNode.cs" />

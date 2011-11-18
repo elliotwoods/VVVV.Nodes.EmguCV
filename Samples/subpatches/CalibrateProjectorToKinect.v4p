@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateProjectorToKinect.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateProjectorToKinect.v4p" systemname="CalibrateProjectorToKinect">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\CalibrateProjectorToKinect.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateProjectorToKinect.v4p" systemname="CalibrateProjectorToKinect">
    <BOUNDS height="6000" left="11250" top="6615" type="Window" width="9615">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="subpatches\CalibrateCameraWrapper.v4p" id="4" nodename="subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\">
+   <NODE componentmode="Hidden" filename="subpatches\CalibrateCameraWrapper.v4p" id="4" nodename="subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="2400" top="3405" type="Node" width="4785">
    </BOUNDS>
    <BOUNDS height="7695" left="11760" top="7845" type="Window" width="16320">
@@ -42,7 +42,7 @@
    <PIN pinname="Image PointsXY" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="subpatches\FindBoards.v4p" id="3" nodename="subpatches\FindBoards.v4p" stayontop="1" systemname="FindBoards" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\">
+   <NODE componentmode="Hidden" filename="subpatches\FindBoards.v4p" id="3" nodename="subpatches\FindBoards.v4p" stayontop="1" systemname="FindBoards" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="780" top="1710" type="Node" width="4860">
    </BOUNDS>
    <BOUNDS height="8910" left="12960" top="4890" type="Window" width="10140">

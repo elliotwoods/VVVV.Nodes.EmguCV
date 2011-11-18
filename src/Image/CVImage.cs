@@ -41,9 +41,9 @@ namespace VVVV.Nodes.EmguCV
 		public void GetImage(TColourFormat format, CVImage target)
 		{
 			if (format == this.NativeFormat)
-				CVImageUtils.CopyImage(this, target);
+				ImageUtils.CopyImage(this, target);
 			else
-				CVImageUtils.CopyImageConverted(this, target);
+				ImageUtils.CopyImageConverted(this, target);
 		}
 
 		public unsafe bool SetImage(IImage source)
@@ -51,10 +51,10 @@ namespace VVVV.Nodes.EmguCV
 			if (source == null)
 				return false;
 
-			TColourFormat sourceFormat = CVImageUtils.GetFormat(source);
+			TColourFormat sourceFormat = ImageUtils.GetFormat(source);
 			bool Reinitialise = Initialise(source.Size, sourceFormat);
 
-			CVImageUtils.CopyImage(source, this);
+			ImageUtils.CopyImage(source, this);
 
 			return Reinitialise;
 		}
@@ -66,14 +66,19 @@ namespace VVVV.Nodes.EmguCV
 
 			bool Reinitialise = Initialise(source.Size, source.NativeFormat);
 
-			CVImageUtils.CopyImage(source, this);
+			ImageUtils.CopyImage(source, this);
 
 			return Reinitialise;
 		}
 
 		override public void Allocate()
 		{
-			FImage = CVImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
+			FImage = ImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);
+		}
+
+		public void LoadFile(string filename)
+		{
+			this.SetImage(new Image<Bgr, byte>(filename));
 		}
 	}
 }

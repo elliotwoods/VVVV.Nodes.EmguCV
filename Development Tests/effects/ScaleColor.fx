@@ -16,6 +16,8 @@ sampler Samp = sampler_state    //sampler for doing the texture-lookup
     MagFilter = LINEAR;
 };
 
+float4x4 tWVP : WORLDVIEWPROJECTION;
+
 //the data structure: "vertexshader to pixelshader"
 //used as output data with the VS function
 //and as input data with the PS function
@@ -37,7 +39,7 @@ vs2ps VS(
 
     //transform position
 	PosO.xy *= 2;
-	Out.Pos = PosO;
+	Out.Pos = mul(PosO,tWVP);
     
     //transform texturecoordinates
     Out.TexCd = TexCd;
@@ -49,11 +51,12 @@ vs2ps VS(
 // PIXELSHADERS:
 // --------------------------------------------------------------------------------------------------
 
-float Scale = 1.0f;
+float MinRange = -1.0f;
+float MaxRange = 1.0f;
 float4 PS(vs2ps In): COLOR
 {
     float4 col = tex2D(Samp, In.TexCd);
-    return col * Scale;
+    return col + MinRange / (MaxRange - MinRange);
 }
 
 // --------------------------------------------------------------------------------------------------

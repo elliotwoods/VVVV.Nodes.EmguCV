@@ -27,7 +27,7 @@ namespace VVVV.Nodes.EmguCV
 			Allocate();
 		}
 
-		protected override void AllocateOutput()
+		protected override void Initialise()
 		{
 			FOutput.Image.Initialise(FSize, FInput.ImageAttributes.ColourFormat);
 			FOutput.Image.Allocate();

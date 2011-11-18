@@ -20,7 +20,7 @@ Thanks to the VVVV devs for making such a lovely plugin architecture and a great
 
 Otherwise:
 Me - Elliot Woods
-a - Vadim Smakhtin
+alg - Vadim Smakhtin
 
 License
 =======
@@ -76,6 +76,7 @@ Memory usage
 ------------
 
 Examples of memory usage:
+
 * 640*480 ~= 300KB (VGA mono)
 * 640*480*3 ~= 1MB (VGA colour)
 * 640*480*16 ~= 5MB (VGA colour + alpha, 32bit float)
@@ -88,18 +89,18 @@ Todo
 
 Interfaces
 ----------
-ICaptureNode
-ICaptureInstance
-IFilterNode
-IFilterInstance
+* ICaptureNode
+* ICaptureInstance
+* IFilterNode
+* IFilterInstance
 
 Node suggestions
 ================
 
 General
 -------
-* +						adds colour values
-* -						subtracts colour values
+* Add						
+* Subtract	
 * Queue
 * Cons
 

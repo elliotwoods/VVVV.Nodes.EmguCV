@@ -17,7 +17,7 @@ namespace VVVV.Nodes.EmguCV
 
 		protected CVImageAttributes FImageAttributes = new CVImageAttributes();
 
-		public bool HasAllocatedImage
+		public bool Allocated
 		{
 			get
 			{

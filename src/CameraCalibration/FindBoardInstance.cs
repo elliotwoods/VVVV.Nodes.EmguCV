@@ -45,7 +45,7 @@ namespace VVVV.Nodes.EmguCV
 			if (!CheckInitialise() || !Enabled)
 				return;
 
-			CvInvoke.cvCvtColor(FInput.Image.CvMat, FGrayscale.Ptr, CVImageUtils.ConvertRoute(FInput.ImageAttributes.ColourFormat, TColourFormat.L8));
+			CvInvoke.cvCvtColor(FInput.Image.CvMat, FGrayscale.Ptr, ImageUtils.ConvertRoute(FInput.ImageAttributes.ColourFormat, TColourFormat.L8));
 
 			Size SizeNow = BoardSize;
 			PointF[] points = CameraCalibration.FindChessboardCorners(FGrayscale, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);

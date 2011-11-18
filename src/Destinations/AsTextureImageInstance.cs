@@ -49,14 +49,14 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (Initialised && FImageInput.Allocated)
 			{
-				FNeedsConversion = CVImageUtils.NeedsConversion(FImageInput.ImageAttributes.ColourFormat, out FConvertedFormat);
+				FNeedsConversion = ImageUtils.NeedsConversion(FImageInput.ImageAttributes.ColourFormat, out FConvertedFormat);
 				if (FNeedsConversion)
 				{
 					FBufferConverted = new CVImage();
 					FBufferConverted.Initialise(FImageInput.ImageAttributes.Size, FConvertedFormat);
-					return CVImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
+					return ImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
 				} else
-					return CVImageUtils.CreateTexture(FImageInput.ImageAttributes, device);
+					return ImageUtils.CreateTexture(FImageInput.ImageAttributes, device);
 				
 			} 
 			else
@@ -86,7 +86,7 @@ namespace VVVV.Nodes.EmguCV
 				CVImage buffer;
 				if (FNeedsConversion)
 				{
-					CVImageUtils.CopyImageConverted(FImageInput.Image, FBufferConverted);
+					ImageUtils.CopyImageConverted(FImageInput.Image, FBufferConverted);
 					buffer = FBufferConverted;
 				}
 				else

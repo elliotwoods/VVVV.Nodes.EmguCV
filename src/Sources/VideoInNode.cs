@@ -124,7 +124,7 @@ namespace VVVV.Nodes.EmguCV
 				lock (FCaptureLock)
 				{
 					IImage capbuffer = FCapture.QueryFrame();
-					if (CVImageUtils.IsIntialised(capbuffer))
+					if (ImageUtils.IsIntialised(capbuffer))
 						Output.SetImage(capbuffer);
 				}
 

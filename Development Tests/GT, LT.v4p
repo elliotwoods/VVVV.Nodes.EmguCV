@@ -1,0 +1,79 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\GT, LT.v4p" systemname="GT, LT" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\GT, LT.v4p">
+   <BOUNDS type="Window" left="4815" top="1395" width="17745" height="9405">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" id="4" nodename="&gt; (EmguCV Filter, Scalar)" systemname="&gt; (EmguCV Filter, Scalar)">
+   <BOUNDS height="100" left="1170" top="1515" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="700">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="375" top="2520" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6060" left="375" top="2520" type="Box" width="7620">
+   </BOUNDS>
+   <BOUNDS height="5010" left="7155" top="5145" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="..\..\Prerequisites\modules\ViewImage (EmguCV, Normalised).v4p" id="8" nodename="ViewImage (EmguCV, Normalised)" systemname="ViewImage (EmguCV, Normalised)">
+   <BOUNDS height="100" left="375" top="2085" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Image" linkstyle="VHV" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="1170" y="1920">
+   </LINKPOINT>
+   <LINKPOINT x="435" y="1920">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <NODE id="3" componentmode="Hidden" filename="..\..\VVVV.Nodes.OpenNI\Samples\modules\FullHouse (OpenNI).v4p" nodename="FullHouse (OpenNI)" systemname="FullHouse (OpenNI)" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Open" slicecount="1" pintype="Input" visible="1" values="0">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="705" top="765" width="100">
+   </BOUNDS>
+   <PIN pinname="Depth Image" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Box" left="0" top="0" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6540" top="3315" width="10800" height="10395">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Preview layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="RGB Image" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="RGB Texture" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Depth Texture" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="World Image" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="World Texture" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Normals Texture" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Status" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Depth Image" dstnodeid="4" dstpinname="Input">
+   </LINK>
+   </PATCH>
