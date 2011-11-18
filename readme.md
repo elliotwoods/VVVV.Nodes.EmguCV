@@ -10,7 +10,6 @@ the answer is yes :)
 
 This is designed for general use of OpenCV functions + also video playback / capture.
 
-hearts and diamonds.
 Elliot
 
 Credits
@@ -44,6 +43,7 @@ Video playback
 This isn't necessarilly the best route for video playback, but can also work quite nicely.
 
 Notes for video playback:
+
 * This doesn't employ any fancy hardware optimisation of video codecs. If you need to chunk big video files, suggest sticking with FileStream + clever codecs.
 * No audio, probably never will have (although other nodes which output CVImage type could give audio).
 * Works with pretty much all the AVI's i threw at it (which isn't that many on this PC). Feedback welcome!
