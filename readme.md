@@ -10,7 +10,7 @@ the answer is yes :)
 
 This is designed for general use of OpenCV functions + also video playback / capture.
 
-hearts and diamonds.
+<3's and diamonds.
 Elliot
 
 Credits
