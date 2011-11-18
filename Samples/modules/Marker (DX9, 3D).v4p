@@ -22,16 +22,6 @@
    </NODE>
    <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="3" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
-   <BOUNDS height="100" left="465" top="2445" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="3" dstpinname="Transform" srcnodeid="4" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="Hidden" id="2" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="465" top="2865" type="Node" width="3900">
    </BOUNDS>
@@ -44,40 +34,20 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Layer 1" srcnodeid="3" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" id="1" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="100" left="2580" top="1980" type="Node" width="100">
+   <BOUNDS height="100" left="2550" top="1980" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" values="2">
+   <PIN pinname="XYZ" slicecount="1" values="2.08">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="0" nodename="Segment (DX9)" systemname="Segment (DX9)">
-   <BOUNDS height="100" left="2400" top="2430" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Resolution" slicecount="1" values="12">
-   </PIN>
-   <PIN pinname="Inner Radius" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="2" dstpinname="Layer 2" srcnodeid="0" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="1" srcpinname="Transform Out">
-   </LINK>
    <LINK dstnodeid="1" dstpinname="Transform In" linkstyle="VHV" srcnodeid="4" srcpinname="Transform Out">
-   <LINKPOINT x="690" y="1868">
+   <LINKPOINT x="680" y="1868">
    </LINKPOINT>
-   <LINKPOINT x="2580" y="1868">
+   <LINKPOINT x="2560" y="1868">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -128,22 +98,68 @@
    </NODE>
    <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
-   <BOUNDS type="Node" left="3090" top="165" width="100" height="100">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3090" top="165" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="3090" top="165" width="795" height="240">
+   <BOUNDS height="240" left="3090" top="165" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.02">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Scale" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Scale">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="XYZ" linkstyle="VHV">
+   <LINK dstnodeid="4" dstpinname="XYZ" linkstyle="VHV" srcnodeid="9" srcpinname="Y Output Value">
    <LINKPOINT x="3120" y="1350">
    </LINKPOINT>
    <LINKPOINT x="1650" y="1350">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Sphere (DX9)" nodename="Sphere (DX9)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="465" top="2295" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="10" dstpinname="Transform">
+   </LINK>
+   <NODE id="11" systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Lightness" slicecount="1" pintype="Input" visible="1" values="0.5">
+   </PIN>
+   <BOUNDS type="Node" left="1410" top="1935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Hue" slicecount="1" pintype="Input" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Saturation" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alpha" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="10" dstpinname="Color">
+   </LINK>
+   <NODE systemname="Segment (DX9)" nodename="Segment (DX9)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="2385" top="2325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Transform Out" dstnodeid="12" dstpinname="Transform">
    </LINK>
    </PATCH>

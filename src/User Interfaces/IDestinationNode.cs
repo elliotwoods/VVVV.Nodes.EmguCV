@@ -18,9 +18,9 @@ namespace VVVV.Nodes.EmguCV
 			if (FProcessor == null)
 				FProcessor = new ProcessDestination<T>(FPinInInputImage);
 
-			FProcessor.CheckInputSize(SpreadMax);
+			FProcessor.CheckInputSize(FPinInInputImage.SliceCount);
 
-			Update(FProcessor.InputSliceCount);
+			Update(FProcessor.SliceCount);
 		}
 
 		protected abstract void Update(int InstanceCount);

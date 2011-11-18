@@ -21,6 +21,16 @@ namespace VVVV.Nodes.EmguCV
 		private Object FBackLock = new Object();
 		private Object FAttributesLock = new Object();
 		public static int LockTimeout = 10000;
+
+		public void LockForReading()
+		{
+			FFrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
+		}
+
+		public void ReleaseForReading()
+		{
+			FFrontLock.ReleaseReaderLock();	
+		}
 		#endregion
 
 		#region Events
@@ -53,16 +63,29 @@ namespace VVVV.Nodes.EmguCV
 		#endregion
 
 		#region Get/set the image
+		public void GetImage(CVImage target)
+		{
+			LockForReading();
+			try
+			{
+				FFrontBuffer.GetImage(target);
+			}
+			finally
+			{
+				ReleaseForReading();
+			}
+		}
+
 		/// <summary>
 		/// Copy the input image into the back buffer
 		/// </summary>
-		/// <param name="image">Input image</param>
-		public void SetImage(CVImage image)
+		/// <param name="source">Input image</param>
+		public void SetImage(CVImage source)
 		{
 			bool Reinitialise;
 
 			lock (FBackLock)
-				Reinitialise = FBackBuffer.SetImage(image);
+				Reinitialise = FBackBuffer.SetImage(source);
 
 			FAllocated = true;
 			OnImageUpdate();
@@ -70,7 +93,7 @@ namespace VVVV.Nodes.EmguCV
 			if (Reinitialise)
 			{
 				lock (FAttributesLock)
-					FImageAttributes = image.ImageAttributes.Clone() as CVImageAttributes;
+					FImageAttributes = source.ImageAttributes.Clone() as CVImageAttributes;
 				OnImageAttributesUpdate(FImageAttributes);
 			}
 
@@ -80,13 +103,13 @@ namespace VVVV.Nodes.EmguCV
 		/// <summary>
 		/// Copy the input image into the back buffer
 		/// </summary>
-		/// <param name="image">Input image</param>
-		public void SetImage(IImage image)
+		/// <param name="source">Input image</param>
+		public void SetImage(IImage source)
 		{
 			bool Reinitialise;
 
 			lock (FBackLock)
-				Reinitialise = FBackBuffer.SetImage(image);
+				Reinitialise = FBackBuffer.SetImage(source);
 			
 			FAllocated = true;
 			OnImageUpdate();

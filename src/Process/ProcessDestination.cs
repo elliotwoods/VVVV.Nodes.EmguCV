@@ -31,7 +31,7 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FInput.Connected)
 				{
-					for (int i = 0; i < InputSliceCount; i++)
+					for (int i = 0; i < SliceCount; i++)
 					{
 						/**HACK**/
 						FProcess[i].SetInput(FInput[i]);
@@ -40,11 +40,11 @@ namespace VVVV.Nodes.EmguCV
 							continue;
 
 						if (FInput[i].ImageAttributesChanged || FProcess[i].NeedsInitialise())
-							for (int iProcess = i; iProcess < InputSliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
 								FProcess[iProcess].Initialise();
 
 						if (FInput[i].ImageChanged)
-							for (int iProcess = i; iProcess < InputSliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
 								FProcess[iProcess].Process();
 					}
 
@@ -87,7 +87,7 @@ namespace VVVV.Nodes.EmguCV
 			return FInput[index];
 		}
 
-		public int InputSliceCount
+		public int SliceCount
 		{
 			get
 			{

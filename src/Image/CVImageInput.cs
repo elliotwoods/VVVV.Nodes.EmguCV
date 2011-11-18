@@ -94,6 +94,11 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
+		public void GetImage(CVImage target)
+		{
+			FLink.GetImage(target);
+		}
+
 		public bool Allocated
 		{
 			get
@@ -206,12 +211,12 @@ namespace VVVV.Nodes.EmguCV
 		#region Locking
 		public void LockForReading()
 		{
-			FLink.FrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
+			FLink.LockForReading();
 		}
 
 		public void ReleaseForReading()
 		{
-			FLink.FrontLock.ReleaseReaderLock();	
+			FLink.ReleaseForReading();
 		}
 		#endregion
 

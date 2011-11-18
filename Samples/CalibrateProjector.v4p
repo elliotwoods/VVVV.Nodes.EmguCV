@@ -57,9 +57,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="8" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
@@ -333,7 +333,7 @@
    </BOUNDS>
    <BOUNDS height="1095" left="7770" top="90" type="Box" width="1215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="1280,800">
+   <PIN pinname="Y Input Value" slicecount="2" values="1024,768">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -373,7 +373,7 @@
    </BOUNDS>
    <BOUNDS height="5010" left="12360" top="13725" type="Window" width="6240">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   <PIN pinname="Layers" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
@@ -498,12 +498,12 @@
    <LINKPOINT x="6900" y="8198">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="11" dstpinname="Runtime layer" linkstyle="Bezier">
+   <LINK dstnodeid="11" dstpinname="Runtime layer" linkstyle="Bezier" srcnodeid="21" srcpinname="Layer">
    <LINKPOINT x="8535" y="9075">
    </LINKPOINT>
    <LINKPOINT x="9510" y="9075">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="27" srcpinname="Preview layer" dstnodeid="1" dstpinname="Layers">
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="27" srcpinname="Preview layer">
    </LINK>
    </PATCH>

@@ -22,6 +22,7 @@ namespace VVVV.Nodes.EmguCV
 		TColourFormat FConvertedFormat;
 		bool FNeedsConversion = false;
 
+		Object FLockTexture = new Object();
 		private Dictionary<Texture, bool> FNeedsRefresh = new Dictionary<Texture,bool>();
 
 		public override void Initialise()
@@ -31,17 +32,20 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
-			foreach (var key in FNeedsRefresh.Keys.ToList())
+			lock (FLockTexture)
 			{
-				FNeedsRefresh[key] = true;
+				//ImageChanged so mark needs refresh on created textures
+				foreach (var key in FNeedsRefresh.Keys.ToList())
+				{
+					FNeedsRefresh[key] = true;
+				}
 			}
 		}
 
-		public bool Initialised
+		private bool InputOK
 		{
 			get
 			{
-				//do we need other checks here as well?
 				if (FInput == null)
 					return false;
 				if (!FInput.Allocated)
@@ -52,70 +56,63 @@ namespace VVVV.Nodes.EmguCV
 
 		public Texture CreateTexture(Device device)
 		{
-			if (Initialised)
+			lock (FLockTexture)
 			{
-				Texture output;
-				FNeedsConversion = ImageUtils.NeedsConversion(FInput.ImageAttributes.ColourFormat, out FConvertedFormat);
-				if (FNeedsConversion)
+				if (InputOK)
 				{
-					FBufferConverted = new CVImage();
-					FBufferConverted.Initialise(FInput.ImageAttributes.Size, FConvertedFormat);
-					output = ImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
-				} else
-					output = ImageUtils.CreateTexture(FInput.ImageAttributes, device);
+					Texture output;
+					FNeedsConversion = ImageUtils.NeedsConversion(FInput.ImageAttributes.ColourFormat, out FConvertedFormat);
+					if (FNeedsConversion)
+					{
+						FBufferConverted = new CVImage();
+						FBufferConverted.Initialise(FInput.ImageAttributes.Size, FConvertedFormat);
+						output = ImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
+					} else
+						output = ImageUtils.CreateTexture(FInput.ImageAttributes, device);
 
-				FNeedsRefresh.Add(output, true);
-				return output;
-			} 
-			else
-				return TextureUtils.CreateTexture(device, 1, 1);
+					FNeedsRefresh.Add(output, true);
+					return output;
+				} 
+				else
+					return TextureUtils.CreateTexture(device, 1, 1);
+			}
 		}
 
 		public void UpdateTexture(Texture texture)
 		{
-			if (!Initialised)
-				return;
-
-			if (!FInput.Allocated)
-				return;
-
-			if (FInput.ImageAttributesChanged)
+			lock (FLockTexture)
 			{
-				FInput.ImageAttributesChanged = true; //reset flag as it will now have dropped
-				return;
-			}
+				if (!FNeedsRefresh.ContainsKey(texture))
+					return;
 
-			if (!FNeedsRefresh.ContainsKey(texture))
-				return;
+				if (!FNeedsRefresh[texture])
+					return;
 
-			if (!FNeedsRefresh[texture])
-				return;
-			FNeedsRefresh[texture] = false;
+				FNeedsRefresh[texture] = false;
 
-			Surface srf = texture.GetSurfaceLevel(0);
-			DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
+				Surface srf = texture.GetSurfaceLevel(0);
+				DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-			if (FNeedsConversion)
-			{
-				FInput.Image.GetImage(FBufferConverted);
-				rect.Data.WriteRange(FBufferConverted.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
-			}
-			else
-			{
-				FInput.LockForReading();
-				try
+				if (FNeedsConversion)
 				{
-					rect.Data.WriteRange(FInput.Data, FInput.ImageAttributes.BytesPerFrame);
+					FInput.GetImage(FBufferConverted);
+					rect.Data.WriteRange(FBufferConverted.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
 				}
-				finally
+				else
 				{
-					FInput.ReleaseForReading();
+					FInput.LockForReading();
+					try
+					{
+						rect.Data.WriteRange(FInput.Data, FInput.ImageAttributes.BytesPerFrame);
+					}
+					finally
+					{
+						FInput.ReleaseForReading();
+					}
 				}
+	
+				srf.UnlockRectangle();
 			}
-
-			
-				
-			srf.UnlockRectangle();
 		}
 
 		public void Dispose()
