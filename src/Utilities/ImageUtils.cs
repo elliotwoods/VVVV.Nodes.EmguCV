@@ -8,6 +8,7 @@ using Emgu.CV.Structure;
 using SlimDX.Direct3D9;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
@@ -141,7 +142,7 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		public static int CountChannels(TColourFormat format)
+		public static int ChannelCount(TColourFormat format)
 		{
 			switch (format)
 			{
@@ -164,6 +165,28 @@ namespace VVVV.Nodes.EmguCV
 
 				default:
 					throw (new NotImplementedException("We haven't implemented CountChannels for this type"));
+			}
+		}
+
+		public static TChannelFormat ChannelFormat(TColourFormat format)
+		{
+			switch(format)
+			{
+				case TColourFormat.L8:
+				case TColourFormat.RGB8:
+				case TColourFormat.RGBA8:
+					return TChannelFormat.Byte;
+
+				case TColourFormat.L16:
+					return TChannelFormat.UShort;
+
+				case TColourFormat.L32F:
+				case TColourFormat.RGB32F:
+				case TColourFormat.RGBA32F:
+					return TChannelFormat.Float;
+
+				default:
+					throw (new Exception("We haven't implemented ChannelFormat for this TColourFormat"));
 			}
 		}
 
@@ -319,6 +342,67 @@ namespace VVVV.Nodes.EmguCV
 				return false;
 
 			return true;
+		}
+
+		/// <summary>
+		/// Get a pixel's channels as doubles
+		/// </summary>
+		/// <param name="source">Image to lookup</param>
+		/// <param name="row">0.0 to 1.0</param>
+		/// <param name="column">0.0 to 1.0</param>
+		/// <returns></returns>
+		public static Spread<double> GetPixelAsDoubles(CVImage source, double x, double y)
+		{
+			uint row = (uint) (x * (double)source.Width);
+			uint col = (uint) (y * (double)source.Height);
+
+			return GetPixelAsDoubles(source, row, col);
+		}
+
+		public static unsafe Spread<double> GetPixelAsDoubles(CVImage source, uint row, uint column)
+		{
+			TColourFormat format = source.ImageAttributes.ColourFormat;
+			uint channelCount = (uint)ChannelCount(format);
+			uint width = (uint)source.Width;
+			uint height = (uint)source.Height;
+			Spread<double> output = new Spread<double>((int)channelCount);
+
+			row %= width;
+			column &= height;
+
+			switch (ChannelFormat(format))
+			{
+				case TChannelFormat.Byte:
+					{
+						byte* d = (byte*)source.Data.ToPointer();
+						for (uint channel = 0; channel < channelCount; channel++)
+						{
+							output[(int)channel] = (double)d[(column + row * width) * sizeof(byte) + channel];
+						}
+						break;
+					}
+
+				case TChannelFormat.Float:
+					{
+						float* d = (float*)source.Data.ToPointer();
+						for (uint channel = 0; channel < channelCount; channel++)
+						{
+							output[(int)channel] = (double)d[(column + row * width) * sizeof(float) + channel];
+						}
+						break;
+					}
+
+				case TChannelFormat.UShort:
+					{
+						ushort* d = (ushort*)source.Data.ToPointer();
+						for (uint channel = 0; channel < channelCount; channel++)
+						{
+							output[(int)channel] = (ushort)d[(column + row * width) * sizeof(ushort) + channel];
+						}
+						break;
+					}
+			}
+			return output;
 		}
 	}
 }

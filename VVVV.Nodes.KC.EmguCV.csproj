@@ -113,7 +113,7 @@
     <None Include="src\Dead\AsTextureL16Node.cs" />
     <None Include="src\Dead\AsTextureRGB8Node.cs" />
     <Compile Include="src\Destinations\AsTextureNode.cs" />
-    <None Include="src\Destinations\PipetRGB32F.cs" />
+    <Compile Include="src\Destinations\PipetNode.cs" />
     <None Include="src\Destinations\Renderer.cs">
       <SubType>UserControl</SubType>
     </None>
