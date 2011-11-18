@@ -42,32 +42,6 @@
    <PIN pinname="Image PointsXY" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="subpatches\FindBoards.v4p" id="3" nodename="subpatches\FindBoards.v4p" stayontop="1" systemname="FindBoards" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
-   <BOUNDS height="270" left="780" top="1710" type="Node" width="4860">
-   </BOUNDS>
-   <BOUNDS height="8910" left="12960" top="4890" type="Window" width="10140">
-   </BOUNDS>
-   <PIN pinname="Image XY" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="World Image" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="RGB Image" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Insert" visible="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Object XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Found Points Layer" visible="1">
-   </PIN>
-   <BOUNDS left="780" top="1710" type="Box">
-   </BOUNDS>
-   <PIN pinname="Record" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="4620" top="360" type="Node" width="100">
    </BOUNDS>
@@ -96,8 +70,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Reset">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Reset" srcnodeid="1" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="7125" top="360" type="Node" width="100">
    </BOUNDS>
@@ -121,9 +93,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|RGB Image|">
    </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="RGB Image" srcnodeid="5" srcpinname="Output Node">
-   </LINK>
    <NODE componentmode="InABox" id="6" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="1755" top="360" type="Node" width="0">
    </BOUNDS>
@@ -133,9 +105,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|World Image|">
    </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="World Image" srcnodeid="6" srcpinname="Output Node">
-   </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5565" top="4680" type="Node" width="0">
    </BOUNDS>
@@ -185,9 +157,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Image XY|">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Image XY" srcnodeid="9" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2700" top="360" type="Node" width="0">
    </BOUNDS>
@@ -205,9 +177,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Calibrate">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="11" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="12" nodename="Multiply (Transform)" systemname="Multiply (Transform)">
    <BOUNDS height="270" left="2850" top="3990" type="Node" width="840">
    </BOUNDS>
@@ -242,8 +214,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Found Points Layer|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="14" dstpinname="Input Node" srcnodeid="3" srcpinname="Found Points Layer">
-   </LINK>
    <LINK dstnodeid="4" dstpinname="Solve" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -272,12 +242,6 @@
    <LINKPOINT x="5635" y="3015">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Image PointsXY" linkstyle="VHV" srcnodeid="3" srcpinname="Image XY">
-   <LINKPOINT x="3985" y="2685">
-   </LINKPOINT>
-   <LINKPOINT x="2930" y="2685">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4020" top="4680" type="Node" width="0">
    </BOUNDS>
@@ -291,15 +255,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Count">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="3" srcpinname="Count">
-   <LINKPOINT x="5580" y="3330">
-   </LINKPOINT>
-   <LINKPOINT x="4065" y="3330">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="Object PointsXYZ" srcnodeid="3" srcpinname="Object XYZ">
-   </LINK>
    <LINK dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform">
    <LINKPOINT x="4505" y="3818">
    </LINKPOINT>
@@ -314,6 +272,52 @@
    <LINKPOINT x="4255" y="3818">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Record" srcnodeid="2" srcpinname="Y Output Value">
+   <NODE systemname="FindBoardsInWorld" filename="FindBoardsInWorld.v4p" nodename="FindBoardsInWorld.v4p" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="795" top="1515" width="4860" height="270">
+   </BOUNDS>
+   <PIN pinname="RGB Image" visible="1">
+   </PIN>
+   <PIN pinname="World Image" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Image XY" visible="1">
+   </PIN>
+   <PIN pinname="Record" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Found Points Layer" visible="1">
+   </PIN>
+   <PIN pinname="Object XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="14880" top="4785" width="10140" height="8910">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="17" dstpinname="RGB Image">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output Node" dstnodeid="17" dstpinname="World Image">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Image XY">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Record">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Found Points Layer" dstnodeid="14" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Object XYZ" dstnodeid="4" dstpinname="Object PointsXYZ">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Image XY" dstnodeid="4" dstpinname="Image PointsXY">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Count" dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="5565" y="3233">
+   </LINKPOINT>
+   <LINKPOINT x="4065" y="3233">
+   </LINKPOINT>
    </LINK>
    </PATCH>

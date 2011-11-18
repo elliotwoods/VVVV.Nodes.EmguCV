@@ -22,12 +22,9 @@ namespace VVVV.Nodes.EmguCV
 	#region PluginInfo
 	[PluginInfo(Name = "FindBoard", Category = "EmguCV", Help = "Finds chessboard corners XY", Tags = "")]
 	#endregion PluginInfo
-	public class FindBoardNode : IPluginEvaluate, IDisposable
+	public class FindBoardNode : IDestinationNode<FindBoardInstance>
 	{
 		#region fields & pins
-		[Input("Image")]
-		ISpread<CVImageLink> FPinInInput;
-		
 		[Input("Board size X", IsSingle=true, DefaultValue=8)]
 		IDiffSpread<int> FPinInBoardSizeX;
 
@@ -39,61 +36,36 @@ namespace VVVV.Nodes.EmguCV
 
 		[Output("Position")]
 		ISpread<ISpread<Vector2D>> FPinOutPositionXY;
-
-		[Output("Status")]
-		ISpread<string> FStatus;
-
-		[Import]
-		ILogger FLogger;
-
-		private ProcessInputThreaded<FindBoardInstance> FTrackers;
-		
 		#endregion fields & pins
 
-		[ImportingConstructor]
-		public FindBoardNode(IPluginHost host)
+		protected override void Update(int InstanceCount)
 		{
-
+			CheckParams(InstanceCount);
+			Output(InstanceCount);
 		}
 
-		public void Dispose()
-		{
-
-		}
-
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			if (FTrackers == null)
-				FTrackers = new ProcessInputThreaded<FindBoardInstance>(FPinInInput);
-
-			FTrackers.CheckInputSize();
-			CheckParams();
-			Output();
-		}
-
-		void CheckParams()
+		void CheckParams(int InstanceCount)
 		{
 			if (FPinInBoardSizeX.IsChanged || FPinInBoardSizeY.IsChanged)
-				for (int i=0; i<FTrackers.SliceCount; i++)
+				for (int i=0; i<InstanceCount; i++)
 				{
-					FTrackers[i].SetSize(FPinInBoardSizeX[0], FPinInBoardSizeY[0]);
+					FProcessor[i].SetSize(FPinInBoardSizeX[0], FPinInBoardSizeY[0]);
 				}
 
 			if (FPinInEnabled.IsChanged)
-				for (int i = 0; i < FTrackers.SliceCount; i++)
+				for (int i = 0; i < InstanceCount; i++)
 				{
-					FTrackers[i].Enabled = FPinInEnabled[0];
+					FProcessor[i].Enabled = FPinInEnabled[0];
 				}
 		}
 
-		void Output()
+		void Output(int InstanceCount)
 		{
-			FPinOutPositionXY.SliceCount = FTrackers.SliceCount;
+			FPinOutPositionXY.SliceCount = InstanceCount;
 
-			for (int i = 0; i < FTrackers.SliceCount; i++)
+			for (int i = 0; i < InstanceCount; i++)
 			{
-				FPinOutPositionXY[i] = FTrackers[i].GetFoundCorners();
+				FPinOutPositionXY[i] = FProcessor[i].GetFoundCorners();
 			}
 		}
 	}

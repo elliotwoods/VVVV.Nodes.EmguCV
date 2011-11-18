@@ -12,7 +12,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class FindBoardInstance : IDestinationInstance
+	public class FindBoardInstance : IDestinationInstance
 	{
 		#region constants
 		readonly Vector2D CMinimumSourceXY = new Vector2D(0, 0);
@@ -26,7 +26,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public bool Enabled = true;
 
-		Image<Gray, byte> FGrayscale;
+		CVImage FGrayscale = new CVImage();
 
 		public void SetSize(int x, int y)
 		{
@@ -40,15 +40,20 @@ namespace VVVV.Nodes.EmguCV
 				return (Spread<Vector2D>)FFoundPoints.Clone<Vector2D>();
 		}
 
+		public override void Initialise()
+		{
+			FGrayscale.Initialise(FInput.ImageAttributes.Size, TColourFormat.L8);
+		}
+
 		override public void Process()
 		{
-			if (!CheckInitialise() || !Enabled)
+			if (!Enabled)
 				return;
 
-			CvInvoke.cvCvtColor(FInput.Image.CvMat, FGrayscale.Ptr, ImageUtils.ConvertRoute(FInput.ImageAttributes.ColourFormat, TColourFormat.L8));
+			FInput.Image.GetImage(TColourFormat.L8, FGrayscale);
 
 			Size SizeNow = BoardSize;
-			PointF[] points = CameraCalibration.FindChessboardCorners(FGrayscale, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
+			PointF[] points = CameraCalibration.FindChessboardCorners(FGrayscale.GetImage() as Image<Gray, byte>, SizeNow, CALIB_CB_TYPE.ADAPTIVE_THRESH);
 
 			lock (FFoundPointsLock)
 			{
@@ -64,21 +69,6 @@ namespace VVVV.Nodes.EmguCV
 				}
 			}
 
-		}
-
-		bool CheckInitialise()
-		{
-			bool needsInit = false;
-
-			if (FGrayscale == null)
-				needsInit = true;
-			else if (FGrayscale.Size != FInput.ImageAttributes.Size)
-				needsInit = true; ;
-			
-			if (needsInit)
-				this.FGrayscale = new Image<Gray, byte>(FInput.ImageAttributes.Size);
-
-			return true;
 		}
 	}
 }

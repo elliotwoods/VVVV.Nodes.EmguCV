@@ -71,6 +71,8 @@ namespace VVVV.Nodes.EmguCV
 					return new Image<Gray, byte>(width, height);
 				case TColourFormat.L16:
 					return new Image<Gray, ushort>(width, height);
+				case TColourFormat.L32F:
+					return new Image<Gray, float>(width, height);
 
 				case TColourFormat.RGB8:
 					return new Image<Rgb, byte>(width, height);
@@ -164,7 +166,7 @@ namespace VVVV.Nodes.EmguCV
 					return 4;
 
 				default:
-					throw (new NotImplementedException("We haven't implemented CountChannels for this type"));
+					return 0;
 			}
 		}
 
@@ -359,16 +361,22 @@ namespace VVVV.Nodes.EmguCV
 			return GetPixelAsDoubles(source, row, col);
 		}
 
-		public static unsafe Spread<double> GetPixelAsDoubles(CVImage source, uint row, uint column)
+		public static unsafe Spread<double> GetPixelAsDoubles(CVImage source, uint column, uint row)
 		{
 			TColourFormat format = source.ImageAttributes.ColourFormat;
 			uint channelCount = (uint)ChannelCount(format);
+
+			if (channelCount == 0)
+			{
+				return new Spread<double>(0);
+			}
+
 			uint width = (uint)source.Width;
 			uint height = (uint)source.Height;
 			Spread<double> output = new Spread<double>((int)channelCount);
 
 			row %= width;
-			column &= height;
+			column %= height;
 
 			switch (ChannelFormat(format))
 			{
@@ -377,7 +385,7 @@ namespace VVVV.Nodes.EmguCV
 						byte* d = (byte*)source.Data.ToPointer();
 						for (uint channel = 0; channel < channelCount; channel++)
 						{
-							output[(int)channel] = (double)d[(column + row * width) * sizeof(byte) + channel];
+							output[(int)channel] = (double)d[(column + row * width) * channelCount + channel];
 						}
 						break;
 					}
@@ -387,7 +395,7 @@ namespace VVVV.Nodes.EmguCV
 						float* d = (float*)source.Data.ToPointer();
 						for (uint channel = 0; channel < channelCount; channel++)
 						{
-							output[(int)channel] = (double)d[(column + row * width) * sizeof(float) + channel];
+							output[(int)channel] = (double)d[(column + row * width) * channelCount + channel];
 						}
 						break;
 					}
@@ -397,7 +405,7 @@ namespace VVVV.Nodes.EmguCV
 						ushort* d = (ushort*)source.Data.ToPointer();
 						for (uint channel = 0; channel < channelCount; channel++)
 						{
-							output[(int)channel] = (ushort)d[(column + row * width) * sizeof(ushort) + channel];
+							output[(int)channel] = (double)d[(column + row * width) * channelCount + channel];
 						}
 						break;
 					}

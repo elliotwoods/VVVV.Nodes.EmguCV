@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\GenerateChessboard.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\GenerateChessboard.v4p" systemname="GenerateChessboard">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\GenerateChessboard.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\GenerateChessboard.v4p" systemname="GenerateChessboard">
    <BOUNDS height="7920" left="15465" top="5010" type="Window" width="8610">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\modules\Chessboard (EmguCV, DX9).v4p" id="2" nodename="Chessboard (EmguCV, DX9)" systemname="Chessboard (EmguCV, DX9)">
@@ -119,7 +119,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="5160" top="315" type="Box" width="405">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="8">
+   <PIN pinname="Y Input Value" slicecount="1" values="9">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -239,6 +239,8 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Lightness">
+   </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Lightness" srcnodeid="21" srcpinname="Y Output Value">
    </LINK>
@@ -276,6 +278,6 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Resolution" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Transform Out" dstnodeid="6" dstpinname="Transform">
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
    </PATCH>
