@@ -47,7 +47,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public bool UsePrevious = false;
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FSize = FInput.ImageAttributes.Size;
 			FOutput.Image.Initialise(FSize, TColourFormat.RGB32F);

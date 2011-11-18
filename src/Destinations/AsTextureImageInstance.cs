@@ -10,7 +10,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes.EmguCV
 {
-	class AsTextureImageInstance : IInstanceInput, IInstance, IDisposable
+	class AsTextureImageInstance : IDestinationInstance
 	{
 		//    [DllImport("msvcrt.dll", EntryPoint = "memcpy")]
 		//    public unsafe static extern void CopyMemory(IntPtr pDest, IntPtr pSrc, int length);
@@ -18,22 +18,23 @@ namespace VVVV.Nodes.EmguCV
 		public int Width { get; private set; }
 		public int Height { get; private set; }
 
-		CVImageInput FImageInput;
-
 		CVImage FBufferConverted;
 		TColourFormat FConvertedFormat;
 		bool FNeedsConversion = false;
 
-		public Object Lock = new Object();
+		private Dictionary<Texture, bool> FNeedsRefresh = new Dictionary<Texture,bool>();
 
-		public void Initialise()
+		public override void Initialise()
 		{
 			
 		}
 
-		public void SetInput(CVImageInput input)
+		public override void Process()
 		{
-			FImageInput = input;
+			foreach (var key in FNeedsRefresh.Keys.ToList())
+			{
+				FNeedsRefresh[key] = true;
+			}
 		}
 
 		public bool Initialised
@@ -41,23 +42,30 @@ namespace VVVV.Nodes.EmguCV
 			get
 			{
 				//do we need other checks here as well?
-				return FImageInput.Connected;
+				if (FInput == null)
+					return false;
+				if (!FInput.Allocated)
+					return false;
+				return true;
 			}
 		}
 
 		public Texture CreateTexture(Device device)
 		{
-			if (Initialised && FImageInput.Allocated)
+			if (Initialised)
 			{
-				FNeedsConversion = ImageUtils.NeedsConversion(FImageInput.ImageAttributes.ColourFormat, out FConvertedFormat);
+				Texture output;
+				FNeedsConversion = ImageUtils.NeedsConversion(FInput.ImageAttributes.ColourFormat, out FConvertedFormat);
 				if (FNeedsConversion)
 				{
 					FBufferConverted = new CVImage();
-					FBufferConverted.Initialise(FImageInput.ImageAttributes.Size, FConvertedFormat);
-					return ImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
+					FBufferConverted.Initialise(FInput.ImageAttributes.Size, FConvertedFormat);
+					output = ImageUtils.CreateTexture(FBufferConverted.ImageAttributes, device);
 				} else
-					return ImageUtils.CreateTexture(FImageInput.ImageAttributes, device);
-				
+					output = ImageUtils.CreateTexture(FInput.ImageAttributes, device);
+
+				FNeedsRefresh.Add(output, true);
+				return output;
 			} 
 			else
 				return TextureUtils.CreateTexture(device, 1, 1);
@@ -68,37 +76,44 @@ namespace VVVV.Nodes.EmguCV
 			if (!Initialised)
 				return;
 
-			if (!FImageInput.ImageChanged || !FImageInput.Allocated)
+			if (!FInput.Allocated)
 				return;
 
-			if (FImageInput.ImageAttributesChanged)
+			if (FInput.ImageAttributesChanged)
 			{
-				FImageInput.ImageAttributesChanged = true; //reset flag as it will now have dropped
+				FInput.ImageAttributesChanged = true; //reset flag as it will now have dropped
 				return;
 			}
+
+			if (!FNeedsRefresh.ContainsKey(texture))
+				return;
+
+			if (!FNeedsRefresh[texture])
+				return;
+			FNeedsRefresh[texture] = false;
 
 			Surface srf = texture.GetSurfaceLevel(0);
 			DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-			FImageInput.LockForReading();
-			try
+			if (FNeedsConversion)
 			{
-				CVImage buffer;
-				if (FNeedsConversion)
-				{
-					ImageUtils.CopyImageConverted(FImageInput.Image, FBufferConverted);
-					buffer = FBufferConverted;
-				}
-				else
-				{
-					buffer = FImageInput.Image;
-				}
-				rect.Data.WriteRange(buffer.Data, buffer.ImageAttributes.BytesPerFrame);
+				FInput.Image.GetImage(FBufferConverted);
+				rect.Data.WriteRange(FBufferConverted.Data, FBufferConverted.ImageAttributes.BytesPerFrame);
 			}
-			finally
+			else
 			{
-				FImageInput.ReleaseForReading();
+				FInput.LockForReading();
+				try
+				{
+					rect.Data.WriteRange(FInput.Data, FInput.ImageAttributes.BytesPerFrame);
+				}
+				finally
+				{
+					FInput.ReleaseForReading();
+				}
 			}
+
+			
 				
 			srf.UnlockRectangle();
 		}

@@ -18,7 +18,7 @@ namespace VVVV.Nodes.EmguCV
 	{
 		CVImage FBuffer = new CVImage();
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FBuffer.Initialise(FInput.ImageAttributes);
 		}

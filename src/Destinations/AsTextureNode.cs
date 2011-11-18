@@ -43,7 +43,7 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		private ProcessInput<AsTextureImageInstance> FProcessInput;
+		private ProcessDestination<AsTextureImageInstance> FProcessor;
 
 		#endregion fields & pins
 
@@ -57,12 +57,14 @@ namespace VVVV.Nodes.EmguCV
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FProcessInput == null)
-				FProcessInput = new ProcessInput<AsTextureImageInstance>(FPinInImage);
+			if (FProcessor == null)
+				FProcessor = new ProcessDestination<AsTextureImageInstance>(FPinInImage);
+
+			FProcessor.CheckInputSize(SpreadMax);
 
 			SetSliceCount(SpreadMax);
 
-			if (FProcessInput.CheckInputSize() || FProcessInput.Input.ImageAttributesChanged)
+			if (FProcessor.CheckInputSize() || FProcessor.Input.ImageAttributesChanged)
 				Reinitialize();
 
 			Update();
@@ -72,9 +74,9 @@ namespace VVVV.Nodes.EmguCV
 		//or a graphics device asks for its data
 		protected override Texture CreateTexture(int Slice, Device device)
 		{
-			if (FProcessInput.SliceCount > Slice)
-				if (FProcessInput.GetProcessor(Slice) != null) // we do have a connected input for this slice
-					return FProcessInput.GetProcessor(Slice).CreateTexture(device);
+			if (FProcessor.InputSliceCount > Slice)
+				if (FProcessor.GetProcessor(Slice) != null) // we do have a connected input for this slice
+					return FProcessor.GetProcessor(Slice).CreateTexture(device);
 			
 			return TextureUtils.CreateTexture(device, 1, 1);
 				
@@ -86,10 +88,10 @@ namespace VVVV.Nodes.EmguCV
 		//calculate the pixels in evaluate and just copy the data to the device texture here
 		protected unsafe override void UpdateTexture(int Slice, Texture texture)
 		{
-			if (FProcessInput.SliceCount <= Slice)
+			if (FProcessor.InputSliceCount <= Slice)
 				return;
 
-			FProcessInput.GetProcessor(Slice).UpdateTexture(texture);
+			FProcessor.GetProcessor(Slice).UpdateTexture(texture);
 		}
 	}
 }

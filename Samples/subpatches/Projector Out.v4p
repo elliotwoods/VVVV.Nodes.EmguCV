@@ -1,25 +1,7 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\Projector Out.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\Projector Out.v4p" locked="0" systemname="Projector Out">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\Projector Out.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\Projector Out.v4p" locked="0" systemname="Projector Out">
    <BOUNDS height="5670" left="14460" top="6570" type="Window" width="7335">
    </BOUNDS>
-   <NODE componentmode="FullScreen" id="9" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
-   <BOUNDS height="270" left="570" top="3690" type="Node" width="5985">
-   </BOUNDS>
-   <BOUNDS height="1800" left="570" top="3690" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="5010" left="32955" top="5970" type="Window" width="6240">
-   </BOUNDS>
-   <PIN pinname="Layers" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1280 x 800|">
-   </PIN>
-   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="570" top="345" type="Node" width="100">
    </BOUNDS>
@@ -66,8 +48,6 @@
    <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="5" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="5" dstpinname="Switch" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="10" srcpinname="Output Node">
@@ -95,5 +75,17 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="24" dstpinname="Input Node" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="FullScreen" id="26">
+   <BOUNDS type="Node" left="585" top="3720" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="3720" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="31620" top="6945" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="26" dstpinname="Layers">
    </LINK>
    </PATCH>

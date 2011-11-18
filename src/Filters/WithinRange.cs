@@ -22,7 +22,7 @@ namespace VVVV.Nodes.EmguCV
 		CVImage FImageGT = new CVImage();
 		CVImage FImageLT = new CVImage();
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FImageGT.Initialise(FInput.Image.ImageAttributes.Size, TColourFormat.L8);
 			FImageLT.Initialise(FInput.Image.ImageAttributes.Size, TColourFormat.L8);

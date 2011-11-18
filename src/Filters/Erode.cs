@@ -31,7 +31,7 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FOutput.Image.Initialise(FInput.Image.ImageAttributes);
 		}

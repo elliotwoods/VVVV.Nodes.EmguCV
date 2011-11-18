@@ -5,13 +5,25 @@ using System.Text;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class IDestinationInstance : IInstanceThreaded, IInstance, IInstanceInput, IDisposable
+	public abstract class IDestinationInstance : IInstance, IInstanceInput, IDisposable
 	{
 		protected CVImageInput FInput;
 
 		virtual public void Initialise() { }
-		abstract public void Process();
 
+		bool FFirstRun = true;
+		virtual public bool NeedsInitialise()
+		{
+			if (FFirstRun)
+			{
+				FFirstRun = false;
+				return true;
+			}
+			return false;
+		}
+
+		abstract public void Process();
+		
 		public void SetInput(CVImageInput input)
 		{
 			FInput = input;

@@ -20,7 +20,7 @@ namespace VVVV.Nodes.EmguCV
 		readonly Vector2D CMaximumDestXY = new Vector2D(1, -1);
 		#endregion
 
-		Size BoardSize = new Size(10, 7);
+		Size BoardSize = new Size(9, 6);
 		Spread<Vector2D> FFoundPoints = new Spread<Vector2D>(0);
 		Object FFoundPointsLock = new Object();
 

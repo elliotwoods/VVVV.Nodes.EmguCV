@@ -8,5 +8,7 @@ namespace VVVV.Nodes.EmguCV
 	interface IInstance
 	{
 		void Initialise();
+		void Process();
+		bool NeedsInitialise();
 	}
 }

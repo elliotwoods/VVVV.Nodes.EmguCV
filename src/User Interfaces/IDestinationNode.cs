@@ -20,7 +20,7 @@ namespace VVVV.Nodes.EmguCV
 
 			FProcessor.CheckInputSize(SpreadMax);
 
-			Update(FProcessor.SliceCount);
+			Update(FProcessor.InputSliceCount);
 		}
 
 		protected abstract void Update(int InstanceCount);

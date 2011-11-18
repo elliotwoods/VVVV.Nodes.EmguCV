@@ -272,8 +272,8 @@
    <LINKPOINT x="4255" y="3818">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="FindBoardsInWorld" filename="FindBoardsInWorld.v4p" nodename="FindBoardsInWorld.v4p" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="795" top="1515" width="4860" height="270">
+   <NODE componentmode="Hidden" filename="FindBoardsInWorld.v4p" id="17" nodename="FindBoardsInWorld.v4p" systemname="FindBoardsInWorld" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
+   <BOUNDS height="270" left="795" top="1515" type="Node" width="4860">
    </BOUNDS>
    <PIN pinname="RGB Image" visible="1">
    </PIN>
@@ -293,28 +293,28 @@
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="14880" top="4785" width="10140" height="8910">
+   <BOUNDS height="8910" left="14880" top="4785" type="Window" width="10140">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="17" dstpinname="RGB Image">
+   <LINK dstnodeid="17" dstpinname="RGB Image" srcnodeid="5" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="6" srcpinname="Output Node" dstnodeid="17" dstpinname="World Image">
+   <LINK dstnodeid="17" dstpinname="World Image" srcnodeid="6" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Enabled">
+   <LINK dstnodeid="17" dstpinname="Enabled" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Image XY">
+   <LINK dstnodeid="17" dstpinname="Image XY" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Record">
+   <LINK dstnodeid="17" dstpinname="Record" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Reset">
+   <LINK dstnodeid="17" dstpinname="Reset" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Found Points Layer" dstnodeid="14" dstpinname="Input Node">
+   <LINK dstnodeid="14" dstpinname="Input Node" srcnodeid="17" srcpinname="Found Points Layer">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Object XYZ" dstnodeid="4" dstpinname="Object PointsXYZ">
+   <LINK dstnodeid="4" dstpinname="Object PointsXYZ" srcnodeid="17" srcpinname="Object XYZ">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Image XY" dstnodeid="4" dstpinname="Image PointsXY">
+   <LINK dstnodeid="4" dstpinname="Image PointsXY" srcnodeid="17" srcpinname="Image XY">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Count" dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINK dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="17" srcpinname="Count">
    <LINKPOINT x="5565" y="3233">
    </LINKPOINT>
    <LINKPOINT x="4065" y="3233">

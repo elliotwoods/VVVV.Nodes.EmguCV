@@ -57,9 +57,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="8" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
@@ -143,7 +143,7 @@
    </PIN>
    <PIN pinname="Extrinsics Transform" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Technique" slicecount="1" visible="1" values="| TLightPoint|">
+   <PIN pinname="Technique" visible="1">
    </PIN>
    <BOUNDS height="7305" left="14025" top="5415" type="Window" width="9210">
    </BOUNDS>
@@ -156,12 +156,6 @@
    <PIN pinname="Marker" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Runtime layer" linkstyle="VHV" srcnodeid="21" srcpinname="Layer">
-   <LINKPOINT x="2205" y="8825">
-   </LINKPOINT>
-   <LINKPOINT x="9555" y="8875">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" filename="subpatches\OpenNI and preview.v4p" id="27" nodename="subpatches\OpenNI and preview.v4p" systemname="OpenNI and preview" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="270" top="1605" type="Node" width="4395">
    </BOUNDS>
@@ -379,13 +373,11 @@
    </BOUNDS>
    <BOUNDS height="5010" left="12360" top="13725" type="Window" width="6240">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <LINK dstnodeid="36" dstpinname="Layers" srcnodeid="11" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="18" dstpinname="Input String" srcnodeid="30" srcpinname="Status">
    </LINK>
    <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="30" srcpinname="Reprojection Error">
@@ -445,7 +437,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="8895" top="4800" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.34">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.38">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -472,8 +464,6 @@
    <LINKPOINT x="2070" y="8798">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="27" srcpinname="Preview layer">
-   </LINK>
    <NODE componentmode="InABox" id="39" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="11235" top="4800" type="Node" width="0">
    </BOUNDS>
@@ -489,5 +479,31 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="34" dstpinname="Lightness" srcnodeid="39" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="100" left="5595" top="7740" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="5595" top="7740" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Technique">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="| TNormals|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Technique" linkstyle="VHV" srcnodeid="40" srcpinname="Output Enum">
+   <LINKPOINT x="5655" y="8198">
+   </LINKPOINT>
+   <LINKPOINT x="6900" y="8198">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="11" dstpinname="Runtime layer" linkstyle="Bezier">
+   <LINKPOINT x="8535" y="9075">
+   </LINKPOINT>
+   <LINKPOINT x="9510" y="9075">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Preview layer" dstnodeid="1" dstpinname="Layers">
    </LINK>
    </PATCH>

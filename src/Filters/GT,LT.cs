@@ -19,7 +19,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public double Threshold = 0.5;
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FOutput.Image.Initialise(FInput.Image.ImageAttributes.Size, TColourFormat.L8);
 		}
@@ -53,7 +53,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public double Threshold = 0.5;
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FOutput.Image.Initialise(FInput.Image.ImageAttributes.Size, TColourFormat.L8);
 		}

@@ -8,7 +8,5 @@ namespace VVVV.Nodes.EmguCV
 	public interface IInstanceOutput
 	{
 		void SetOutput(CVImageOutput output);
-
-		bool Allocate();
 	}
 }

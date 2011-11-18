@@ -5,13 +5,26 @@ using System.Text;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class IGeneratorInstance : IInstanceThreaded, IInstanceOutput, IDisposable
+	public abstract class IGeneratorInstance : IInstance, IInstanceOutput, IDisposable
 	{
 		protected CVImageOutput FOutput;
 
 		public virtual bool NeedsThread()
 		{
 			return true;
+		}
+
+		public virtual void Initialise() { }
+
+		bool FFirstRun = true;
+		virtual public bool NeedsInitialise()
+		{
+			if (FFirstRun)
+			{
+				FFirstRun = false;
+				return true;
+			}
+			return false;
 		}
 
 		public void Process()
@@ -22,13 +35,6 @@ namespace VVVV.Nodes.EmguCV
 		public void SetOutput(CVImageOutput output)
 		{
 			FOutput = output;
-		}
-
-		public bool Allocate()
-		{
-			//not sure what exactly we should be doing here
-			//since generators dont need to allocate against an inputted image
-			return true;
 		}
 
 		/// <summary>

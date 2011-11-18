@@ -12,7 +12,7 @@ namespace VVVV.Nodes.EmguCV
 	{
 		public int Width = 3;
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FOutput.Image.Initialise(FInput.ImageAttributes);
 		}

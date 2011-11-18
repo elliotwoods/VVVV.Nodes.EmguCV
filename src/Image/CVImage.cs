@@ -46,6 +46,11 @@ namespace VVVV.Nodes.EmguCV
 				ImageUtils.CopyImageConverted(this, target);
 		}
 
+		public void GetImage(CVImage target)
+		{
+			GetImage(target.ImageAttributes.ColourFormat, target);
+		}
+
 		public unsafe bool SetImage(IImage source)
 		{
 			if (source == null)

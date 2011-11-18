@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class IFilterInstance : IInstanceThreaded, IInstanceInput, IInstanceOutput, IDisposable
+	public abstract class IFilterInstance : IInstance, IInstanceInput, IInstanceOutput, IDisposable
 	{
 		protected CVImageInput FInput;
 		protected CVImageOutput FOutput;
@@ -13,7 +13,19 @@ namespace VVVV.Nodes.EmguCV
 		/// <summary>
 		/// Override this function. It is called whenever the input image's attributes changes or you ask to reallocate
 		/// </summary>
-		abstract protected void Initialise();
+		abstract public void Initialise();
+
+		bool FFirstRun = true;
+		virtual public bool NeedsInitialise()
+		{
+			if (FFirstRun)
+			{
+				FFirstRun = false;
+				return true;
+			}
+			return false;
+		}
+
 		abstract public void Process();
 
 		public void SetInput(CVImageInput input)
@@ -24,26 +36,6 @@ namespace VVVV.Nodes.EmguCV
 		public void SetOutput(CVImageOutput output)
 		{
 			FOutput = output;
-		}
-
-		public bool Allocate()
-		{
-			if (FInput == null)
-				return false;
-
-			if (FInput.Allocated) {
-				try
-				{
-					Initialise();
-					return true;
-				}
-				catch
-				{
-					return false;
-				}
-			}
-			else
-				return false;
 		}
 
 		/// <summary>

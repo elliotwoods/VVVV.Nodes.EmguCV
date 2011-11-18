@@ -32,13 +32,13 @@ namespace VVVV.Nodes.EmguCV
 			set
 			{
 				FThresholdEnabled = value;
-				Allocate();
+				Initialise();
 			}
 		}
 
 		public TDifferenceMode DifferenceMode = TDifferenceMode.AbsoluteDifference;
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 
 			if (FThresholdEnabled)

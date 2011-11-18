@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ProcessDestination<T> where T : IInstanceThreaded, IInstanceInput, IDisposable, new()
+	public class ProcessDestination<T> where T : IDestinationInstance, new()
 	{
 		CVImageInputSpread FInput;
 		public CVImageInputSpread Input { get { return FInput; } }
@@ -31,13 +31,20 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FInput.Connected)
 				{
-					for (int i = 0; i < SliceCount; i++)
+					for (int i = 0; i < InputSliceCount; i++)
 					{
-						//remove this hack
+						/**HACK**/
 						FProcess[i].SetInput(FInput[i]);
 
+						if (!FInput[i].Allocated)
+							continue;
+
+						if (FInput[i].ImageAttributesChanged || FProcess[i].NeedsInitialise())
+							for (int iProcess = i; iProcess < InputSliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+								FProcess[iProcess].Initialise();
+
 						if (FInput[i].ImageChanged)
-							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+							for (int iProcess = i; iProcess < InputSliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
 								FProcess[iProcess].Process();
 					}
 
@@ -80,7 +87,7 @@ namespace VVVV.Nodes.EmguCV
 			return FInput[index];
 		}
 
-		public int SliceCount
+		public int InputSliceCount
 		{
 			get
 			{

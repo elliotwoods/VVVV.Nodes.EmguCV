@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\modules\Marker (DX9, 3D).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\modules\Marker (DX9, 3D).v4p" systemname="Marker (DX9, 3D)">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\modules\Marker (DX9, 3D).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\modules\Marker (DX9, 3D).v4p" systemname="Marker (DX9, 3D)">
    <BOUNDS height="4575" left="13350" top="8310" type="Window" width="5340">
    </BOUNDS>
    <NODE componentmode="Hidden" id="5" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
@@ -17,7 +17,7 @@
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="1" values="0.02">
+   <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
@@ -112,10 +112,10 @@
    </NODE>
    <LINK dstnodeid="7" dstpinname="Input Node" srcnodeid="2" srcpinname="Layer">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
-   <BOUNDS type="Node" left="4290" top="495" width="100" height="100">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4290" top="495" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4290" top="495" width="480" height="480">
+   <BOUNDS height="480" left="4290" top="495" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -123,9 +123,27 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Enabled">
+   <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="3090" top="165" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3090" top="165" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Scale" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="XYZ" linkstyle="VHV">
+   <LINKPOINT x="3120" y="1350">
+   </LINKPOINT>
+   <LINKPOINT x="1650" y="1350">
+   </LINKPOINT>
    </LINK>
    </PATCH>

@@ -146,7 +146,6 @@
     <Compile Include="src\User Interfaces\IGeneratorInstance.cs" />
     <Compile Include="src\User Interfaces\IGeneratorNode.cs" />
     <Compile Include="src\Process\IInstance.cs" />
-    <Compile Include="src\Process\IInstanceThreaded.cs" />
     <Compile Include="src\Process\ProcessInput.cs" />
     <Compile Include="src\Image\CVImageLink.cs" />
     <Compile Include="src\Image\CVImageInput.cs" />
@@ -162,7 +161,7 @@
     <Compile Include="src\Process\IInstanceInput.cs" />
     <Compile Include="src\Process\IInstanceOutput.cs" />
     <Compile Include="src\Process\ProcessFilter.cs" />
-    <Compile Include="src\Process\ProcessInputThreaded.cs" />
+    <None Include="src\Dead\ProcessInputThreaded.cs" />
     <Compile Include="src\Sources\VideoInNode.cs" />
     <None Include="src\Dead\VideoPlayerNode.cs" />
     <None Include="src\Dead\FaceTrackingNode.cs" />

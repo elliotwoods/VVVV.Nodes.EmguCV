@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ProcessFilter<T> where T : IInstanceThreaded, IInstanceInput, IInstanceOutput, IDisposable, new()
+	public class ProcessFilter<T> where T : IFilterInstance, new()
 	{
 		CVImageInputSpread FInput;
 		public CVImageInputSpread Input { get { return FInput; } }
@@ -37,12 +37,20 @@ namespace VVVV.Nodes.EmguCV
 				{
 					for (int i = 0; i < SliceCount; i++)
 					{
-						//remove this hack
+						/**HACK**/
 						FProcess[i].SetInput(FInput[i]);
 
 						if (FInput[i].ImageAttributesChanged || !FOutput[i].Link.Allocated)
-							if (!FProcess[i].Allocate())
+						{
+							try
+							{
+								FProcess[i].Initialise();
+							}
+							catch
+							{
 								continue;
+							}
+						}
 
 						if (FInput[i].ImageChanged)
 							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))

@@ -24,10 +24,10 @@ namespace VVVV.Nodes.EmguCV
 
 			//Call Allocate() whenever you need to change the properties of the output image
 			//not AllocateOutput()!
-			Allocate();
+			Initialise();
 		}
 
-		protected override void Initialise()
+		public override void Initialise()
 		{
 			FOutput.Image.Initialise(FSize, FInput.ImageAttributes.ColourFormat);
 			FOutput.Image.Allocate();
