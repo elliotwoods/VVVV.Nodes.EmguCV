@@ -57,9 +57,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="8" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
@@ -217,7 +217,7 @@
    <NODE componentmode="Hidden" filename="subpatches\CalibrateProjectorToKinect.v4p" id="30" nodename="subpatches\CalibrateProjectorToKinect.v4p" systemname="CalibrateProjectorToKinect" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="3585" top="7200" type="Node" width="7050">
    </BOUNDS>
-   <BOUNDS height="6000" left="11250" top="6615" type="Window" width="9615">
+   <BOUNDS height="6000" left="13245" top="4065" type="Window" width="9615">
    </BOUNDS>
    <PIN pinname="Insert" visible="1">
    </PIN>
@@ -373,9 +373,9 @@
    </BOUNDS>
    <BOUNDS height="5010" left="12360" top="13725" type="Window" width="6240">
    </BOUNDS>
-   <PIN pinname="Layers" slicecount="1" visible="1" values="||">
+   <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Input String" srcnodeid="30" srcpinname="Status">
@@ -437,7 +437,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="8895" top="4800" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.38">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.33">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -505,5 +505,7 @@
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="27" srcpinname="Preview layer">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="36" dstpinname="Layers">
    </LINK>
    </PATCH>

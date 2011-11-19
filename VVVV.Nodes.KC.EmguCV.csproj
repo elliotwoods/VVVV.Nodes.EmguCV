@@ -113,6 +113,7 @@
     <None Include="src\Dead\AsTextureL16Node.cs" />
     <None Include="src\Dead\AsTextureRGB8Node.cs" />
     <Compile Include="src\Destinations\AsTextureNode.cs" />
+    <Compile Include="src\Destinations\FramerateNode.cs" />
     <Compile Include="src\Destinations\PipetNode.cs" />
     <None Include="src\Destinations\Renderer.cs">
       <SubType>UserControl</SubType>
@@ -146,7 +147,7 @@
     <Compile Include="src\User Interfaces\IGeneratorInstance.cs" />
     <Compile Include="src\User Interfaces\IGeneratorNode.cs" />
     <Compile Include="src\Process\IInstance.cs" />
-    <Compile Include="src\Process\ProcessInput.cs" />
+    <None Include="src\Dead\ProcessInput.cs" />
     <Compile Include="src\Image\CVImageLink.cs" />
     <Compile Include="src\Image\CVImageInput.cs" />
     <Compile Include="src\Image\CVImageOutput.cs" />

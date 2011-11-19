@@ -76,6 +76,18 @@ namespace VVVV.Nodes.EmguCV
 			return Reinitialise;
 		}
 
+		/// <summary>
+		/// Copy data from pointer. Presume we're already correctly initialised
+		/// </summary>
+		/// <param name="source">Raw pixel data of correct size</param>
+		public void SetPixels(IntPtr rawData)
+		{
+			if (rawData == IntPtr.Zero)
+				return;
+
+			ImageUtils.CopyImage(rawData, this);
+		}
+
 		override public void Allocate()
 		{
 			FImage = ImageUtils.CreateImage(this.Width, this.Height, this.NativeFormat);

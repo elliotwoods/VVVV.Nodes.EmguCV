@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateCameraWrapper.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper">
-   <BOUNDS height="7695" left="11760" top="7845" type="Window" width="16320">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\CalibrateCameraWrapper.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper">
+   <BOUNDS height="7695" left="13815" top="7005" type="Window" width="16320">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="19" nodename="CalibrateCamera (EmguCV)" systemname="CalibrateCamera (EmguCV)">
    <BOUNDS height="270" left="1110" top="2565" type="Node" width="10980">
@@ -127,7 +127,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="7650" top="765" type="Box" width="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -139,7 +139,7 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="CV_CALIB_ZERO_TANGENT_DIST">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="CV_CALIB_ZERO_TANGENT_DIST" srcnodeid="14" srcpinname="Y Output Value">
@@ -160,6 +160,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="CV_CALIB_FIX_FOCAL_LENGTH">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="CV_CALIB_FIX_FOCAL_LENGTH" srcnodeid="13" srcpinname="Y Output Value">
@@ -289,7 +291,7 @@
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="3015" top="3615" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="795" left="3015" top="3615" type="Box" width="1200">
+   <BOUNDS height="780" left="3015" top="3615" type="Box" width="1440">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
@@ -300,6 +302,8 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Camera Matrix">
@@ -329,9 +333,9 @@
    <LINK dstnodeid="3" dstpinname="Input Node" srcnodeid="4" srcpinname="Transform">
    </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="1110" top="1500" type="Node" width="100">
+   <BOUNDS height="100" left="1110" top="1200" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="1110" top="1500" type="Box" width="795">
+   <BOUNDS height="240" left="1110" top="1200" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>

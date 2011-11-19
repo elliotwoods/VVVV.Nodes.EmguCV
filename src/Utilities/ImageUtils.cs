@@ -292,6 +292,11 @@ namespace VVVV.Nodes.EmguCV
 			CopyImage(source.Ptr, target.CvMat, target.ImageAttributes.BytesPerFrame);
 		}
 
+		public static void CopyImage(IntPtr rawData, CVImage target)
+		{
+			CopyMemory(target.Data, rawData, target.ImageAttributes.BytesPerFrame);
+		}
+
 		/// <summary>
 		/// Copys by hand raw image data from source to target
 		/// </summary>

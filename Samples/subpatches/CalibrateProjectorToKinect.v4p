@@ -1,47 +1,7 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\CalibrateProjectorToKinect.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateProjectorToKinect.v4p" systemname="CalibrateProjectorToKinect">
-   <BOUNDS height="6000" left="11250" top="6615" type="Window" width="9615">
+   <BOUNDS height="6000" left="13245" top="4065" type="Window" width="9615">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="subpatches\CalibrateCameraWrapper.v4p" id="4" nodename="subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
-   <BOUNDS height="270" left="2400" top="3405" type="Node" width="4785">
-   </BOUNDS>
-   <BOUNDS height="7695" left="11760" top="7845" type="Window" width="16320">
-   </BOUNDS>
-   <PIN pinname="Resolution XY" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="CV_CALIB_USE_INTRINSIC_GUESS" pintype="Input" slicecount="1" visible="-1" values="1">
-   </PIN>
-   <PIN pinname="CV_CALIB_FIX_PRINCIPAL_POINT" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <PIN pinname="CV_CALIB_FIX_ASPECT_RATIO" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <PIN pinname="CV_CALIB_ZERO_TANGENT_DIST" pintype="Input" slicecount="1" visible="-1" values="1">
-   </PIN>
-   <PIN pinname="CV_CALIB_FIX_FOCAL_LENGTH" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <PIN pinname="CV_CALIB_FIX_KI" pintype="Input" slicecount="1" visible="-1" values="1">
-   </PIN>
-   <PIN pinname="CV_CALIB_RATIONAL_MODEL" pintype="Input" slicecount="1" visible="-1" values="0">
-   </PIN>
-   <PIN pinname="Distortion Coefficients" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Reprojection Error" visible="1">
-   </PIN>
-   <PIN pinname="Object PointsXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Do" visible="1">
-   </PIN>
-   <PIN pinname="Status" visible="1">
-   </PIN>
-   <PIN pinname="Intrinsics Transform" visible="1">
-   </PIN>
-   <PIN pinname="Extrinsics Transform" visible="1">
-   </PIN>
-   <PIN pinname="Solve" visible="1">
-   </PIN>
-   <PIN pinname="Image PointsXY" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="4620" top="360" type="Node" width="100">
    </BOUNDS>
@@ -119,9 +79,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Reprojection Error|">
    </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Reprojection Error">
-   </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="7125" top="4680" type="Node" width="0">
    </BOUNDS>
@@ -137,9 +97,9 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Status">
    </PIN>
+   <PIN pinname="Input String">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="4" srcpinname="Status">
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="3660" top="360" type="Node" width="0">
    </BOUNDS>
@@ -214,8 +174,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Found Points Layer|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Solve" srcnodeid="0" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="8295" top="360" type="Node" width="0">
    </BOUNDS>
@@ -236,12 +194,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Resolution XY|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Resolution XY" linkstyle="VHV" srcnodeid="15" srcpinname="Y Output Value">
-   <LINKPOINT x="8270" y="3015">
-   </LINKPOINT>
-   <LINKPOINT x="5635" y="3015">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4020" top="4680" type="Node" width="0">
    </BOUNDS>
@@ -258,19 +210,7 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform">
-   <LINKPOINT x="4505" y="3818">
-   </LINKPOINT>
-   <LINKPOINT x="3160" y="3818">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="13" dstpinname="Input Node" srcnodeid="12" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="12" dstpinname="Transform In 2" linkstyle="VHV" srcnodeid="4" srcpinname="Intrinsics Transform">
-   <LINKPOINT x="3395" y="3818">
-   </LINKPOINT>
-   <LINKPOINT x="4255" y="3818">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" filename="FindBoardsInWorld.v4p" id="17" nodename="FindBoardsInWorld.v4p" systemname="FindBoardsInWorld" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="795" top="1515" type="Node" width="4860">
@@ -310,14 +250,82 @@
    </LINK>
    <LINK dstnodeid="14" dstpinname="Input Node" srcnodeid="17" srcpinname="Found Points Layer">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Object PointsXYZ" srcnodeid="17" srcpinname="Object XYZ">
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="Image PointsXY" srcnodeid="17" srcpinname="Image XY">
-   </LINK>
    <LINK dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="17" srcpinname="Count">
    <LINKPOINT x="5565" y="3233">
    </LINKPOINT>
    <LINKPOINT x="4065" y="3233">
    </LINKPOINT>
+   </LINK>
+   <NODE id="4" componentmode="Hidden" filename="subpatches\CalibrateCameraWrapper.v4p" nodename="subpatches\CalibrateCameraWrapper.v4p" systemname="CalibrateCameraWrapper">
+   <PIN pinname="Solve" visible="1">
+   </PIN>
+   <PIN pinname="Resolution XY" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Object PointsXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Image PointsXY" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="13815" top="7005" width="16320" height="7695">
+   </BOUNDS>
+   <BOUNDS type="Node" height="270" left="2400" top="3405" width="4830">
+   </BOUNDS>
+   <PIN pinname="CV_CALIB_USE_INTRINSIC_GUESS" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="CV_CALIB_FIX_PRINCIPAL_POINT" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="CV_CALIB_FIX_ASPECT_RATIO" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="CV_CALIB_ZERO_TANGENT_DIST" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="CV_CALIB_FIX_FOCAL_LENGTH" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="CV_CALIB_FIX_KI" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="CV_CALIB_RATIONAL_MODEL" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Distortion Coefficients" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Reprojection Error" visible="1">
+   </PIN>
+   <PIN pinname="Do" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Intrinsics Transform" visible="1">
+   </PIN>
+   <PIN pinname="Extrinsics Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Image XY" dstnodeid="4" dstpinname="Image PointsXY" linkstyle="VHV">
+   <LINKPOINT x="3975" y="2588">
+   </LINKPOINT>
+   <LINKPOINT x="2925" y="2588">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Object XYZ" dstnodeid="4" dstpinname="Object PointsXYZ">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Intrinsics Transform" dstnodeid="12" dstpinname="Transform In 2" linkstyle="VHV">
+   <LINKPOINT x="3395" y="3818">
+   </LINKPOINT>
+   <LINKPOINT x="4255" y="3818">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Extrinsics Transform" dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV">
+   <LINKPOINT x="4505" y="3818">
+   </LINKPOINT>
+   <LINKPOINT x="3160" y="3818">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Resolution XY" linkstyle="VHV">
+   <LINKPOINT x="8270" y="3015">
+   </LINKPOINT>
+   <LINKPOINT x="5635" y="3015">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Solve">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Status" dstnodeid="8" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Reprojection Error" dstnodeid="7" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
