@@ -123,8 +123,9 @@
     <None Include="src\Filters\Template.cs" />
     <None Include="src\Dead\BoundsNode.cs" />
     <Compile Include="src\Destinations\AvgSdvNode.cs" />
+    <Compile Include="src\Filters\EQ.cs" />
     <Compile Include="src\Filters\OpticalFlowHS.cs" />
-    <Compile Include="src\Filters\GT,LT.cs" />
+    <Compile Include="src\Filters\GT,LT,EQ.cs" />
     <Compile Include="src\Filters\Dilate.cs" />
     <Compile Include="src\Filters\Erode.cs" />
     <Compile Include="src\Filters\FrameDifference.cs" />

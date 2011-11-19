@@ -25,6 +25,20 @@ namespace VVVV.Nodes.EmguCV
 		Object FLockTexture = new Object();
 		private Dictionary<Texture, bool> FNeedsRefresh = new Dictionary<Texture,bool>();
 
+		private bool FNeedsTexture = false;
+		public bool NeedsTexture
+		{
+			get
+			{
+				if (FNeedsTexture)
+				{
+		 			FNeedsTexture = false;
+					return true;
+				}
+				return false;
+			}
+		}
+
 		public override void Initialise()
 		{
 			
@@ -83,7 +97,10 @@ namespace VVVV.Nodes.EmguCV
 			lock (FLockTexture)
 			{
 				if (!FNeedsRefresh.ContainsKey(texture))
+				{
+					FNeedsTexture = true;
 					return;
+				}
 
 				if (!FNeedsRefresh[texture])
 					return;

@@ -60,9 +60,13 @@ namespace VVVV.Nodes.EmguCV
 			if (FProcessor == null)
 				FProcessor = new ProcessDestination<AsTextureImageInstance>(FPinInImage);
 
+			bool needsInit = FProcessor.CheckInputSize();
+			for (int i = 0; i < FProcessor.SliceCount; i++)
+				needsInit |= FProcessor[i].NeedsTexture;
 
-			if (FProcessor.CheckInputSize())
-					Reinitialize();
+			if (needsInit)
+				Reinitialize();
+
 			SetSliceCount(FProcessor.SliceCount);
 
 			Update();

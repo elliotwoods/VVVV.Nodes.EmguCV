@@ -11,12 +11,12 @@ namespace VVVV.Nodes.EmguCV
 
 		virtual public void Initialise() { }
 
-		bool FFirstRun = true;
+		private bool FNeedsInitialisation = true;
 		virtual public bool NeedsInitialise()
 		{
-			if (FFirstRun)
+			if (FNeedsInitialisation)
 			{
-				FFirstRun = false;
+				FNeedsInitialisation = false;
 				return true;
 			}
 			return false;

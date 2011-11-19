@@ -90,7 +90,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return FLink.Image;
+				return FLink.FrontImage;
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return FLink.Image.Data;
+				return FLink.FrontImage.Data;
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return FLink.Image.CvMat;
+				return FLink.FrontImage.CvMat;
 			}
 		}
 

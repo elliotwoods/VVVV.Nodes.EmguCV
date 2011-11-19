@@ -129,7 +129,7 @@ namespace VVVV.Nodes.EmguCV
 		/// <summary>
 		/// Get the front buffer. Be sure to lock the front buffer for reading!
 		/// </summary>
-		public CVImage Image
+		public CVImage FrontImage
 		{
 			get { return FFrontBuffer; }
 		}
@@ -146,7 +146,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return FAllocated;
+				return FFrontBuffer.Allocated;
 			}
 		}
 

@@ -40,6 +40,9 @@ namespace VVVV.Nodes.EmguCV
 						/**HACK**/
 						FProcess[i].SetInput(FInput[i]);
 
+						if (!FInput[i].Allocated)
+							continue;
+
 						if (FInput[i].ImageAttributesChanged || !FOutput[i].Link.Allocated)
 						{
 							try
