@@ -1,11 +1,11 @@
-Introduction
-============
-https://github.com/elliotwoods/VVVV.Nodes.EmguCV
-
 ## WARNING
 the code has been quite rushed over the past 4 days
 likely there's some bad code in here that i have to go back later to scoop out.
 scooping hands welcome! :)
+
+Introduction
+============
+https://github.com/elliotwoods/VVVV.Nodes.EmguCV
 
 A new link type for VVVV 'CVImageLink' which lets you work with images on the CPU (previously achieved with DirectShow filters).
 CVImageLink includes lots of lovely magic, like threading, double buffering, automatic conversion, yada yada
