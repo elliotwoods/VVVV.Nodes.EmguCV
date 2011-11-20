@@ -1,0 +1,63 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\AsTexture - 2 render devices.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" systemname="ImageLoad">
+   <BOUNDS height="9135" left="9660" top="1110" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="540" top="2115" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="5985" left="540" top="2115" type="Box" width="7530">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8835" top="12300" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="18" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="270" left="555" top="645" type="Node" width="3615">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="SetResolution" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4110" top="1155" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4110" top="1155" type="Box" width="1920">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input String" srcnodeid="18" srcpinname="Status">
+   </LINK>
+   <NODE systemname="ImageViewQuad (EmguCV, Normalised)" filename="..\..\Prerequisites\modules\ImageViewQuad (EmguCV, Normalised).v4p" nodename="ImageViewQuad (EmguCV, Normalised)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="555" top="1260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Image" dstnodeid="21" dstpinname="Image">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="1" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="FullScreen" id="22">
+   <BOUNDS type="Node" left="2385" top="1695" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2385" top="1695" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="32925" top="4455" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="22" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="615" y="1598">
+   </LINKPOINT>
+   <LINKPOINT x="2385" y="1598">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
