@@ -88,6 +88,6 @@
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <LINK dstnodeid="26" dstpinname="Layers" srcnodeid="5" srcpinname="Output">
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="26" dstpinname="Layers">
    </LINK>
    </PATCH>
