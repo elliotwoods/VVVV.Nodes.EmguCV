@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Emgu.CV;
 using System.Threading;
+using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
@@ -27,6 +28,14 @@ namespace VVVV.Nodes.EmguCV
 			FFrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
 		}
 
+		public Object BackLock
+		{
+			get
+			{
+				return FBackLock;
+			}
+		}
+
 		public void ReleaseForReading()
 		{
 			FFrontLock.ReleaseReaderLock();	
@@ -41,10 +50,12 @@ namespace VVVV.Nodes.EmguCV
 
 		#region Swapping and copying
 		/// <summary>
-		/// Swap the front buffer and back buffer
+		/// Swap the front buffer and back buffer, locks are performed interally
 		/// </summary>
 		public void Swap()
 		{
+			FAllocated = true;
+
 			lock (FBackLock)
 			{
 				FFrontLock.AcquireWriterLock(LockTimeout);
@@ -59,6 +70,8 @@ namespace VVVV.Nodes.EmguCV
 					FFrontLock.ReleaseWriterLock();
 				}
 			}
+
+			OnImageUpdate();
 		}
 		#endregion
 
@@ -87,15 +100,8 @@ namespace VVVV.Nodes.EmguCV
 			lock (FBackLock)
 				Reinitialise = FBackBuffer.SetImage(source);
 
-			FAllocated = true;
-			OnImageUpdate();
-
 			if (Reinitialise)
-			{
-				lock (FAttributesLock)
-					FImageAttributes = source.ImageAttributes.Clone() as CVImageAttributes;
-				OnImageAttributesUpdate(FImageAttributes);
-			}
+				InitialiseFrontFromBack();
 
 			Swap();
 		}
@@ -110,18 +116,46 @@ namespace VVVV.Nodes.EmguCV
 
 			lock (FBackLock)
 				Reinitialise = FBackBuffer.SetImage(source);
-			
-			FAllocated = true;
-			OnImageUpdate();
 
 			if (Reinitialise)
-			{
-				lock (FAttributesLock)
-					FImageAttributes = FBackBuffer.ImageAttributes.Clone() as CVImageAttributes;
-				OnImageAttributesUpdate(FImageAttributes);
-			}
+				InitialiseFrontFromBack();
 
 			Swap();
+		}
+
+		public void Initialise(CVImageAttributes attributes)
+		{
+			FImageAttributes = attributes;
+
+			InitialiseBack();
+			InitialiseFrontFromBack();
+		}
+
+		void InitialiseBack()
+		{
+			lock (FBackLock)
+			{
+				FBackBuffer.Initialise(FImageAttributes);
+			}
+		}
+
+		void InitialiseFrontFromBack()
+		{
+			lock (FBackLock)
+				lock (FAttributesLock)
+					FImageAttributes = FBackBuffer.ImageAttributes;
+
+			FFrontLock.AcquireWriterLock(LockTimeout);
+			try
+			{
+				FFrontBuffer.Initialise(FImageAttributes);
+			}
+			finally
+			{
+				FFrontLock.ReleaseWriterLock();
+			}
+
+			OnImageAttributesUpdate(FImageAttributes);
 		}
 		#endregion
 
@@ -132,6 +166,14 @@ namespace VVVV.Nodes.EmguCV
 		public CVImage FrontImage
 		{
 			get { return FFrontBuffer; }
+		}
+
+		/// <summary>
+		/// Get the back buffer. Be sure to lock the back buffer for writing!
+		/// </summary>
+		public CVImage BackImage
+		{
+			get { return FBackBuffer; }
 		}
 
 		public CVImageAttributes ImageAttributes

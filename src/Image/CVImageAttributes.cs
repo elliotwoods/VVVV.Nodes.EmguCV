@@ -31,6 +31,12 @@ namespace VVVV.Nodes.EmguCV
 			FSize = new Size(0, 0);
 		}
 
+		public CVImageAttributes(Size size, TColourFormat format)
+		{
+			FSize = size;
+			ColourFormat = format;
+		}
+
 		public CVImageAttributes(TColourFormat c, int w, int h)
 		{
 			ColourFormat = c;

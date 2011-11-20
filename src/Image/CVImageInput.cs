@@ -99,6 +99,14 @@ namespace VVVV.Nodes.EmguCV
 			FLink.GetImage(target);
 		}
 
+		public void GetImage(CVImageDoubleBuffer target)
+		{
+			lock(target.BackLock)
+			{
+				FLink.GetImage(target.BackImage);
+			}
+		}
+
 		public bool Allocated
 		{
 			get

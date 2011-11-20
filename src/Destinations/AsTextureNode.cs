@@ -43,7 +43,7 @@ namespace VVVV.Nodes.EmguCV
 		[Import]
 		ILogger FLogger;
 
-		private ProcessDestination<AsTextureImageInstance> FProcessor;
+		private ProcessDestination<AsTextureInstance> FProcessor;
 
 		#endregion fields & pins
 
@@ -58,7 +58,7 @@ namespace VVVV.Nodes.EmguCV
 		public void Evaluate(int SpreadMax)
 		{
 			if (FProcessor == null)
-				FProcessor = new ProcessDestination<AsTextureImageInstance>(FPinInImage);
+				FProcessor = new ProcessDestination<AsTextureInstance>(FPinInImage);
 
 			bool needsInit = FProcessor.CheckInputSize();
 			for (int i = 0; i < FProcessor.SliceCount; i++)
