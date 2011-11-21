@@ -33,6 +33,11 @@ namespace VVVV.Nodes.EmguCV
 			FInput = input;
 		}
 
+		public bool HasInput(CVImageInput input)
+		{
+			return FInput == input;
+		}
+
 		public void SetOutput(CVImageOutput output)
 		{
 			FOutput = output;

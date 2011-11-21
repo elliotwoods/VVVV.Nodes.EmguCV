@@ -27,6 +27,13 @@ namespace VVVV.Nodes.EmguCV
 		public void SetInput(CVImageInput input)
 		{
 			FInput = input;
+			if (FInput.Allocated)
+				Process();
+		}
+
+		public bool HasInput(CVImageInput input)
+		{
+			return FInput == input;
 		}
 
 		virtual public void Dispose()

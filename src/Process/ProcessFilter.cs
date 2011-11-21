@@ -37,9 +37,6 @@ namespace VVVV.Nodes.EmguCV
 				{
 					for (int i = 0; i < SliceCount; i++)
 					{
-						/**HACK**/
-						FProcess[i].SetInput(FInput[i]);
-
 						if (!FInput[i].Allocated)
 							continue;
 
@@ -122,7 +119,10 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (!FInput.CheckInputSize() && FOutput.SliceCount == SpreadMax)
 				return false;
-		
+
+			if (FInput[0] == null)
+				SpreadMax = 0;
+
 			for (int i = FProcess.SliceCount; i < SpreadMax; i++)
 				Add(FInput[i]);
 

@@ -38,7 +38,14 @@ namespace VVVV.Nodes.EmguCV
 
 		public void ReleaseForReading()
 		{
-			FFrontLock.ReleaseReaderLock();	
+			try
+			{
+				FFrontLock.ReleaseReaderLock();
+			}
+			catch
+			{
+
+			}
 		}
 		#endregion
 
