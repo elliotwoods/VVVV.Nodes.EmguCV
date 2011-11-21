@@ -35,8 +35,6 @@ _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
 
-#Project files
-[Bb]uild/
 
 #Subversion files
 .svn

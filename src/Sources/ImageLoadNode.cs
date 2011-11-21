@@ -53,6 +53,7 @@ namespace VVVV.Nodes.EmguCV
 			catch
 			{
 				FStatus = "Image load failed";
+				FLoadedImage = "";
 			}
 		}
 	}

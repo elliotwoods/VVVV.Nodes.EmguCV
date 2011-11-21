@@ -268,8 +268,20 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="Transform" srcnodeid="44" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="VideoIn (EmguCV)" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" nodename="VideoIn (EmguCV)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="255" top="795" width="5280" height="270">
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="51" nodename="ImageResize (EmguCV)" systemname="ImageResize (EmguCV)">
+   <BOUNDS height="270" left="240" top="2565" type="Node" width="1890">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="52" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="270" left="240" top="795" type="Node" width="5295">
    </BOUNDS>
    <PIN pinname="Camera ID" visible="1">
    </PIN>
@@ -277,43 +289,21 @@
    </PIN>
    <PIN pinname="Height" visible="1">
    </PIN>
-   <PIN pinname="Status" visible="1">
+   <PIN pinname="Image" visible="1">
    </PIN>
    <PIN pinname="FPS" visible="1">
    </PIN>
-   <PIN pinname="Image" visible="1">
+   <PIN pinname="Status" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="47" dstpinname="Camera ID">
+   <LINK dstnodeid="52" dstpinname="Camera ID" srcnodeid="6" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="47" dstpinname="Width">
+   <LINK dstnodeid="52" dstpinname="Width" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="47" dstpinname="Height">
+   <LINK dstnodeid="52" dstpinname="Height" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="47" srcpinname="Status" dstnodeid="8" dstpinname="Input String">
-   </LINK>
-   <LINK srcnodeid="47" srcpinname="FPS" dstnodeid="21" dstpinname="Go To Position">
-   </LINK>
-   <NODE systemname="ImageResize (EmguCV)" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" nodename="ImageResize (EmguCV)" componentmode="Hidden" id="48">
-   <BOUNDS type="Node" left="255" top="2670" width="1845" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="47" srcpinname="Image" dstnodeid="48" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Width">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Height">
-   </LINK>
-   <NODE systemname="Info (EmguCV)" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" nodename="Info (EmguCV)" componentmode="Hidden" id="49">
-   <BOUNDS type="Node" left="255" top="3135" width="3885" height="270">
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="53" nodename="Info (EmguCV)" systemname="Info (EmguCV)">
+   <BOUNDS height="270" left="240" top="3075" type="Node" width="3885">
    </BOUNDS>
    <PIN pinname="Allocated" visible="1">
    </PIN>
@@ -325,35 +315,49 @@
    </PIN>
    <PIN pinname="Image" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="255" top="3135">
+   <BOUNDS left="240" top="3075" type="Box">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="49" srcpinname="Allocated" dstnodeid="33" dstpinname="Y Input Value">
+   <LINK dstnodeid="33" dstpinname="Y Input Value" srcnodeid="53" srcpinname="Allocated">
    </LINK>
-   <LINK srcnodeid="49" srcpinname="Width" dstnodeid="34" dstpinname="Y Input Value">
+   <LINK dstnodeid="34" dstpinname="Y Input Value" srcnodeid="53" srcpinname="Width">
    </LINK>
-   <LINK srcnodeid="49" srcpinname="Height" dstnodeid="35" dstpinname="Y Input Value">
+   <LINK dstnodeid="35" dstpinname="Y Input Value" srcnodeid="53" srcpinname="Height">
    </LINK>
-   <LINK srcnodeid="49" srcpinname="Format" dstnodeid="36" dstpinname="Input String">
+   <LINK dstnodeid="36" dstpinname="Input String" srcnodeid="53" srcpinname="Format">
    </LINK>
-   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="49" dstpinname="Image">
+   <LINK dstnodeid="53" dstpinname="Image" srcnodeid="51" srcpinname="Output">
    </LINK>
-   <NODE systemname="AsTexture (EmguCV)" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" nodename="AsTexture (EmguCV)" componentmode="Hidden" id="50">
-   <BOUNDS type="Node" left="7380" top="3135" width="100" height="100">
+   <LINK dstnodeid="51" dstpinname="Input" srcnodeid="52" srcpinname="Image">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Width" srcnodeid="43" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Height" linkstyle="VHV" srcnodeid="43" srcpinname="Y Output Value">
+   <LINKPOINT x="1215" y="2430">
+   </LINKPOINT>
+   <LINKPOINT x="2070" y="2430">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Go To Position" srcnodeid="52" srcpinname="FPS">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="52" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="54" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
+   <BOUNDS height="100" left="7380" top="3075" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
+   <BOUNDS left="7380" top="3075" type="Box">
+   </BOUNDS>
    <PIN pinname="Image" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="7380" top="3135">
-   </BOUNDS>
    </NODE>
-   <LINK srcnodeid="50" srcpinname="Texture Out" dstnodeid="39" dstpinname="Texture">
+   <LINK dstnodeid="39" dstpinname="Texture" srcnodeid="54" srcpinname="Texture Out">
    </LINK>
-   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="50" dstpinname="Image" linkstyle="VHV">
-   <LINKPOINT x="315" y="3023">
+   <LINK dstnodeid="54" dstpinname="Image" linkstyle="VHV" srcnodeid="51" srcpinname="Output">
+   <LINKPOINT x="300" y="2940">
    </LINKPOINT>
-   <LINKPOINT x="7380" y="3023">
+   <LINKPOINT x="7380" y="2940">
    </LINKPOINT>
    </LINK>
    </PATCH>

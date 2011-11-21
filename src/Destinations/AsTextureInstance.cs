@@ -47,6 +47,8 @@ namespace VVVV.Nodes.EmguCV
 				FBufferConverted = new CVImageDoubleBuffer();
 				FBufferConverted.Initialise(new CVImageAttributes(FInput.ImageAttributes.Size, FConvertedFormat));
 			}
+
+			FNeedsTexture = true;
 		}
 
 		public override void Process()

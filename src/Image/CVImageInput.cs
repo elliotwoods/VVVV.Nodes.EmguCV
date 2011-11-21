@@ -190,7 +190,12 @@ namespace VVVV.Nodes.EmguCV
 			Disconnect();
 
 			FLink = input;
-			FImageAttributesFresh = true;
+
+			if (FLink.Allocated)
+			{
+				FImageAttributesFresh = true;
+				FImageFresh = true;
+			}
 
 			AddListeners();
 		}
