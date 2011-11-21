@@ -1,17 +1,21 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\test-ImageLoad.v4p" systemname="test-ImageLoad" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\test-ImageLoad.v4p">
-   <BOUNDS type="Window" left="3570" top="3735" width="9000" height="6000">
+   <PATCH nodename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\Samples\test-ImageLoad.v4p" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\test-ImageLoad.v4p" systemname="test-ImageLoad">
+   <BOUNDS height="6000" left="3570" top="3735" type="Window" width="9000">
    </BOUNDS>
-   <NODE systemname="ImageLoad (EmguCV)" filename="bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="ImageLoad (EmguCV)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="2820" top="1395" width="100" height="100">
+   <NODE componentmode="Hidden" filename="bin\Debug\VVVV.Nodes.EmguCV.dll" id="0" nodename="ImageLoad (EmguCV)" systemname="ImageLoad (EmguCV)">
+   <BOUNDS height="100" left="2820" top="1395" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Filename" visible="1">
+   <PIN encoded="0" pinname="Filename" slicecount="1" visible="1" values="..\..\..\..\Pictures\2010-10\Фото0036.jpg">
    </PIN>
    <PIN pinname="Image" visible="1">
    </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="2460" top="2520" width="100" height="100">
+   <NODE componentmode="Hidden" id="1" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="2460" top="2520" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -20,62 +24,46 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="AsTexture (EmguCV RGB)" filename="bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="AsTexture (EmguCV RGB)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="2805" top="2010" width="1665" height="270">
+   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="2445" top="3225" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Image" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Texture Out" dstnodeid="1" dstpinname="Texture">
-   </LINK>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="3">
-   <BOUNDS type="Node" left="2445" top="3225" width="100" height="100">
+   <BOUNDS height="1800" left="2445" top="3225" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS type="Box" left="2445" top="3225" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="12990" top="6180" width="6240" height="5010">
+   <BOUNDS height="5010" left="12990" top="6180" type="Window" width="6240">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="1" srcpinname="Layer">
    </LINK>
-   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2625" top="540" width="100" height="100">
+   <NODE componentmode="Hidden" id="4" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="2625" top="540" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="XYZ" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform">
+   <LINK dstnodeid="1" dstpinname="Transform" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="6">
-   <BOUNDS type="Node" left="4965" top="3960" width="100" height="100">
+   <NODE componentmode="InAWindow" id="6" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="4965" top="3960" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4965" top="3960" width="2400" height="1800">
+   <BOUNDS height="1800" left="4965" top="3960" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS type="Window" left="12960" top="645" width="6240" height="5010">
+   <BOUNDS height="5010" left="12960" top="645" type="Window" width="6240">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="2" dstpinname="Image">
-   </LINK>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="9">
-   <BOUNDS type="Node" left="4260" top="15" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="2" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
+   <BOUNDS height="270" left="2805" top="2010" type="Node" width="1665">
    </BOUNDS>
-   <BOUNDS type="Box" left="4260" top="15" width="2190" height="1185">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="3">
+   <PIN pinname="Image" visible="1">
    </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Input String" slicecount="3" values="..\..\..\Pictures\Фотки\1.jpg,..\..\..\Pictures\2010-11\Фото0117.jpg,..\..\..\Pictures\2010-10\Фото0065.jpg" encoded="0">
+   <PIN pinname="Texture Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="0" dstpinname="Filename">
+   <LINK dstnodeid="2" dstpinname="Image" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Texture Out" dstnodeid="1" dstpinname="Texture">
    </LINK>
    </PATCH>

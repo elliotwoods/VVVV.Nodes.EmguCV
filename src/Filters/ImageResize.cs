@@ -29,6 +29,8 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Initialise()
 		{
+			if(!FInput.Allocated) return;
+
 			FOutput.Image.Initialise(FSize, FInput.ImageAttributes.ColourFormat);
 			FOutput.Image.Allocate();
 		}
