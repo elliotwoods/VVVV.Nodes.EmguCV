@@ -1,0 +1,87 @@
+﻿#region using
+using System.Collections.Generic;
+using System.Drawing;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
+using System;
+using VVVV.Utils.VColor;
+
+#endregion
+
+namespace VVVV.Nodes.EmguCV
+{
+	public class CannyInstance : IFilterInstance
+	{
+
+		public double ThresholdMin = 50;
+		public double ThresholdMax = 150;
+
+		private CVImage FGrayscale = new CVImage();
+
+		private int FAperture = 5;
+		public int Aperture
+		{
+			set
+			{
+				if (value < 3)
+					value = 3;
+
+				if (value > 7)
+					value = 7;
+
+				value += (value + 1) % 2;
+
+				FAperture = value;
+			}
+		}
+
+		public override void Initialise()
+		{
+			FGrayscale.Initialise(FInput.ImageAttributes.Size, TColourFormat.L8);
+			FOutput.Image.Initialise(FGrayscale.ImageAttributes);
+		}
+
+		public override void Process()
+		{
+			FInput.GetImage(FGrayscale);
+			CvInvoke.cvCanny(FGrayscale.CvMat, FOutput.CvMat, ThresholdMin, ThresholdMax, FAperture);
+			FOutput.Send();
+		}
+
+	}
+
+	#region PluginInfo
+	[PluginInfo(Name = "Canny", Category = "EmguCV", Version = "", Help = "Find edges in image using Canny filter", Author = "elliotwoods", Credits = "", Tags = "")]
+	#endregion PluginInfo
+	public class CannyNode : IFilterNode<CannyInstance>
+	{
+		[Input("Threshold min", DefaultValue = 50)]
+		IDiffSpread<double> FThresholdMin;
+
+		[Input("Threshold max", DefaultValue = 150)]
+		IDiffSpread<double> FThresholdMax;
+
+		[Input("Window size", MinValue = 3, MaxValue = 7, DefaultValue = 3)]
+		IDiffSpread<int> FWindowSize;
+
+		protected override void Update(int InstanceCount)
+		{
+			if (FThresholdMin.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].ThresholdMin = FThresholdMin[i];
+
+			if (FThresholdMax.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].ThresholdMax = FThresholdMax[i];
+
+			if (FWindowSize.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].Aperture = FWindowSize[i];
+
+		}
+	}
+}

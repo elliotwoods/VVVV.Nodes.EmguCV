@@ -40,7 +40,7 @@ namespace VVVV.Nodes.EmguCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "FrameDelay", Category = "EmguCV", Version = "Filter", Help = "Delay output by 1 frame", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "FrameDelay", Category = "EmguCV", Version = "", Help = "Delay output by 1 frame", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class FrameDelayNode : IFilterNode<FrameDelayInstance>
 	{

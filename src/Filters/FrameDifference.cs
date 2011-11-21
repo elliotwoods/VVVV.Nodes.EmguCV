@@ -88,7 +88,7 @@ namespace VVVV.Nodes.EmguCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "FrameDifference", Category = "EmguCV", Version = "Filter", Help = "Output difference between frames", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "FrameDifference", Category = "EmguCV", Version = "", Help = "Output difference between frames", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class FrameDifferenceNode : IFilterNode<FrameDifferenceInstance>
 	{

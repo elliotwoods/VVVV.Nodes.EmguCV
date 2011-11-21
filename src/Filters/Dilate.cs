@@ -45,7 +45,7 @@ namespace VVVV.Nodes.EmguCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Dilate", Category = "EmguCV", Version = "Filter", Help = "Inflate features in image, i.e. grow noise", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Dilate", Category = "EmguCV", Version = "", Help = "Inflate features in image, i.e. grow noise", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class DilateNode : IFilterNode<DilateInstance>
 	{

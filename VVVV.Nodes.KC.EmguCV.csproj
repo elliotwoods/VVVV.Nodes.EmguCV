@@ -123,7 +123,7 @@
     <None Include="src\Filters\Template.cs" />
     <None Include="src\Dead\BoundsNode.cs" />
     <Compile Include="src\Destinations\AvgSdvNode.cs" />
-    <Compile Include="src\Filters\EQ.cs" />
+    <Compile Include="src\Filters\Canny.cs" />
     <Compile Include="src\Filters\OpticalFlowHS.cs" />
     <Compile Include="src\Filters\GT,LT,EQ.cs" />
     <Compile Include="src\Filters\Dilate.cs" />
@@ -136,6 +136,7 @@
     <Compile Include="src\Filters\WithinRange.cs" />
     <Compile Include="src\Process\ProcessDestination.cs" />
     <Compile Include="src\Sources\NoiseNode.cs" />
+    <None Include="src\Tracking\ContourNode.cs" />
     <Compile Include="src\User Interfaces\IDestinationNode.cs" />
     <Compile Include="src\User Interfaces\IDestinationInstance.cs" />
     <Compile Include="src\Destinations\InfoNode.cs" />

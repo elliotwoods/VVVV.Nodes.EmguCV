@@ -215,9 +215,9 @@
    <NODE componentmode="Hidden" filename="FindBoardsInWorld.v4p" id="17" nodename="FindBoardsInWorld.v4p" systemname="FindBoardsInWorld" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\">
    <BOUNDS height="270" left="795" top="1515" type="Node" width="4860">
    </BOUNDS>
-   <PIN pinname="RGB Image" visible="1" slicecount="1" values="||">
+   <PIN pinname="RGB Image" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="World Image" visible="1" slicecount="1" values="||">
+   <PIN pinname="World Image" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>

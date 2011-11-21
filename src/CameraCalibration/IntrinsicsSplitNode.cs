@@ -51,7 +51,6 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
-
 		}
 
 		//called when data for any output pin is requested

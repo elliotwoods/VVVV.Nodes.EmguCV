@@ -45,7 +45,7 @@ namespace VVVV.Nodes.EmguCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Erode", Category = "EmguCV", Version = "Filter", Help = "Reduce features in image, i.e. remove noise", Author = "", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Erode", Category = "EmguCV", Version = "", Help = "Reduce features in image, i.e. remove noise", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class ErodeNode : IFilterNode<ErodeInstance>
 	{
