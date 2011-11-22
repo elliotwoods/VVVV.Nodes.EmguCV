@@ -1,0 +1,85 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\imagegui.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\devtests\imagegui.v4p" systemname="imagegui">
+   <BOUNDS height="12630" left="9660" top="1110" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="8" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
+   <BOUNDS height="100" left="1335" top="1890" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1335" top="1890">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="270" left="555" top="5535" type="Node" width="2760">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="540" top="5865" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="5985" left="540" top="5865" type="Box" width="7530">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8835" top="12300" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="15" nodename="ImageLoad (EmguCV)" systemname="ImageLoad (EmguCV)">
+   <BOUNDS height="270" left="1335" top="1215" type="Node" width="2775">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Filename">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Image" dstnodeid="8" dstpinname="Image">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1350" top="555" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1350" top="555" width="2205" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="photo.png" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="|All Files (*.*)||*.*|" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filename" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="15" dstpinname="Filename">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="4050" top="1890" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4050" top="1890" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Status" dstnodeid="17" dstpinname="Input String">
+   </LINK>
+   </PATCH>

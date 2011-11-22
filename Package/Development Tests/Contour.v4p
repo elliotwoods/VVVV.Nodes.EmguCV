@@ -1,0 +1,431 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\Contour.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" systemname="ImageLoad" locked="0">
+   <BOUNDS height="12630" left="9645" top="1785" type="Window" width="13740">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="1815" top="6840" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="5040" left="1815" top="6840" type="Box" width="7410">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8835" top="12300" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4905" top="1095" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="4905" top="1095" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Threshold Enabled|">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3855" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3855" top="1095" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.14">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Threshold">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\VVVV.Nodes.OpenNI\Build\plugins\VVVV.Nodes.EmguCV.dll" id="30" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="270" left="1800" top="720" type="Node" width="2430">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <BOUNDS left="1800" top="720" type="Box">
+   </BOUNDS>
+   <PIN pinname="Width">
+   </PIN>
+   <PIN pinname="Height">
+   </PIN>
+   <PIN pinname="Camera ID" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="5895" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5895" top="1095" type="Box" width="1590">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="AbsoluteDifference">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Difference Mode|">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\VVVV.Nodes.OpenNI\Package\Plugins\VVVV.Nodes.EmguCV.dll" id="35" nodename="Contour (EmguCV)" systemname="Contour (EmguCV)">
+   <BOUNDS height="270" left="4935" top="2490" type="Node" width="5490">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bounding boxXYZW" visible="1">
+   </PIN>
+   <PIN pinname="Area" visible="1">
+   </PIN>
+   <PIN pinname="Perimeter" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6135" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6135" top="3045" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Area">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="35" srcpinname="Area">
+   <LINKPOINT x="7450" y="2913">
+   </LINKPOINT>
+   <LINKPOINT x="6395" y="2863">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="40" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="270" left="1815" top="5565" type="Node" width="6255">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="40" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Package\Plugins\VVVV.Nodes.EmguCV.dll" id="45" nodename="BackgroundSubtract (EmguCV)" systemname="BackgroundSubtract (EmguCV)">
+   <BOUNDS height="270" left="1815" top="1950" type="Node" width="4155">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set">
+   </PIN>
+   <PIN pinname="Threshold Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" visible="1">
+   </PIN>
+   <PIN pinname="Difference Mode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="35" dstpinname="Input" linkstyle="VHV" srcnodeid="45" srcpinname="Output">
+   <LINKPOINT x="2035" y="2340">
+   </LINKPOINT>
+   <LINKPOINT x="4775" y="2340">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Input" srcnodeid="30" srcpinname="Image">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Threshold" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Threshold Enabled" srcnodeid="25" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Difference Mode" srcnodeid="31" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11475" top="3360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="11475" top="3360" type="Box" width="495">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.02">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Minimum area|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="51" nodename="Timing (Debug)" systemname="Timing (Debug)">
+   <BOUNDS height="100" left="10305" top="975" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Windows Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Timer Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Update View Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Prepare Graph Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Render Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Present Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Network Sync Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Debug Output Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Reset Cache Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Total Clock Filter Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Total Runnning Time" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Up Time" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="52" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2985" top="150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="405" left="2985" top="150" type="Box" width="930">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1920">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Width" srcnodeid="52" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="56" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2820" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="2820" top="1095" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Set">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Set" srcnodeid="56" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="57" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10305" top="1350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="495" left="10305" top="1350" type="Box" width="615">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|frames per second|">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="57" dstpinname="Y Input Value" srcnodeid="51" srcpinname="frames per second">
+   </LINK>
+   <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
+   <BOUNDS height="100" left="10305" top="405" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Time Mode" slicecount="1" values="Filtered">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4170" top="150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="405" left="4170" top="150" type="Box" width="930">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1080">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Height" srcnodeid="59" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Package\Modules\ImageQuad(EmguCV DX9).v4p" id="60" nodename="..\Package\Modules\ImageQuad(EmguCV DX9).v4p" systemname="ImageQuad(EmguCV DX9)" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\">
+   <BOUNDS height="100" left="480" top="1965" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Image" linkstyle="VHV" srcnodeid="30" srcpinname="Image">
+   <LINKPOINT x="1800" y="1438">
+   </LINKPOINT>
+   <LINKPOINT x="540" y="1488">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="61" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="465" top="2640" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="465" top="2640" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="12510" top="9000" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\Package\Modules\ImageQuad(EmguCV DX9).v4p" id="62" nodename="..\Package\Modules\ImageQuad(EmguCV DX9).v4p" systemname="ImageQuad(EmguCV DX9)" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\">
+   <BOUNDS height="100" left="1815" top="4965" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="40" dstpinname="Layer 1" srcnodeid="62" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="62" dstpinname="Image" srcnodeid="45" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="61" dstpinname="Layers" srcnodeid="60" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="63" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6015" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6015" top="3555" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Count">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="63" dstpinname="Y Input Value" srcnodeid="35" srcpinname="Bounding box Bin Size">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Package\modules\BoundingBox (DX9).v4p" id="67" nodename="BoundingBox (DX9)" systemname="BoundingBox (DX9)">
+   <BOUNDS height="100" left="4905" top="4950" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Bounding boxXYWH" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="40" dstpinname="Layer 2" srcnodeid="67" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Package\modules\SelectMinimumArea (EmguCV Contour).v4p" id="68" nodename="SelectMinimumArea (EmguCV Contour)" systemname="SelectMinimumArea (EmguCV Contour)">
+   <BOUNDS height="270" left="4920" top="4305" type="Node" width="6615">
+   </BOUNDS>
+   <PIN pinname="Bounding box XYWH" visible="1">
+   </PIN>
+   <PIN pinname="Minimum area" visible="1">
+   </PIN>
+   <PIN pinname="Area" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="17460" top="6600" width="8640" height="6000">
+   </BOUNDS>
+   <PIN pinname="Perimeter" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Bounding box XYWH" srcnodeid="35" srcpinname="Bounding boxXYZW">
+   </LINK>
+   <LINK dstnodeid="67" dstpinname="Bounding boxXYWH" srcnodeid="68" srcpinname="Bounding box XYWH">
+   </LINK>
+   <LINK dstnodeid="68" dstpinname="Minimum area" srcnodeid="49" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="68" dstpinname="Area" srcnodeid="35" srcpinname="Area">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Perimeter" dstnodeid="68" dstpinname="Perimeter">
+   </LINK>
+   <NODE systemname="ContourPerimeter (DX9)" filename="..\Package\modules\ContourPerimeter (DX9).v4p" nodename="ContourPerimeter (DX9)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="11460" top="5010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="16590" top="7890" width="6015" height="5790">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="68" srcpinname="Perimeter" dstnodeid="72" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 3" linkstyle="VHV">
+   <LINKPOINT x="11460" y="5408">
+   </LINKPOINT>
+   <LINKPOINT x="8070" y="5408">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="CPULoad (Debug)" nodename="CPULoad (Debug)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="11325" top="960" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Do Check" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="74" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="12075" top="1560" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12075" top="1560" width="795" height="795">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|CPU Load|" encoded="0">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="CPU Load" dstnodeid="74" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="75">
+   <BOUNDS type="Node" left="11340" top="210" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11340" top="210" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="73" dstpinname="Do Check">
+   </LINK>
+   </PATCH>

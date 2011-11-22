@@ -1,0 +1,127 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" systemname="ImageLoad">
+   <BOUNDS height="12630" left="8295" top="1710" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="5" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="270" left="390" top="5370" type="Node" width="2760">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="390" top="5715" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6090" left="390" top="5715" type="Box" width="8070">
+   </BOUNDS>
+   <BOUNDS height="5010" left="8835" top="12300" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1185" top="405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1185" top="405" type="Box" width="2205">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="photo.png">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|All Files (*.*)||*.*|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="3900" top="3240" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3900" top="3240" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3885" top="1095" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="3885" top="1095" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Reload">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="765" top="4875" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="23" nodename="ImageLoad (EmguCV)" systemname="ImageLoad (EmguCV)">
+   <BOUNDS height="270" left="1185" top="2115" type="Node" width="2775">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Reload" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Reload" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input String" srcnodeid="23" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="24" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
+   <BOUNDS height="100" left="1170" top="3315" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Filename" srcnodeid="16" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="25" nodename="GaussianBlur (EmguCV)" systemname="GaussianBlur (EmguCV)">
+   <BOUNDS height="100" left="1170" top="2790" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Image" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
+   </LINK>
+   </PATCH>
