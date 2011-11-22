@@ -123,6 +123,7 @@
     <None Include="src\Dead\BoundsNode.cs" />
     <Compile Include="src\Destinations\AvgSdvNode.cs" />
     <Compile Include="src\Filters\Canny.cs" />
+    <Compile Include="src\Filters\BackgroundSubtract.cs" />
     <Compile Include="src\Filters\OpticalFlowHS.cs" />
     <Compile Include="src\Filters\GT,LT,EQ.cs" />
     <Compile Include="src\Filters\Dilate.cs" />
