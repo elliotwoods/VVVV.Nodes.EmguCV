@@ -26,6 +26,7 @@
 ipch/
 obj/
 [Bb]in
+[Bb]uild
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
@@ -46,7 +47,7 @@ _ReSharper*/
 *~.xml
 
 #dll's
-cvextern.dll
+*.dll
 
 #media files
 *.avi
