@@ -108,8 +108,6 @@
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Texture" srcnodeid="24" srcpinname="Texture Out">
-   </LINK>
    <LINK dstnodeid="23" dstpinname="Filename" srcnodeid="16" srcpinname="Output String">
    </LINK>
    <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="25" nodename="GaussianBlur (EmguCV)" systemname="GaussianBlur (EmguCV)">
@@ -123,5 +121,7 @@
    <LINK dstnodeid="24" dstpinname="Image" srcnodeid="25" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="25" dstpinname="Input" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
    </LINK>
    </PATCH>

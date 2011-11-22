@@ -22,9 +22,8 @@ namespace VVVV.Nodes.EmguCV
 			if (FSize.Height < 1)
 				FSize.Height = 1;
 
-			//Call Allocate() whenever you need to change the properties of the output image
-			//not AllocateOutput()!
-			Initialise();
+			if (FInput.Allocated)
+				Initialise();
 		}
 
 		public override void Initialise()
