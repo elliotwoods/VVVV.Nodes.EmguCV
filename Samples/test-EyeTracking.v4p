@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="c:\Users\Smakhtin\Documents\Repos\EventBased\VVVV.Nodes.EmguCV\tests\test-EyeTracking.v4p" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-EyeTracking.v4p" systemname="test-EyeTracking">
+   <PATCH nodename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\Samples\test-EyeTracking.v4p" filename="C:\Users\Smakhtin\Documents\Repos\VVVV.Nodes.EmguCV\tests\test-EyeTracking.v4p" systemname="test-EyeTracking">
    <BOUNDS height="10230" left="1950" top="930" type="Window" width="12030">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -180,16 +180,6 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
    </LINK>
-   <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="5" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
-   <PIN pinname="Image" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS height="100" left="870" top="1515" type="Node" width="100">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="15" nodename="ObjectTracking (EmguCV)" systemname="ObjectTracking (EmguCV)">
    <BOUNDS height="100" left="3480" top="1665" type="Node" width="100">
    </BOUNDS>
@@ -208,8 +198,6 @@
    <PIN pinname="Min Height" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Image" srcnodeid="0" srcpinname="Image">
-   </LINK>
    <LINK dstnodeid="13" dstpinname="XY" srcnodeid="15" srcpinname="PositionXY">
    </LINK>
    <LINK dstnodeid="14" dstpinname="XY" srcnodeid="15" srcpinname="ScaleXY">
@@ -227,7 +215,7 @@
    <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="17" nodename="ObjectTracking (EmguCV)" systemname="ObjectTracking (EmguCV)">
    <BOUNDS height="100" left="8760" top="1125" type="Node" width="100">
    </BOUNDS>
-   <PIN encoded="0" pinname="Haar Table" slicecount="1" values="haars\haarcascade_righteye_2splits.xml">
+   <PIN encoded="0" pinname="Haar Table" slicecount="1" values="..\..\..\..\..\..\opencv\data\haarcascades\haarcascade_frontalface_alt2.xml">
    </PIN>
    <PIN pinname="Image" visible="1">
    </PIN>
@@ -237,9 +225,9 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="17" dstpinname="Image" srcnodeid="0" srcpinname="Image">
-   </LINK>
    <NODE componentmode="Hidden" id="23" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="8040" top="3810" type="Node" width="100">
    </BOUNDS>
@@ -372,8 +360,6 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="28" dstpinname="Image" srcnodeid="0" srcpinname="Image">
-   </LINK>
    <NODE componentmode="Hidden" id="33" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="13185" top="4770" type="Node" width="100">
    </BOUNDS>
@@ -466,24 +452,6 @@
    </LINK>
    <LINK dstnodeid="28" dstpinname="Enabled" srcnodeid="24" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InAWindow" id="34" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
-   <BOUNDS height="100" left="8865" top="9045" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="1800" left="8865" top="9045" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="5010" left="14040" top="2745" type="Window" width="6240">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Image" srcnodeid="0" srcpinname="Image">
-   </LINK>
-   <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="36" nodename="AsTexture (EmguCV RGB)" systemname="AsTexture (EmguCV RGB)">
-   <BOUNDS height="100" left="5490" top="3480" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Image" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InAWindow" id="37" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="10080" top="6795" type="Node" width="100">
    </BOUNDS>
@@ -504,18 +472,14 @@
    </NODE>
    <LINK dstnodeid="37" dstpinname="Layers" srcnodeid="38" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="38" dstpinname="Texture" srcnodeid="36" srcpinname="Texture Out">
-   </LINK>
-   <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="9885" top="5265" width="100" height="100">
+   <NODE componentmode="Hidden" id="39" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="100" left="9885" top="5265" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Texture Out" dstnodeid="39" dstpinname="Texture">
-   </LINK>
-   <NODE systemname="ImageResize (EmguCV)" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" nodename="ImageResize (EmguCV)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="5475" top="3030" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\bin\Debug\VVVV.Nodes.EmguCV.dll" id="40" nodename="ImageResize (EmguCV)" systemname="ImageResize (EmguCV)">
+   <BOUNDS height="100" left="5475" top="3030" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Image" visible="1">
    </PIN>
@@ -525,9 +489,39 @@
    </PIN>
    <PIN pinname="Init" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="40" srcpinname="Image" dstnodeid="36" dstpinname="Image">
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="5" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="870" top="1515" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="5" srcpinname="Texture Out">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="40" dstpinname="Image">
+   <LINK dstnodeid="5" dstpinname="Image" srcnodeid="0" srcpinname="Image">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="36" nodename="AsTexture (EmguCV)" systemname="AsTexture (EmguCV)">
+   <BOUNDS height="100" left="5490" top="3480" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Texture" srcnodeid="36" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Texture" srcnodeid="36" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="36" dstpinname="Image" srcnodeid="40" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Input" srcnodeid="0" srcpinname="Image">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Image" dstnodeid="17" dstpinname="Input">
    </LINK>
    </PATCH>
