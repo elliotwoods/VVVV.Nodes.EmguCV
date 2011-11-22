@@ -36,7 +36,14 @@ namespace VVVV.Nodes.EmguCV
 				return;
 
 			FInput.Image.GetImage(TColourFormat.L8, FGrayscale);
-			Image<Gray, byte> img = FGrayscale;
+			Image<Gray, byte> img = FGrayscale.GetImage() as Image<Gray, byte>;
+
+			if (img != null)
+			{
+				Contour<Point> pts = img.FindContours();
+				if (pts != null)
+					System.Diagnostics.Debug.Print(pts.ToString());
+			}
 		}
 	}
 

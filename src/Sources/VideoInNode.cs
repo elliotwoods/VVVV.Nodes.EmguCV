@@ -86,7 +86,7 @@ namespace VVVV.Nodes.EmguCV
 					FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_WIDTH, width);
 					FCapture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FRAME_HEIGHT, height);
 				}
-				catch
+				catch (Exception e)
 				{
 					Status = "Camera open failed";
 					IsRunning = false;

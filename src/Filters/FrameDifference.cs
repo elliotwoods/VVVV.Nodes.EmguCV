@@ -32,7 +32,7 @@ namespace VVVV.Nodes.EmguCV
 			set
 			{
 				FThresholdEnabled = value;
-				Initialise();
+				ReInitialise();
 			}
 		}
 

@@ -15,15 +15,20 @@ namespace VVVV.Nodes.EmguCV
 		/// </summary>
 		abstract public void Initialise();
 
-		bool FFirstRun = true;
+		bool FNeedsInitialisation = true;
 		virtual public bool NeedsInitialise()
 		{
-			if (FFirstRun)
+			if (FNeedsInitialisation)
 			{
-				FFirstRun = false;
+				FNeedsInitialisation = false;
 				return true;
 			}
 			return false;
+		}
+
+		protected void ReInitialise()
+		{
+			FNeedsInitialisation = true;
 		}
 
 		abstract public void Process();
