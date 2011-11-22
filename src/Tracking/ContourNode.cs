@@ -36,7 +36,7 @@ namespace VVVV.Nodes.EmguCV
 				return;
 
 			FInput.Image.GetImage(TColourFormat.L8, FGrayscale);
-
+			Image<Gray, byte> img = FGrayscale;
 		}
 	}
 
