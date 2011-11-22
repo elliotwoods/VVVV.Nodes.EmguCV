@@ -19,10 +19,23 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.EmguCV
 {
-	struct ContourData
+	public class ContourPerimeter
 	{
-		public Rectangle Bounds;
-		public double Area;
+		public ContourPerimeter(Contour<Point> contour, int imageWidth, int imageHeight)
+		{
+			Points = new Vector2D[contour.Total];
+
+			for (int i = 0; i < contour.Total; i++)
+			{
+				this.Points[i].x = contour[i].X / (double)imageWidth * 2.0d - 1.0d;
+				this.Points[i].y = 1.0d - contour[i].Y / (double)imageHeight*2.0d;
+			}
+
+			this.Length = contour.Perimeter;
+		}
+
+		public Vector2D[] Points;
+		public double Length;
 	}
 
 	public class ContourInstance : IDestinationInstance
@@ -34,6 +47,7 @@ namespace VVVV.Nodes.EmguCV
 		Object FLockResults = new Object();
 		Spread<Vector4D> FBoundingBox = new Spread<Vector4D>(0);
 		Spread<double> FArea = new Spread<double>(0);
+		Spread<ContourPerimeter> FPerimeter = new Spread<ContourPerimeter>(0);
 
 		public ISpread<Vector4D> BoundingBox
 		{
@@ -53,9 +67,25 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
+		public ISpread<ContourPerimeter> Perimeter
+		{
+			get
+			{
+				lock (FLockResults)
+					return FPerimeter.Clone<ContourPerimeter>();
+			}
+		}
+
 		public override void Initialise()
 		{
 			FGrayscale.Initialise(FInput.ImageAttributes.Size, TColourFormat.L8);
+		}
+
+		private struct ContourTempData
+		{
+			public Rectangle Bounds;
+			public double Area;
+			public ContourPerimeter Perimeter; 
 		}
 
 		override public void Process()
@@ -73,14 +103,15 @@ namespace VVVV.Nodes.EmguCV
 
 				Contour<Point> contour = img.FindContours();
 
-				List<ContourData> results = new List<ContourData>();
+				List<ContourTempData> results = new List<ContourTempData>();
 
-				ContourData c;
+				ContourTempData c;
 				for (; contour != null; contour = contour.HNext)
 				{
-					c = new ContourData();
+					c = new ContourTempData();
 					c.Area = contour.Area;
 					c.Bounds = contour.BoundingRectangle;
+					c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
 
 					results.Add(c);
 				}
@@ -89,6 +120,7 @@ namespace VVVV.Nodes.EmguCV
 				{
 					FBoundingBox.SliceCount = results.Count;
 					FArea.SliceCount = results.Count;
+					FPerimeter.SliceCount = results.Count;
 
 					for (int i = 0; i < results.Count; i++)
 					{
@@ -100,6 +132,8 @@ namespace VVVV.Nodes.EmguCV
 							 (double)c.Bounds.Height * 2.0d / (double)img.Height);
 
 						FArea[i] = (double)c.Area*  (4.0d / (double)(img.Width * img.Height));
+
+						FPerimeter[i] = c.Perimeter;
 					}
 				}
 
@@ -121,6 +155,10 @@ namespace VVVV.Nodes.EmguCV
 
 		[Output("Area")]
 		ISpread<ISpread<double>> FPinOutArea;
+
+		[Output("Perimeter")]
+		ISpread<ISpread<ContourPerimeter>> FPinOutPerimeter;
+
 		#endregion fields & pins
 
 		protected override void Update(int InstanceCount)
@@ -142,11 +180,13 @@ namespace VVVV.Nodes.EmguCV
 		{
 			FPinOutArea.SliceCount = InstanceCount;
 			FPinOutBounds.SliceCount = InstanceCount;
+			FPinOutPerimeter.SliceCount = InstanceCount;
 
 			for (int i = 0; i < InstanceCount; i++)
 			{
 				FPinOutArea[i] = FProcessor[i].Area;
 				FPinOutBounds[i] = FProcessor[i].BoundingBox;
+				FPinOutPerimeter[i] = FProcessor[i].Perimeter;
 			}
 		}
 	}

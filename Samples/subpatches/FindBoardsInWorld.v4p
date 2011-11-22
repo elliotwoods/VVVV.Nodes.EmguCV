@@ -434,7 +434,21 @@
    <LINKPOINT x="1995" y="1470">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" filename="..\..\Build\Dynamic\3DLength\3DLength.csproj" id="63" nodename="Length (3d)" systemname="Length (3d)">
+   <NODE componentmode="Hidden" id="64" nodename="MessageBeep (Windows)" systemname="MessageBeep (Windows)">
+   <BOUNDS height="100" left="5535" top="3300" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="DoBeep" visible="1">
+   </PIN>
+   <PIN pinname="Sound" slicecount="1" values="StandardBeep">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="64" dstpinname="DoBeep" linkstyle="VHV" srcnodeid="57" srcpinname="Output">
+   <LINKPOINT x="5160" y="3173">
+   </LINKPOINT>
+   <LINKPOINT x="5535" y="3173">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\..\Package\Dynamic\3DLength\3DLength.csproj" id="63" nodename="Length (3d)" systemname="Length (3d)">
    <BOUNDS height="100" left="2940" top="2040" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -448,20 +462,6 @@
    <LINKPOINT x="1575" y="1988">
    </LINKPOINT>
    <LINKPOINT x="2940" y="1988">
-   </LINKPOINT>
-   </LINK>
-   <NODE componentmode="Hidden" id="64" nodename="MessageBeep (Windows)" systemname="MessageBeep (Windows)">
-   <BOUNDS height="100" left="5535" top="3300" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="DoBeep" visible="1">
-   </PIN>
-   <PIN pinname="Sound" slicecount="1" values="StandardBeep">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="64" dstpinname="DoBeep" linkstyle="VHV">
-   <LINKPOINT x="5160" y="3173">
-   </LINKPOINT>
-   <LINKPOINT x="5535" y="3173">
    </LINKPOINT>
    </LINK>
    </PATCH>

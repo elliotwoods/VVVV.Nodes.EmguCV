@@ -137,6 +137,7 @@
     <Compile Include="src\Process\ProcessDestination.cs" />
     <Compile Include="src\Sources\NoiseNode.cs" />
     <Compile Include="src\Tracking\ContourNode.cs" />
+    <Compile Include="src\Tracking\ContourPerimeterSplitNode.cs" />
     <Compile Include="src\Tracking\ObjectTrackingNode.cs" />
     <Compile Include="src\User Interfaces\IDestinationNode.cs" />
     <Compile Include="src\User Interfaces\IDestinationInstance.cs" />
