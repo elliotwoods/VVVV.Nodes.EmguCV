@@ -23,24 +23,29 @@ namespace VVVV.Nodes.EmguCV
 	{
 		public ContourPerimeter(Contour<Point> contour, int imageWidth, int imageHeight)
 		{
-			Points = new Vector2D[contour.Total];
+			Points = new PointF[contour.Total];
 
 			for (int i = 0; i < contour.Total; i++)
 			{
-				this.Points[i].x = contour[i].X / (double)imageWidth * 2.0d - 1.0d;
-				this.Points[i].y = 1.0d - contour[i].Y / (double)imageHeight*2.0d;
+				this.Points[i].X = contour[i].X / (float)imageWidth * 2.0f - 1.0f;
+				this.Points[i].Y = 1.0f - contour[i].Y / (float)imageHeight * 2.0f;
 			}
 
 			this.Length = contour.Perimeter;
+			this.Size.Width = imageWidth;
+			this.Size.Height = imageHeight;
 		}
 
-		public Vector2D[] Points;
+		public PointF[] Points;
 		public double Length;
+		public Size Size;
 	}
 
 	public class ContourInstance : IDestinationInstance
 	{
 		public bool Enabled = true;
+		public CHAIN_APPROX_METHOD Approximation = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE;
+
 
 		CVImage FGrayscale = new CVImage();
 
@@ -48,6 +53,7 @@ namespace VVVV.Nodes.EmguCV
 		Spread<Vector4D> FBoundingBox = new Spread<Vector4D>(0);
 		Spread<double> FArea = new Spread<double>(0);
 		Spread<ContourPerimeter> FPerimeter = new Spread<ContourPerimeter>(0);
+		public string FStatus = "";
 
 		public ISpread<Vector4D> BoundingBox
 		{
@@ -76,6 +82,15 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
+		public string Status
+		{
+			get
+			{
+				lock (FLockResults)
+					return FStatus.Clone() as string;
+			}
+		}
+
 		public override void Initialise()
 		{
 			FGrayscale.Initialise(FInput.ImageAttributes.Size, TColourFormat.L8);
@@ -95,25 +110,36 @@ namespace VVVV.Nodes.EmguCV
 
 			FInput.Image.GetImage(TColourFormat.L8, FGrayscale);
 			Image<Gray, byte> img = FGrayscale.GetImage() as Image<Gray, byte>;
-
 			if (img != null)
 			{
 				//Seriously EmguCV? what the fuck is up with your syntax?
 				//both ways of skinning this cat involve fucking a moose
 
-				Contour<Point> contour = img.FindContours();
-
 				List<ContourTempData> results = new List<ContourTempData>();
-
 				ContourTempData c;
-				for (; contour != null; contour = contour.HNext)
-				{
-					c = new ContourTempData();
-					c.Area = contour.Area;
-					c.Bounds = contour.BoundingRectangle;
-					c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
 
-					results.Add(c);
+				try
+				{
+					Contour<Point> contour = img.FindContours(Approximation, RETR_TYPE.CV_RETR_LIST);
+
+					for (; contour != null; contour = contour.HNext)
+					{
+						c = new ContourTempData();
+						c.Area = contour.Area;
+						c.Bounds = contour.BoundingRectangle;
+						c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
+
+						results.Add(c);
+					}
+
+
+					lock (FLockResults)
+						FStatus = "OK";
+				}
+				catch (Exception e)
+				{
+					lock (FLockResults)
+						FStatus = e.Message;
 				}
 
 				lock (FLockResults)
@@ -147,6 +173,9 @@ namespace VVVV.Nodes.EmguCV
 	public class ContourNode : IDestinationNode<ContourInstance>
 	{
 		#region fields & pins
+		[Input("Chain approximation", DefaultEnumEntry = "CV_CHAIN_APPROX_SIMPLE")]
+		IDiffSpread<CHAIN_APPROX_METHOD> FPinInApproximation;
+
 		[Input("Enabled", DefaultValue = 1)]
 		IDiffSpread<bool> FPinInEnabled;
 
@@ -158,6 +187,9 @@ namespace VVVV.Nodes.EmguCV
 
 		[Output("Perimeter")]
 		ISpread<ISpread<ContourPerimeter>> FPinOutPerimeter;
+
+		[Output("Status")]
+		ISpread<string> FStatus;
 
 		#endregion fields & pins
 
@@ -171,9 +203,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			if (FPinInEnabled.IsChanged)
 				for (int i = 0; i < InstanceCount; i++)
-				{
 					FProcessor[i].Enabled = FPinInEnabled[0];
-				}
+				
+			if (FPinInApproximation.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].Approximation = FPinInApproximation[i];
 		}
 
 		void Output(int InstanceCount)
@@ -181,12 +215,14 @@ namespace VVVV.Nodes.EmguCV
 			FPinOutArea.SliceCount = InstanceCount;
 			FPinOutBounds.SliceCount = InstanceCount;
 			FPinOutPerimeter.SliceCount = InstanceCount;
+			FStatus.SliceCount = InstanceCount;
 
 			for (int i = 0; i < InstanceCount; i++)
 			{
 				FPinOutArea[i] = FProcessor[i].Area;
 				FPinOutBounds[i] = FProcessor[i].BoundingBox;
 				FPinOutPerimeter[i] = FProcessor[i].Perimeter;
+				FStatus[i] = FProcessor[i].Status;
 			}
 		}
 	}

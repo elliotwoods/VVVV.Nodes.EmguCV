@@ -351,9 +351,11 @@
    </BOUNDS>
    <PIN pinname="Input XYZ" visible="1">
    </PIN>
-   <BOUNDS height="8070" left="15900" top="6570" type="Window" width="5100">
+   <BOUNDS height="8070" left="15120" top="5625" type="Window" width="5100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" slicecount="1" values="0.1">
    </PIN>
    </NODE>
    <LINK dstnodeid="56" dstpinname="Input XYZ" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">

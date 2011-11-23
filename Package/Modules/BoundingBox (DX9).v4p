@@ -71,9 +71,9 @@
    </BOUNDS>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Layer">
    </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input Node" srcnodeid="0" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" id="7" nodename="Count (Node)" systemname="Count (Node)">
    <BOUNDS height="100" left="2625" top="2250" type="Node" width="100">
    </BOUNDS>
@@ -99,5 +99,7 @@
    <LINK dstnodeid="2" dstpinname="Hue" srcnodeid="8" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="8" dstpinname="Spread Count" srcnodeid="7" srcpinname="Count">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="5" dstpinname="Input Node">
    </LINK>
    </PATCH>

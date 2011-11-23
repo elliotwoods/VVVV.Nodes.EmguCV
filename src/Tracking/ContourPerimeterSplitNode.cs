@@ -70,7 +70,7 @@ namespace VVVV.Nodes.EmguCV
 
 				for (int j = 0; j < FInput[i].Points.Length; j++)
 				{
-					FOutPosition[i][j] = FInput[i].Points[j];
+					FOutPosition[i][j] = new Vector2D(FInput[i].Points[j].X, FInput[i].Points[j].Y);
 				}
 			}
 		}
