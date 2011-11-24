@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\FindBoardsInWorld.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\FindBoards.v4p" systemname="FindBoards">
-   <BOUNDS height="13950" left="8940" top="11685" type="Window" width="10140">
+   <BOUNDS height="17055" left="4680" top="6900" type="Window" width="10140">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\..\Prerequisites\VVVV.Nodes.EmguCV.dll" id="27" nodename="FindBoard (EmguCV)" systemname="FindBoard (EmguCV)">
    <BOUNDS height="270" left="465" top="1005" type="Node" width="2475">
@@ -167,6 +167,8 @@
    </PIN>
    <BOUNDS left="4605" top="6090" type="Box">
    </BOUNDS>
+   <PIN pinname="Output Bin Size" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="12" dstpinname="Input" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
    <LINKPOINT x="1590" y="5190">
@@ -353,7 +355,7 @@
    </BOUNDS>
    <PIN pinname="Input XYZ" visible="1">
    </PIN>
-   <BOUNDS height="8070" left="15120" top="5625" type="Window" width="5100">
+   <BOUNDS height="9540" left="5010" top="8835" type="Window" width="5955">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -468,46 +470,176 @@
    <LINKPOINT x="2940" y="1988">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="65">
-   <BOUNDS type="Node" left="1305" top="9345" width="100" height="100">
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="67" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="2145" top="11490" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1305" top="9345" width="3585" height="2625">
+   <BOUNDS type="Box" left="2145" top="11490" width="6330" height="4770">
    </BOUNDS>
-   <PIN pinname="Minimum" slicecount="1" values="0">
+   <BOUNDS type="Window" left="8385" top="21675" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Slider Constraints" slicecount="1" values="None">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="X Input Value" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN pinname="Columns" slicecount="1" values="54">
-   </PIN>
-   <PIN pinname="Slider Alignment" slicecount="1" values="None">
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="930" top="8730" width="100" height="100">
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="68" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="2145" top="11055" width="3195" height="270">
    </BOUNDS>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="XY" visible="1">
+   <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="66" dstpinname="XY">
+   <LINK srcnodeid="68" srcpinname="Layer" dstnodeid="67" dstpinname="Layers" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="66" srcpinname="X" dstnodeid="65" dstpinname="X Input Value">
+   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\modules\vvvv group\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="69" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="2145" top="10665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Layer" dstnodeid="68" dstpinname="Layer 1" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="66" srcpinname="Y" dstnodeid="65" dstpinname="Y Input Value">
+   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="70" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="7020" top="11115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="0.33">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Initial Interest" visible="1" slicecount="3" values="0.11904188990593,0.0134963747113943,1.12788546085358">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="View Projection" dstnodeid="67" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Text (EX9)" filename="%VVVV%\plugins\DrawText.dll" nodename="Text (EX9)" componentmode="Hidden" id="71" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="3720" top="10665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Show Brush" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Text Rendering Mode" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Layer" dstnodeid="68" dstpinname="Layer 2" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Translate (Transform Vector)" nodename="Translate (Transform Vector)" componentmode="Hidden" id="72" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="3870" top="9750" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="73" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="6450" top="9525" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String Spectral)" nodename="Add (String Spectral)" componentmode="Hidden" id="74" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="6435" top="10200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Output" dstnodeid="74" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="74" srcpinname="Output" dstnodeid="71" dstpinname="Text" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="5880" y="10553">
+   </LINKPOINT>
+   <LINKPOINT x="4650" y="10553">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="73" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="72" dstpinname="XYZ" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="75" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="3855" top="10215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Transform Out" dstnodeid="71" dstpinname="Transform" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Transform Out" dstnodeid="75" dstpinname="Transform In" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="77" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="5130" top="9420" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="78" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="6105" top="9015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output Bin Size" dstnodeid="78" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="78" srcpinname="Count" dstnodeid="77" dstpinname="Spread Count" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Select (Value)" nodename="Select (Value)" componentmode="Hidden" id="79" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="5130" top="9825" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="77" srcpinname="Output" dstnodeid="79" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" id="80" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="5130" top="10215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Output" dstnodeid="80" dstpinname="Hue" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="80" srcpinname="Output" dstnodeid="71" dstpinname="Color" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output Bin Size" dstnodeid="79" dstpinname="Select" hiddenwhenlocked="1" linkstyle="Bezier">
+   <LINKPOINT x="6135" y="8093">
+   </LINKPOINT>
+   <LINKPOINT x="5700" y="8093">
+   </LINKPOINT>
    </LINK>
    </PATCH>

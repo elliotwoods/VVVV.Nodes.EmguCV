@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\modules\BoardObjectPoints (EmguCV).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\BoardObjectPoints (EmguCV).v4p" systemname="BoardObjectPoints (EmguCV)">
-   <BOUNDS height="5940" left="11085" top="5670" type="Window" width="5730">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\BoardObjectPoints (EmguCV).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\BoardObjectPoints (EmguCV).v4p" systemname="BoardObjectPoints (EmguCV)">
+   <BOUNDS height="5940" left="8835" top="9285" type="Window" width="5730">
    </BOUNDS>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="390" top="4305" type="Node" width="100">
@@ -125,13 +125,17 @@
    </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" id="11" nodename="Multiply (Value)" systemname="Multiply (Value)">
-   <BOUNDS height="270" left="2280" top="1845" type="Node" width="1845">
+   <BOUNDS height="270" left="2280" top="1845" type="Node" width="2895">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Input 2" linkstyle="VHV" srcnodeid="7" srcpinname="Y Output Value">

@@ -17,8 +17,8 @@ namespace VVVV.Nodes.EmguCV
 	public class CannyInstance : IFilterInstance
 	{
 
-		public double ThresholdMin = 50;
-		public double ThresholdMax = 150;
+		public double ThresholdMin = 20;
+		public double ThresholdMax = 40;
 
 		private CVImage FGrayscale = new CVImage();
 
@@ -59,10 +59,10 @@ namespace VVVV.Nodes.EmguCV
 	#endregion PluginInfo
 	public class CannyNode : IFilterNode<CannyInstance>
 	{
-		[Input("Threshold min", DefaultValue = 50)]
+		[Input("Threshold min", DefaultValue = 20)]
 		IDiffSpread<double> FThresholdMin;
 
-		[Input("Threshold max", DefaultValue = 150)]
+		[Input("Threshold max", DefaultValue = 40)]
 		IDiffSpread<double> FThresholdMax;
 
 		[Input("Window size", MinValue = 3, MaxValue = 7, DefaultValue = 3)]

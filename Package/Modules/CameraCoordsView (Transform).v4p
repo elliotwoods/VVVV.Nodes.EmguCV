@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CameraCoordsView (Transform).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CameraCoords.v4p" systemname="CameraCoords">
-   <BOUNDS height="7140" left="16260" top="5985" type="Window" width="3810">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\CameraCoordsView (Transform).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CameraCoords.v4p" systemname="CameraCoords">
+   <BOUNDS height="7140" left="10155" top="13035" type="Window" width="3810">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="100" left="450" top="5070" type="Node" width="100">
@@ -110,8 +110,6 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="9" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="5" srcpinname="Y">
    </LINK>
    <NODE componentmode="Hidden" id="10" nodename="Multiply (Value)" systemname="Multiply (Value)">
@@ -140,18 +138,20 @@
    </NODE>
    <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="7" srcpinname="Y">
    </LINK>
-   <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="1995" top="4155" width="100" height="100">
+   <NODE componentmode="Hidden" id="12" nodename="Subtract (Value)" systemname="Subtract (Value)">
+   <BOUNDS height="100" left="1995" top="4155" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Output" dstnodeid="3" dstpinname="Y">
+   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="12" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="12" dstpinname="Input 2">
+   <LINK dstnodeid="12" dstpinname="Input 2" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="2" dstpinname="Y">
    </LINK>
    </PATCH>

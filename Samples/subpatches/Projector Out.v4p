@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\Projector Out.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\Projector Out.v4p" locked="0" systemname="Projector Out">
-   <BOUNDS height="5670" left="14460" top="6570" type="Window" width="7335">
+   <BOUNDS height="5670" left="7800" top="9090" type="Window" width="7335">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="570" top="345" type="Node" width="100">
@@ -81,13 +81,15 @@
    </BOUNDS>
    <BOUNDS height="1800" left="585" top="3720" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="5010" left="31620" top="6945" type="Window" width="6240">
+   <BOUNDS height="5010" left="23160" top="4605" type="Window" width="10200">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|640 x 480|">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="26" dstpinname="Layers">
+   <LINK dstnodeid="26" dstpinname="Layers" srcnodeid="5" srcpinname="Output">
    </LINK>
    </PATCH>
