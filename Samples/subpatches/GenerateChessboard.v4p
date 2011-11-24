@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\GenerateChessboard.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\GenerateChessboard.v4p" systemname="GenerateChessboard">
-   <BOUNDS height="7920" left="15465" top="5010" type="Window" width="8610">
+   <BOUNDS height="7920" left="7410" top="6585" type="Window" width="8610">
    </BOUNDS>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="6465" top="315" type="Node" width="100">
@@ -63,7 +63,7 @@
    <LINK dstnodeid="8" dstpinname="XYZ" srcnodeid="6" srcpinname="XYZ Transformed">
    </LINK>
    <NODE componentmode="Hidden" id="5" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
-   <BOUNDS height="100" left="735" top="1875" type="Node" width="100">
+   <BOUNDS height="100" left="1005" top="1875" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -71,9 +71,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1305" top="315" type="Node" width="0">
+   <BOUNDS height="0" left="1575" top="315" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="1305" top="315" type="Box" width="795">
+   <BOUNDS height="480" left="1575" top="315" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" values="1280,800">
    </PIN>
@@ -197,6 +197,8 @@
    </PIN>
    <PIN pinname="XYZ" slicecount="1" values="2">
    </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
    </LINK>
@@ -241,7 +243,7 @@
    </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" filename="CameraCoordsView (Transform).v4p" id="4" nodename="CameraCoordsView (Transform)" systemname="CameraCoordsView (Transform)">
-   <BOUNDS height="100" left="1320" top="1440" type="Node" width="100">
+   <BOUNDS height="100" left="1590" top="1440" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -251,8 +253,6 @@
    <LINK dstnodeid="5" dstpinname="Source" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="4" dstpinname="Resolution" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="28" nodename="Divide (Value)" systemname="Divide (Value)">
    <BOUNDS height="100" left="1905" top="3390" type="Node" width="100">
@@ -268,8 +268,8 @@
    </LINK>
    <LINK dstnodeid="6" dstpinname="XYZ UnTransformed" srcnodeid="28" srcpinname="Output">
    </LINK>
-   <NODE systemname="Chessboard (EmguCV DX9)" filename="..\..\Build\modules\Chessboard (EmguCV DX9).v4p" nodename="Chessboard (EmguCV DX9)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="4410" top="3765" width="2805" height="270">
+   <NODE componentmode="Hidden" filename="..\..\Build\modules\Chessboard (EmguCV DX9).v4p" id="29" nodename="Chessboard (EmguCV DX9)" systemname="Chessboard (EmguCV DX9)">
+   <BOUNDS height="270" left="4410" top="3765" type="Node" width="2805">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -281,15 +281,49 @@
    </PIN>
    <PIN pinname="Board Size X" visible="1">
    </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2" hiddenwhenlocked="1">
+   <LINK dstnodeid="17" dstpinname="Layer 2" hiddenwhenlocked="1" srcnodeid="29" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Lightness">
+   <LINK dstnodeid="29" dstpinname="Lightness" srcnodeid="21" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Board Pitch">
+   <LINK dstnodeid="29" dstpinname="Board Pitch" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Board Size Y">
+   <LINK dstnodeid="29" dstpinname="Board Size Y" srcnodeid="13" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Board Size X">
+   <LINK dstnodeid="29" dstpinname="Board Size X" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="750" top="3270" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Transform Out" dstnodeid="6" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Transform Out" dstnodeid="31" dstpinname="Transform In 2">
+   </LINK>
+   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="32">
+   <BOUNDS type="Node" left="750" top="315" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="315" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Output Node" dstnodeid="31" dstpinname="Transform In 1">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output Node" dstnodeid="29" dstpinname="Transform In" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="810" y="2145">
+   </LINKPOINT>
+   <LINKPOINT x="4395" y="2145">
+   </LINKPOINT>
    </LINK>
    </PATCH>

@@ -380,8 +380,8 @@ namespace VVVV.Nodes.EmguCV
 			uint height = (uint)source.Height;
 			Spread<double> output = new Spread<double>((int)channelCount);
 
-			row %= width;
-			column %= height;
+			row %= height;
+			column %= width;
 
 			switch (ChannelFormat(format))
 			{
