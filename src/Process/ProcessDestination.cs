@@ -42,7 +42,21 @@ namespace VVVV.Nodes.EmguCV
 
 						if (FInput[i].ImageChanged)
 							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
-								FProcess[iProcess].Process();
+							{
+								FInput[i].LockForReading();
+								try
+								{
+									FProcess[iProcess].Process();
+								}
+								catch (Exception e)
+								{
+									ImageUtils.Log(e);
+								}
+								finally
+								{
+									FInput[i].ReleaseForReading();
+								}
+							}
 					}
 
 					Thread.Sleep(1);

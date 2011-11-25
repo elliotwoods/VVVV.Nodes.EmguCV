@@ -19,8 +19,18 @@ using System.Collections.Generic;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ContourPerimeter
+	public enum ContourApproximation { None, Simple, TehChinL1, TehChinKCOS, LinkRuns, Poly };
+
+	public class ContourPerimeter : ICloneable
 	{
+		public ContourPerimeter(ContourPerimeter other)
+		{
+			this.Points = new PointF[other.Points.Length];
+			Array.Copy(other.Points, this.Points, other.Points.Length);
+			this.Length = other.Length;
+			this.Size = other.Size;
+		}
+
 		public ContourPerimeter(Contour<Point> contour, int imageWidth, int imageHeight)
 		{
 			Points = new PointF[contour.Total];
@@ -39,13 +49,31 @@ namespace VVVV.Nodes.EmguCV
 		public PointF[] Points;
 		public double Length;
 		public Size Size;
+
+		public object Clone()
+		{
+			return new ContourPerimeter(this);
+		}
 	}
 
 	public class ContourInstance : IDestinationInstance
 	{
 		public bool Enabled = true;
-		public CHAIN_APPROX_METHOD Approximation = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE;
+		public ContourApproximation Approximation = ContourApproximation.Simple;
 
+		double FPolyAccuracy = 3;
+		public double PolyAccuracy
+		{
+			set
+			{
+				if (value < 1)
+					value = 1;
+				if (value > 1000)
+					value = 1000;
+
+				FPolyAccuracy = value;
+			}
+		}
 
 		CVImage FGrayscale = new CVImage();
 
@@ -78,7 +106,12 @@ namespace VVVV.Nodes.EmguCV
 			get
 			{
 				lock (FLockResults)
-					return FPerimeter.Clone<ContourPerimeter>();
+				{
+					Spread<ContourPerimeter> value = new Spread<ContourPerimeter>(FPerimeter.SliceCount);
+					for (int i = 0; i < FPerimeter.SliceCount; i++)
+						value[i] = FPerimeter[i].Clone() as ContourPerimeter;
+					return value;
+				}
 			}
 		}
 
@@ -120,14 +153,44 @@ namespace VVVV.Nodes.EmguCV
 
 				try
 				{
-					Contour<Point> contour = img.FindContours(Approximation, RETR_TYPE.CV_RETR_LIST);
+					CHAIN_APPROX_METHOD cam;
+
+					switch (Approximation) {
+						case ContourApproximation.None:
+							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_NONE;
+							break;
+						
+						case ContourApproximation.TehChinKCOS:
+							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_TC89_KCOS;
+							break;
+
+						case ContourApproximation.TehChinL1:
+							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_TC89_L1;
+							break;
+
+						case ContourApproximation.LinkRuns:
+							cam = CHAIN_APPROX_METHOD.CV_LINK_RUNS;
+							break;
+
+						case ContourApproximation.Simple:
+						case ContourApproximation.Poly:
+						default:
+							cam = CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE;
+							break;
+					}
+
+					Contour<Point> contour = img.FindContours(cam, RETR_TYPE.CV_RETR_LIST);
 
 					for (; contour != null; contour = contour.HNext)
 					{
 						c = new ContourTempData();
 						c.Area = contour.Area;
 						c.Bounds = contour.BoundingRectangle;
-						c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
+
+						if (Approximation == ContourApproximation.Poly)
+							c.Perimeter = new ContourPerimeter(contour.ApproxPoly(FPolyAccuracy), img.Width, img.Height);
+						else
+							c.Perimeter = new ContourPerimeter(contour, img.Width, img.Height);
 
 						results.Add(c);
 					}
@@ -173,8 +236,11 @@ namespace VVVV.Nodes.EmguCV
 	public class ContourNode : IDestinationNode<ContourInstance>
 	{
 		#region fields & pins
-		[Input("Chain approximation", DefaultEnumEntry = "CV_CHAIN_APPROX_SIMPLE")]
-		IDiffSpread<CHAIN_APPROX_METHOD> FPinInApproximation;
+		[Input("Approximation", DefaultEnumEntry = "Simple")]
+		IDiffSpread<ContourApproximation> FPinInApproximation;
+
+		[Input("Poly approximation accuracy", DefaultValue=3, MinValue=1, MaxValue=1000)]
+		IDiffSpread<double> FPinInPolyAccuracy;
 
 		[Input("Enabled", DefaultValue = 1)]
 		IDiffSpread<bool> FPinInEnabled;
@@ -208,6 +274,11 @@ namespace VVVV.Nodes.EmguCV
 			if (FPinInApproximation.IsChanged)
 				for (int i = 0; i < InstanceCount; i++)
 					FProcessor[i].Approximation = FPinInApproximation[i];
+
+			if (FPinInPolyAccuracy.IsChanged)
+				for (int i = 0; i < InstanceCount; i++)
+					FProcessor[i].PolyAccuracy = FPinInPolyAccuracy[i];
+
 		}
 
 		void Output(int InstanceCount)

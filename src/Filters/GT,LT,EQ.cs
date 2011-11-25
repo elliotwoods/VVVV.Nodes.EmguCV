@@ -93,6 +93,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
+			FInput.LockForReading();
 			CvInvoke.cvCmpS(FInput.CvMat, Threshold, FOutput.CvMat, CMP_TYPE.CV_CMP_EQ);
 			FOutput.Send();
 		}

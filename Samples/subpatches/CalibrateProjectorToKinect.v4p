@@ -193,6 +193,8 @@
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Resolution XY|">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4020" top="4680" type="Node" width="0">
@@ -320,7 +322,7 @@
    <LINKPOINT x="3675" y="3840">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform">
+   <LINK dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform" hiddenwhenlocked="1">
    <LINKPOINT x="4785" y="3825">
    </LINKPOINT>
    <LINKPOINT x="2940" y="3825">
