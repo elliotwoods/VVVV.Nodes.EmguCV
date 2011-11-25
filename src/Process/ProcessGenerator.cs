@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ProcessGenerator<T> where T : IGeneratorInstance, new()
+	public class ProcessGenerator<T> : IDisposable where T : IGeneratorInstance, new()
 	{
 		CVImageOutputSpread FOutput;
 		public CVImageOutputSpread Output { get { return FOutput; } }
@@ -16,6 +16,7 @@ namespace VVVV.Nodes.EmguCV
 
 		Thread FThread;
 		bool FThreadRunning = false;
+		Object FLockProcess = new Object();
 
 		public ProcessGenerator(ISpread<CVImageLink> outputPin, int SliceCount)
 		{
@@ -31,8 +32,11 @@ namespace VVVV.Nodes.EmguCV
 		{
 			while (FThreadRunning)
 			{
-				for (int i = 0; i < FProcess.SliceCount; i++)
-					FProcess[i].Process();
+				lock (FLockProcess)
+				{
+					for (int i = 0; i < FProcess.SliceCount; i++)
+						FProcess[i].Process();
+				}
 			}
 		}
 
@@ -83,19 +87,22 @@ namespace VVVV.Nodes.EmguCV
 			if (FProcess.SliceCount == SpreadMax)
 				return false;
 
-			for (int i = FProcess.SliceCount; i < SpreadMax; i++)
-				Add();
-
-			if (FProcess.SliceCount > SpreadMax)
+			lock (FLockProcess)
 			{
-				for (int i = SpreadMax; i < FProcess.SliceCount; i++)
-					Dispose(i);
+				for (int i = FProcess.SliceCount; i < SpreadMax; i++)
+					Add();
 
-				FProcess.SliceCount = SpreadMax;
-				FOutput.SliceCount = SpreadMax;
+				if (FProcess.SliceCount > SpreadMax)
+				{
+					for (int i = SpreadMax; i < FProcess.SliceCount; i++)
+						Dispose(i);
+
+					FProcess.SliceCount = SpreadMax;
+					FOutput.SliceCount = SpreadMax;
+				}
+
+				FOutput.AlignOutputPins();
 			}
-
-			FOutput.AlignOutputPins();
 
 			return true;
 		}
@@ -119,16 +126,26 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		protected void Dispose(int i)
-		{
-			FProcess[i].Dispose();
-			FOutput[i].Dispose();
-		}
-
 		protected void Resize(int count)
 		{
 			FProcess.SliceCount = count;
 			FOutput.AlignOutputPins();
+		}
+
+		public void Dispose()
+		{
+			StopThread();
+
+			foreach (var process in FProcess)
+				process.Dispose();
+
+			FOutput.Dispose();
+		}
+
+		protected void Dispose(int i)
+		{
+			FProcess[i].Dispose();
+			FOutput[i].Dispose();
 		}
 	}
 }

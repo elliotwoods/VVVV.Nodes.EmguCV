@@ -20,6 +20,9 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
+			foreach (var input in FInput)
+				input.Dispose();
+
 			FInput.SliceCount = 0;
 		}
 

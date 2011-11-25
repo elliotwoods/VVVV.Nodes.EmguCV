@@ -171,6 +171,8 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
+				if (!FLink.CheckReaderLock())
+					throw new Exception("Image read must be locked to this thread before operations can be performed on CvMat");
 				return FLink.FrontImage.CvMat;
 			}
 		}
@@ -204,6 +206,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			RemoveListeners();
 
+			ReleaseForReading();
 			FLink = null;
 		}
 
@@ -222,14 +225,18 @@ namespace VVVV.Nodes.EmguCV
 		#endregion
 
 		#region Locking
-		public void LockForReading()
+		public bool LockForReading()
 		{
-			FLink.LockForReading();
+			if (FLink == null)
+				return false;
+
+			return FLink.LockForReading();
 		}
 
 		public void ReleaseForReading()
 		{
-			FLink.ReleaseForReading();
+			if (FLink != null)
+				FLink.ReleaseForReading();
 		}
 		#endregion
 

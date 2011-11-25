@@ -52,7 +52,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
-			
+			FLink.Dispose();
 		}
 	}
 }

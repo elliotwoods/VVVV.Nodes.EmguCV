@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\GT, LT.v4p" systemname="GT, LT" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\GT, LT.v4p">
-   <BOUNDS type="Window" left="4815" top="1395" width="17745" height="9405">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\GT, LT.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\GT, LT.v4p" systemname="GT, LT">
+   <BOUNDS height="9405" left="4815" top="1395" type="Window" width="17745">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="..\..\Prerequisites\plugins\VVVV.Nodes.EmguCV.dll" id="4" nodename="&gt; (EmguCV Filter, Scalar)" systemname="&gt; (EmguCV Filter, Scalar)">
    <BOUNDS height="100" left="1170" top="1515" type="Node" width="100">
@@ -22,34 +22,18 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" filename="..\..\Prerequisites\modules\ViewImage (EmguCV, Normalised).v4p" id="8" nodename="ViewImage (EmguCV, Normalised)" systemname="ViewImage (EmguCV, Normalised)">
-   <BOUNDS height="100" left="375" top="2085" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Image" visible="1">
+   <NODE componentmode="Hidden" filename="..\..\VVVV.Nodes.OpenNI\Samples\modules\FullHouse (OpenNI).v4p" hiddenwhenlocked="0" id="3" managers="" nodename="FullHouse (OpenNI)" systemname="FullHouse (OpenNI)">
+   <PIN pinname="Open" pintype="Input" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Image" linkstyle="VHV" srcnodeid="4" srcpinname="Output">
-   <LINKPOINT x="1170" y="1920">
-   </LINKPOINT>
-   <LINKPOINT x="435" y="1920">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
-   </LINK>
-   <NODE id="3" componentmode="Hidden" filename="..\..\VVVV.Nodes.OpenNI\Samples\modules\FullHouse (OpenNI).v4p" nodename="FullHouse (OpenNI)" systemname="FullHouse (OpenNI)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Open" slicecount="1" pintype="Input" visible="1" values="0">
-   </PIN>
-   <BOUNDS type="Node" height="100" left="705" top="765" width="100">
+   <BOUNDS height="100" left="705" top="765" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Depth Image" visible="1" pintype="Output">
+   <PIN pinname="Depth Image" pintype="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="0" top="0" width="4800" height="3600">
+   <BOUNDS height="3600" left="0" top="0" type="Box" width="4800">
    </BOUNDS>
-   <BOUNDS type="Window" left="6540" top="3315" width="10800" height="10395">
+   <BOUNDS height="10395" left="6540" top="3315" type="Window" width="10800">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Evaluate" pintype="Input" slicecount="1" values="1">
    </PIN>
@@ -74,6 +58,36 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Depth Image" dstnodeid="4" dstpinname="Input">
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="3" srcpinname="Depth Image">
+   </LINK>
+   <NODE systemname="ImageQuad (EmguCV DX9)" filename="..\modules\ImageQuad (EmguCV DX9).v4p" nodename="ImageQuad (EmguCV DX9)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="1185" top="2010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Image">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2145" top="1320" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="1320" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Status" dstnodeid="10" dstpinname="Input String">
    </LINK>
    </PATCH>

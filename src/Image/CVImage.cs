@@ -11,7 +11,7 @@ using Emgu.CV.CvEnum;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class CVImage : ImageBase
+	public class CVImage : ImageBase, IDisposable
 	{
 		IImage FImage;
 
@@ -96,6 +96,15 @@ namespace VVVV.Nodes.EmguCV
 		public void LoadFile(string filename)
 		{
 			this.SetImage(new Image<Bgr, byte>(filename));
+		}
+
+		public void Dispose()
+		{
+			if (FImage != null)
+			{
+				FImage.Dispose();
+				FImage = null;
+			}
 		}
 	}
 }

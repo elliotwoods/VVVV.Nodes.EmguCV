@@ -57,7 +57,13 @@ namespace VVVV.Nodes.EmguCV
 			//with the correct size and colour format
 
 
+			//Whenever you access the pixels directly of FInput
+			//e.g. when using the .CvMat accessor
+			//you must lock it for reading using 
+			if (!FInput.LockForReading()) //this
+				return;
 			CvInvoke.cvPyrDown(FInput.CvMat, FOutput.CvMat, FILTER_TYPE.CV_GAUSSIAN_5x5);
+			FInout.ReleaseForReading(); //and  this after you've finished with FImage
 
 			if (FInput.ImageAttributes.ColourFormat==TColourFormat.RGB8)
 				PixelWiseAdd();

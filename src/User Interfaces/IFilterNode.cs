@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class IFilterNode<T> : IPluginEvaluate where T : IFilterInstance, new()
+	public abstract class IFilterNode<T> : IPluginEvaluate, IDisposable where T : IFilterInstance, new()
 	{
 		[Input("Input", Order = -1)]
 		private ISpread<CVImageLink> FInput;
@@ -27,5 +27,10 @@ namespace VVVV.Nodes.EmguCV
 		}
 
 		protected abstract void Update(int InstanceCount);
+
+		public void Dispose()
+		{
+			FProcessor.Dispose();
+		}
 	}
 }

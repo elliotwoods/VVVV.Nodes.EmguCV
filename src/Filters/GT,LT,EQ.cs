@@ -26,7 +26,10 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
+			if (!FInput.LockForReading())
+				return;
 			CvInvoke.cvCmpS(FInput.CvMat, Threshold, FOutput.CvMat, CMP_TYPE.CV_CMP_GT);
+			FInput.ReleaseForReading();
 			FOutput.Send();
 		}
 
@@ -60,7 +63,10 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
+			if (!FInput.LockForReading())
+				return;
 			CvInvoke.cvCmpS(FInput.CvMat, Threshold, FOutput.CvMat, CMP_TYPE.CV_CMP_LT);
+			FInput.ReleaseForReading();
 			FOutput.Send();
 		}
 
@@ -93,8 +99,10 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
-			FInput.LockForReading();
+			if (!FInput.LockForReading())
+				return;
 			CvInvoke.cvCmpS(FInput.CvMat, Threshold, FOutput.CvMat, CMP_TYPE.CV_CMP_EQ);
+			FInput.ReleaseForReading();
 			FOutput.Send();
 		}
 
