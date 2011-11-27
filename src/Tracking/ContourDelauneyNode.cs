@@ -145,7 +145,10 @@ namespace VVVV.Nodes.EmguCV
 					points = new Spread<PointF[]>(SliceCount);
 
 					for (int i = 0; i < SliceCount; i++)
+					{
+						points[i] = new PointF[FPoints[i].Length];
 						Array.Copy(FPoints[i], points[i], FPoints[i].Length);
+					}
 	
 				}
 
@@ -161,8 +164,16 @@ namespace VVVV.Nodes.EmguCV
 				{
 					FTriangles.SliceCount = SliceCount;
 
-					for (int i = 0; i < SliceCount; i++ )
-						Array.Copy(triangles[i], FTriangles[i], triangles[i].Length);
+					Triangle2DF t;
+					for (int i = 0; i < SliceCount; i++)
+					{
+						FTriangles[i] = new Triangle2DF[triangles[i].Length];
+						for (int j = 0; j < triangles[i].Length; j++ )
+						{
+							t = triangles[i][j];
+							FTriangles[i][j] = new Triangle2DF(t.V0, t.V1, t.V2);
+						}
+					}
 				}
 
 				FResults = true;

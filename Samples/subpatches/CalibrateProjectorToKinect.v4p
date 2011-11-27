@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\CalibrateProjectorToKinect.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\CalibrateProjectorToKinect.v4p" systemname="CalibrateProjectorToKinect">
-   <BOUNDS height="6000" left="3435" top="11565" type="Window" width="10620">
+   <BOUNDS height="7905" left="4800" top="12090" type="Window" width="10590">
    </BOUNDS>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="4620" top="360" type="Node" width="100">
@@ -322,7 +322,7 @@
    <LINKPOINT x="3675" y="3840">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="12" dstpinname="Transform In 1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform" hiddenwhenlocked="1">
+   <LINK dstnodeid="12" dstpinname="Transform In 1" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="4" srcpinname="Extrinsics Transform">
    <LINKPOINT x="4785" y="3825">
    </LINKPOINT>
    <LINKPOINT x="2940" y="3825">

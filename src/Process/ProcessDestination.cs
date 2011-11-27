@@ -42,10 +42,16 @@ namespace VVVV.Nodes.EmguCV
 							if (FInput[i].ImageAttributesChanged || FProcess[i].NeedsInitialise())
 								for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
 									FProcess[iProcess].Initialise();
-
-							if (FInput[i].ImageChanged)
-								for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
-									FProcess[iProcess].Process();						
+							try
+							{
+								if (FInput[i].ImageChanged)
+									for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+										FProcess[iProcess].Process();
+							}
+							catch (Exception e)
+							{
+								ImageUtils.Log(e);
+							}
 						}
 					}
 

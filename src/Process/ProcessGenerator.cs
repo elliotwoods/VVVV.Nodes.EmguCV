@@ -34,8 +34,15 @@ namespace VVVV.Nodes.EmguCV
 			{
 				lock (FLockProcess)
 				{
-					for (int i = 0; i < FProcess.SliceCount; i++)
-						FProcess[i].Process();
+					try
+					{
+						for (int i = 0; i < FProcess.SliceCount; i++)
+							FProcess[i].Process();
+					}
+					catch (Exception e)
+					{
+						ImageUtils.Log(e);
+					}
 				}
 			}
 		}
