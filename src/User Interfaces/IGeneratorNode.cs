@@ -39,7 +39,7 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
-			FProcessor.Dispose();
+			
 		}
 	}
 }

@@ -43,7 +43,21 @@ namespace VVVV.Nodes.EmguCV
 		/// </summary>
 		protected virtual void Generate() { }
 
-		public string Status { get ; protected set; }
+		private Object FLockStatus = new Object();
+		private string FStatus;
+		public string Status
+		{
+			get
+			{
+				lock (FLockStatus)
+					return FStatus;
+			}
+			set
+			{
+				lock (FLockStatus)
+					FStatus = value;
+			}
+		}
 
 		protected bool FEnabled;
 		public bool Enabled
