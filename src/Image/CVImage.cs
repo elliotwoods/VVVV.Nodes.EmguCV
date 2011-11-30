@@ -77,9 +77,9 @@ namespace VVVV.Nodes.EmguCV
 		}
 
 		/// <summary>
-		/// Copy data from pointer. Presume we're already correctly initialised
+		/// Copy data from pointer. Presume we're initialised and data is of correct size
 		/// </summary>
-		/// <param name="source">Raw pixel data of correct size</param>
+		/// <param name="rawData">Raw pixel data of correct size</param>
 		public void SetPixels(IntPtr rawData)
 		{
 			if (rawData == IntPtr.Zero)

@@ -10,16 +10,7 @@ namespace VVVV.Nodes.EmguCV
 	public class ImageLoadInstance : IGeneratorInstance
 	{
 		string FLoadedImage = "";
-
-		private string FStatus = "";
-		public string Status
-		{
-			get
-			{
-				return FStatus;
-			}
-		}
-
+		
 		public override bool NeedsThread()
 		{
 			return false;
@@ -48,11 +39,11 @@ namespace VVVV.Nodes.EmguCV
 				FOutput.Image.LoadFile(filename);
 				FLoadedImage = filename;
 				FOutput.Send();
-				FStatus = "OK";
+				Status = "OK";
 			}
 			catch
 			{
-				FStatus = "Image load failed";
+				Status = "Image load failed";
 				FLoadedImage = "";
 			}
 		}
@@ -70,9 +61,6 @@ namespace VVVV.Nodes.EmguCV
 		[Input("Reload", IsBang = true)]
 		ISpread<bool> FPinInReload;
 
-		[Output("Status")]
-		ISpread<string> FPinOutStatus;
-
 		[Import]
 		ILogger FLogger;
 		#endregion fields&pins
@@ -85,8 +73,6 @@ namespace VVVV.Nodes.EmguCV
 
 		protected override void Update(int InstanceCount)
 		{
-			FPinOutStatus.SliceCount = InstanceCount;
-
 			if (FPinInFilename.IsChanged)
 				for (int i = 0; i < InstanceCount; i++)
 					FProcessor[i].Filename = FPinInFilename[i];
@@ -95,8 +81,6 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FPinInReload[i])
 					FProcessor[i].Reload();
-
-				FPinOutStatus[i] = FProcessor[i].Status;
 			}
 		}
 	}

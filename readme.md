@@ -1,8 +1,3 @@
-## WARNING
-the code has been quite rushed over the past 4 days
-likely there's some bad code in here that i have to go back later to scoop out.
-scooping hands welcome! :)
-
 Introduction
 ============
 https://github.com/elliotwoods/VVVV.Nodes.EmguCV
@@ -43,6 +38,13 @@ TODO: make notes for quick installation :)
 Operating notes
 ===============
 
+Known issues
+------------
+* Changing slice counts in image inputs/outputs will sometimes cause crashes. Fixing this is somewhat of a priority, and relates to things being properly disposed (which is also of general importance).
+* Changing slice counts on processor nodes (generators, filters, destinations) doesn't result in input properties being updated for the instances.
+* We don't handle stride (useful for non '4 byte' image types at non power of 2 resolutions)
+
+
 Video playback
 --------------
 This isn't necessarilly the best route for video playback, but can also work quite nicely.
@@ -52,6 +54,7 @@ Notes for video playback:
 * This doesn't employ any fancy hardware optimisation of video codecs. If you need to chunk big video files, suggest sticking with FileStream + clever codecs.
 * No audio, probably never will have (although other nodes which output CVImage type could give audio).
 * Works with pretty much all the AVI's i threw at it (which isn't that many on this PC). Feedback welcome!
+
 
 Types
 -----

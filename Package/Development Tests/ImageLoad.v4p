@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" systemname="ImageLoad">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\ImageLoad.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" systemname="ImageLoad">
    <BOUNDS height="12630" left="8295" top="1710" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" id="5" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -122,6 +122,6 @@
    </LINK>
    <LINK dstnodeid="25" dstpinname="Input" srcnodeid="23" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="5" dstpinname="Texture">
+   <LINK dstnodeid="5" dstpinname="Texture" srcnodeid="24" srcpinname="Texture Out">
    </LINK>
    </PATCH>
