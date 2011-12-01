@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\RunTime.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\RunTime.v4p" systemname="RunTime" locked="0">
-   <BOUNDS height="9375" left="18420" top="5250" type="Window" width="7425">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Samples\subpatches\RunTime.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.KC.EmguCV\tests\subpatches\RunTime.v4p" locked="0" systemname="RunTime">
+   <BOUNDS height="10680" left="5295" top="7140" type="Window" width="9210">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="100" left="4275" top="315" type="Node" width="100">
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="5010" left="20595" top="13485" type="Window" width="6240">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
@@ -41,7 +41,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="225" top="4245" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input Node" visible="1">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Layer">
    </PIN>
@@ -79,7 +79,7 @@
    </BOUNDS>
    <BOUNDS height="480" left="6270" top="315" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="640,480">
+   <PIN pinname="Y Input Value" slicecount="2" values="1280,1024">
    </PIN>
    <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -107,7 +107,7 @@
    </PIN>
    <PIN pinname="Y" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="23" nodename="Multiply (Transform)" systemname="Multiply (Transform)">
@@ -124,8 +124,26 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="Transform In 2" srcnodeid="22" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="KinectPreview (EX9.Effect)" filename="..\..\..\VVVV.Nodes.OpenNI\Build\Shaders\KinectPreview.fx" nodename="KinectPreview (EX9.Effect)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="225" top="3825" width="3540" height="270">
+   <NODE componentmode="Hidden" id="32" nodename="Multiply (Transform)" systemname="Multiply (Transform)">
+   <BOUNDS height="270" left="915" top="3405" type="Node" width="3405">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="Transform In 1" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="1" srcpinname="Output Node">
+   <LINKPOINT x="4275" y="1965">
+   </LINKPOINT>
+   <LINKPOINT x="975" y="1965">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Transform In 2" srcnodeid="23" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\..\..\VVVV.Nodes.OpenNI\Package\Shaders\KinectPreview.fx" id="29" nodename="KinectPreview (EX9.Effect)" systemname="KinectPreview (EX9.Effect)">
+   <BOUNDS height="270" left="225" top="3825" type="Node" width="3540">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -135,47 +153,27 @@
    </PIN>
    <PIN pinname="XYZ" visible="1">
    </PIN>
-   <PIN pinname="RGB" visible="1" slicecount="1" values="||">
+   <PIN pinname="RGB" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="World" visible="1">
+   <PIN pinname="World" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="tScreen" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="8" dstpinname="Input Node">
+   <LINK dstnodeid="8" dstpinname="Input Node" srcnodeid="29" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="3" dstpinname="Layers" linkstyle="VHV">
+   <LINK dstnodeid="3" dstpinname="Layers" linkstyle="VHV" srcnodeid="29" srcpinname="Layer">
    <LINKPOINT x="285" y="4155">
    </LINKPOINT>
    <LINKPOINT x="1245" y="4155">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Mesh" dstnodeid="29" dstpinname="Mesh">
+   <LINK dstnodeid="29" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
    </LINK>
-   <LINK srcnodeid="12" srcpinname="Output Node" dstnodeid="29" dstpinname="XYZ">
+   <LINK dstnodeid="29" dstpinname="RGB" srcnodeid="11" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Output Node" dstnodeid="29" dstpinname="RGB">
+   <LINK dstnodeid="29" dstpinname="World" srcnodeid="12" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="12" srcpinname="Output Node" dstnodeid="29" dstpinname="World">
-   </LINK>
-   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="915" top="3405" width="3405" height="270">
-   </BOUNDS>
-   <PIN pinname="Transform In 1" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Transform In 2" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="29" dstpinname="Transform">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Output Node" dstnodeid="32" dstpinname="Transform In 1" linkstyle="Bezier" hiddenwhenlocked="1">
-   <LINKPOINT x="4275" y="1965">
-   </LINKPOINT>
-   <LINKPOINT x="975" y="1965">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="32" dstpinname="Transform In 2">
+   <LINK dstnodeid="29" dstpinname="Transform" srcnodeid="32" srcpinname="Transform Out">
    </LINK>
    </PATCH>

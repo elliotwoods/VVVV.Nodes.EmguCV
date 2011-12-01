@@ -11,7 +11,7 @@ using Emgu.CV.CvEnum;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class CVImage : ImageBase
+	public class CVImage : ImageBase, IDisposable
 	{
 		IImage FImage;
 
@@ -77,9 +77,9 @@ namespace VVVV.Nodes.EmguCV
 		}
 
 		/// <summary>
-		/// Copy data from pointer. Presume we're already correctly initialised
+		/// Copy data from pointer. Presume we're initialised and data is of correct size
 		/// </summary>
-		/// <param name="source">Raw pixel data of correct size</param>
+		/// <param name="rawData">Raw pixel data of correct size</param>
 		public void SetPixels(IntPtr rawData)
 		{
 			if (rawData == IntPtr.Zero)
@@ -96,6 +96,15 @@ namespace VVVV.Nodes.EmguCV
 		public void LoadFile(string filename)
 		{
 			this.SetImage(new Image<Bgr, byte>(filename));
+		}
+
+		public void Dispose()
+		{
+			if (FImage != null)
+			{
+				FImage.Dispose();
+				FImage = null;
+			}
 		}
 	}
 }

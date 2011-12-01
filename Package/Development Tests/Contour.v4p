@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\Contour.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageLoad.v4p" locked="0" systemname="ImageLoad">
-   <BOUNDS height="12630" left="5010" top="1785" type="Window" width="18375">
+   <BOUNDS height="12630" left="0" top="5910" type="Window" width="18375">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="1815" top="6840" type="Node" width="100">
@@ -84,6 +84,10 @@
    <PIN pinname="Perimeter" visible="1">
    </PIN>
    <PIN pinname="Chain approximation" slicecount="1" values="CV_CHAIN_APPROX_SIMPLE">
+   </PIN>
+   <PIN pinname="Poly approximation accuracy" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Approximation" slicecount="1" values="Poly">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -260,6 +264,8 @@
    <BOUNDS height="100" left="10305" top="405" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Time Mode" slicecount="1" values="Filtered">
+   </PIN>
+   <PIN pinname="Maximum background fpsS" slicecount="1" values="60">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -444,34 +450,14 @@
    <LINKPOINT x="8070" y="5408">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="ContourDelauney (EmguCV)" filename="..\plugins\VVVV.Nodes.EmguCV.dll" nodename="ContourDelauney (EmguCV)" componentmode="Hidden" id="77">
-   <BOUNDS type="Node" left="13440" top="4995" width="3525" height="270">
+   <NODE componentmode="InABox" id="78" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="16920" top="4050" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Apply">
-   </PIN>
-   <PIN pinname="Vertex positionXY" visible="1">
-   </PIN>
-   <PIN pinname="Vertex position Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Triangle centroidXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="68" srcpinname="Perimeter" dstnodeid="77" dstpinname="Input" linkstyle="VHV">
-   <LINKPOINT x="11535" y="4770">
-   </LINKPOINT>
-   <LINKPOINT x="13440" y="4770">
-   </LINKPOINT>
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="78" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="16920" top="4050" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="16920" top="4050" width="480" height="480">
+   <BOUNDS height="480" left="16920" top="4050" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -479,33 +465,31 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Apply" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Apply">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="77" dstpinname="Apply">
-   </LINK>
-   <NODE systemname="VertexBuffer (EX9.Geometry Join)" nodename="VertexBuffer (EX9.Geometry Join)" componentmode="Hidden" id="79">
-   <BOUNDS type="Node" left="13425" top="6405" width="100" height="100">
+   <NODE componentmode="Hidden" id="79" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VertexBuffer (EX9.Geometry Join)">
+   <BOUNDS height="100" left="13425" top="6405" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Position XYZ" visible="1">
    </PIN>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="82">
-   <BOUNDS type="Node" left="14835" top="5475" width="100" height="100">
+   <NODE componentmode="Hidden" id="82" nodename="I (Spreads)" systemname="I (Spreads)">
+   <BOUNDS height="100" left="14835" top="5475" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname=".. To [" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Mesh (EX9.Geometry Join)" nodename="Mesh (EX9.Geometry Join)" componentmode="Hidden" id="83">
-   <BOUNDS type="Node" left="13440" top="6840" width="2190" height="270">
+   <NODE componentmode="Hidden" id="83" nodename="Mesh (EX9.Geometry Join)" systemname="Mesh (EX9.Geometry Join)">
+   <BOUNDS height="270" left="13440" top="6840" type="Node" width="2190">
    </BOUNDS>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
@@ -516,16 +500,16 @@
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="79" srcpinname="Vertex Buffer" dstnodeid="83" dstpinname="Vertex Buffer">
+   <LINK dstnodeid="83" dstpinname="Vertex Buffer" srcnodeid="79" srcpinname="Vertex Buffer">
    </LINK>
-   <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="83" dstpinname="Apply" linkstyle="Bezier">
+   <LINK dstnodeid="83" dstpinname="Apply" linkstyle="Bezier" srcnodeid="78" srcpinname="Y Output Value">
    <LINKPOINT x="16925" y="5685">
    </LINKPOINT>
    <LINKPOINT x="15610" y="5685">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="84">
-   <BOUNDS type="Node" left="13260" top="7305" width="100" height="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\Constant.fx" id="84" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
+   <BOUNDS height="100" left="13260" top="7305" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -534,40 +518,34 @@
    <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="85">
-   <BOUNDS type="Node" left="13245" top="7725" width="100" height="100">
+   <NODE componentmode="InABox" id="85" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="13245" top="7725" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="13245" top="7725" width="3570" height="3300">
+   <BOUNDS height="3300" left="13245" top="7725" type="Box" width="3570">
    </BOUNDS>
-   <BOUNDS type="Window" left="18375" top="9900" width="6240" height="5010">
+   <BOUNDS height="5010" left="18375" top="9900" type="Window" width="6240">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="84" srcpinname="Layer" dstnodeid="85" dstpinname="Layers">
+   <LINK dstnodeid="85" dstpinname="Layers" srcnodeid="84" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="86">
-   <BOUNDS type="Node" left="12945" top="6840" width="100" height="100">
+   <NODE componentmode="Hidden" id="86" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
+   <BOUNDS height="100" left="12945" top="6840" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
    <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
    </PIN>
    </NODE>
-   <LINK srcnodeid="86" srcpinname="Render State Out" dstnodeid="84" dstpinname="Render State" linkstyle="VHV">
+   <LINK dstnodeid="84" dstpinname="Render State" linkstyle="VHV" srcnodeid="86" srcpinname="Render State Out">
    <LINKPOINT x="13005" y="7193">
    </LINKPOINT>
    <LINKPOINT x="13245" y="7193">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="77" srcpinname="Vertex position Bin Size" dstnodeid="82" dstpinname=".. To [" linkstyle="VHV">
-   <LINKPOINT x="14190" y="5355">
-   </LINKPOINT>
-   <LINKPOINT x="15030" y="5355">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="Vector (4d Join)" nodename="Vector (4d Join)" componentmode="Hidden" id="88">
-   <BOUNDS type="Node" left="14520" top="6285" width="100" height="100">
+   <NODE componentmode="Hidden" id="88" nodename="Vector (4d Join)" systemname="Vector (4d Join)">
+   <BOUNDS height="100" left="14520" top="6285" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -582,8 +560,8 @@
    <PIN pinname="W" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Vector (3d Split)" nodename="Vector (3d Split)" componentmode="Hidden" id="87">
-   <BOUNDS type="Node" left="14820" top="5880" width="100" height="100">
+   <NODE componentmode="Hidden" id="87" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
+   <BOUNDS height="100" left="14820" top="5880" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="XYZW" visible="1">
    </PIN>
@@ -596,20 +574,20 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="87" srcpinname="X" dstnodeid="88" dstpinname="X">
+   <LINK dstnodeid="88" dstpinname="X" srcnodeid="87" srcpinname="X">
    </LINK>
-   <LINK srcnodeid="87" srcpinname="Y" dstnodeid="88" dstpinname="Y">
+   <LINK dstnodeid="88" dstpinname="Y" srcnodeid="87" srcpinname="Y">
    </LINK>
-   <LINK srcnodeid="87" srcpinname="Z" dstnodeid="88" dstpinname="Z">
+   <LINK dstnodeid="88" dstpinname="Z" srcnodeid="87" srcpinname="Z">
    </LINK>
-   <LINK srcnodeid="88" srcpinname="XYZW" dstnodeid="83" dstpinname="Indices">
+   <LINK dstnodeid="83" dstpinname="Indices" srcnodeid="88" srcpinname="XYZW">
    </LINK>
-   <LINK srcnodeid="82" srcpinname="Output" dstnodeid="87" dstpinname="XYZ">
+   <LINK dstnodeid="87" dstpinname="XYZ" srcnodeid="82" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="87" srcpinname="X" dstnodeid="88" dstpinname="W">
+   <LINK dstnodeid="88" dstpinname="W" srcnodeid="87" srcpinname="X">
    </LINK>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="80">
-   <BOUNDS type="Node" left="13425" top="5460" width="645" height="270">
+   <NODE componentmode="Hidden" id="80" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="270" left="13425" top="5460" type="Node" width="645">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -620,28 +598,56 @@
    <PIN pinname="XY" visible="1">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="81" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
+   <BOUNDS height="270" left="13425" top="5895" type="Node" width="1230">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="81" dstpinname="X" srcnodeid="80" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="81" dstpinname="Y" srcnodeid="80" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="79" dstpinname="Position XYZ" srcnodeid="81" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Layer 2" srcnodeid="67" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="84" dstpinname="Mesh" srcnodeid="83" srcpinname="Mesh">
+   </LINK>
+   <NODE id="77" componentmode="Hidden" filename="..\plugins\VVVV.Nodes.EmguCV.dll" nodename="ContourDelauney (EmguCV)" systemname="ContourDelauney (EmguCV)">
+   <PIN pinname="Apply">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="270" left="13440" top="4995" width="3525">
+   </BOUNDS>
+   <PIN pinname="Vertex positionXY" visible="1">
+   </PIN>
+   <PIN pinname="Vertex position Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Triangle centroidXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="68" srcpinname="Perimeter" dstnodeid="77" dstpinname="Input" linkstyle="VHV">
+   <LINKPOINT x="11535" y="4770">
+   </LINKPOINT>
+   <LINKPOINT x="13440" y="4770">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="77" dstpinname="Apply">
+   </LINK>
+   <LINK srcnodeid="77" srcpinname="Vertex position Bin Size" dstnodeid="82" dstpinname=".. To [" linkstyle="VHV">
+   <LINKPOINT x="14190" y="5355">
+   </LINKPOINT>
+   <LINKPOINT x="15030" y="5355">
+   </LINKPOINT>
+   </LINK>
    <LINK srcnodeid="77" srcpinname="Vertex positionXY" dstnodeid="80" dstpinname="XY">
-   </LINK>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="81">
-   <BOUNDS type="Node" left="13425" top="5895" width="1230" height="270">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="80" srcpinname="X" dstnodeid="81" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="80" srcpinname="Y" dstnodeid="81" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="81" srcpinname="XYZ" dstnodeid="79" dstpinname="Position XYZ">
-   </LINK>
-   <LINK srcnodeid="67" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="83" srcpinname="Mesh" dstnodeid="84" dstpinname="Mesh">
    </LINK>
    </PATCH>

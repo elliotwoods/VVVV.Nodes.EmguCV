@@ -71,13 +71,23 @@ namespace VVVV.Nodes.EmguCV
 				else
 				{
 					if (DifferenceMode == TDifferenceMode.AbsoluteDifference)
+					{
+						if (!FInput.LockForReading())
+							return;
 						CvInvoke.cvAbsDiff(FInput.CvMat, FBuffer.CvMat, FOutput.CvMat);
+						FInput.ReleaseForReading();
+					}
 
 					CvInvoke.cvThreshold(FOutput.CvMat, FOutput.CvMat, 255.0d * Threshold, 255, THRESH.CV_THRESH_BINARY);
 				}
 			} else {
 				if (DifferenceMode == TDifferenceMode.AbsoluteDifference)
+				{
+					if (!FInput.LockForReading())
+						return;
 					CvInvoke.cvAbsDiff(FInput.CvMat, FBuffer.CvMat, FOutput.CvMat);
+					FInput.ReleaseForReading();
+				}
 
 				FBuffer.SetImage(FInput.Image);
 			}

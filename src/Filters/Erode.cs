@@ -38,8 +38,13 @@ namespace VVVV.Nodes.EmguCV
 
 		public override void Process()
 		{
+			if (!FInput.LockForReading())
+				return;
 			CvInvoke.cvErode(FInput.CvMat, FOutput.CvMat, IntPtr.Zero, FIterations);
+			FInput.ReleaseForReading();
+
 			FOutput.Send();
+
 		}
 
 	}

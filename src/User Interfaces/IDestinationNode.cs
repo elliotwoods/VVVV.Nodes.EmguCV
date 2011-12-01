@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public abstract class IDestinationNode<T> : IPluginEvaluate where T : IDestinationInstance, new()
+	public abstract class IDestinationNode<T> : IPluginEvaluate, IDisposable where T : IDestinationInstance, new()
 	{
 		[Input("Input", Order = -1)]
 		private ISpread<CVImageLink> FPinInInputImage;
@@ -24,5 +24,10 @@ namespace VVVV.Nodes.EmguCV
 		}
 
 		protected abstract void Update(int InstanceCount);
+
+		public void Dispose()
+		{
+			FProcessor.Dispose();
+		}
 	}
 }

@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class CVImageDoubleBuffer
+	public class CVImageDoubleBuffer : IDisposable
 	{
 		#region Data
 		private CVImage FBackBuffer = new CVImage();
@@ -21,11 +21,19 @@ namespace VVVV.Nodes.EmguCV
 		private ReaderWriterLock FFrontLock = new ReaderWriterLock();
 		private Object FBackLock = new Object();
 		private Object FAttributesLock = new Object();
-		public static int LockTimeout = 10000;
+		public static int LockTimeout = 100;
 
-		public void LockForReading()
+		public bool LockForReading()
 		{
-			FFrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
+			try
+			{
+				FFrontLock.AcquireReaderLock(CVImageDoubleBuffer.LockTimeout);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		public Object BackLock
@@ -47,6 +55,11 @@ namespace VVVV.Nodes.EmguCV
 
 			}
 		}
+
+		public bool CheckReaderLock()
+		{
+			return FFrontLock.IsReaderLockHeld;
+		}
 		#endregion
 
 		#region Events
@@ -57,7 +70,7 @@ namespace VVVV.Nodes.EmguCV
 
 		#region Swapping and copying
 		/// <summary>
-		/// Swap the front buffer and back buffer, locks are performed interally
+		/// Swap the front buffer and back buffer
 		/// </summary>
 		public void Swap()
 		{
@@ -207,5 +220,18 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 		#endregion
+
+		public void Dispose()
+		{
+			lock (FBackLock)
+			{
+				FFrontLock.AcquireWriterLock(100);
+
+				FFrontBuffer.Dispose();
+				FBackBuffer.Dispose();
+
+				FFrontLock.ReleaseWriterLock();
+			}
+		}
 	}
 }

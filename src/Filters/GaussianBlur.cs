@@ -22,7 +22,12 @@ namespace VVVV.Nodes.EmguCV
 			if (Width == 0)
 				FOutput.Image.SetImage(FInput.Image);
 			else
+			{
+				if (!FInput.LockForReading())
+					return;
 				CvInvoke.cvSmooth(FInput.CvMat, FOutput.CvMat, SMOOTH_TYPE.CV_GAUSSIAN, Width*2+1, 0, 0, 0);
+				FInput.ReleaseForReading();
+			}
 			
 			FOutput.Send();
 

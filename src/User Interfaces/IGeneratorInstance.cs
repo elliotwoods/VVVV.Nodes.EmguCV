@@ -43,6 +43,53 @@ namespace VVVV.Nodes.EmguCV
 		/// </summary>
 		protected virtual void Generate() { }
 
+		private Object FLockStatus = new Object();
+		private string FStatus;
+		public string Status
+		{
+			get
+			{
+				lock (FLockStatus)
+					return FStatus;
+			}
+			set
+			{
+				lock (FLockStatus)
+					FStatus = value;
+			}
+		}
+
+		protected bool FEnabled;
+		public bool Enabled
+		{
+			get
+			{
+				return FEnabled;
+			}
+			set
+			{
+				if (FEnabled == value)
+					return;
+
+				FEnabled = value;
+				if (FEnabled)
+					Enable();
+				else
+					Disable();
+
+			}
+		}
+
+		/// <summary>
+		/// Override this function if you need to do something when FEnabled goes high.
+		/// </summary>
+		virtual protected void Enable() { }
+
+		/// <summary>
+		/// Override this function if you need to do something when FEnabled goes low.
+		/// </summary>
+		virtual protected void Disable() { }
+
 		virtual public void Dispose()
 		{
 

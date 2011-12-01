@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public class ProcessDestination<T> where T : IDestinationInstance, new()
+	public class ProcessDestination<T> : IDisposable where T : IDestinationInstance, new()
 	{
 		CVImageInputSpread FInput;
 		public CVImageInputSpread Input { get { return FInput; } }
@@ -16,6 +16,7 @@ namespace VVVV.Nodes.EmguCV
 
 		Thread FThread;
 		bool FThreadRunning = false;
+		Object FLockProcess = new Object();
 
 		public ProcessDestination(ISpread<CVImageLink> inputPin)
 		{
@@ -31,18 +32,27 @@ namespace VVVV.Nodes.EmguCV
 			{
 				if (FInput.Connected)
 				{
-					for (int i = 0; i < SliceCount; i++)
+					lock (FLockProcess)
 					{
-						if (!FInput[i].Allocated)
-							continue;
+						for (int i = 0; i < SliceCount; i++)
+						{
+							if (!FInput[i].Allocated)
+								continue;
 
-						if (FInput[i].ImageAttributesChanged || FProcess[i].NeedsInitialise())
-							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
-								FProcess[iProcess].Initialise();
-
-						if (FInput[i].ImageChanged)
-							for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
-								FProcess[iProcess].Process();
+							if (FInput[i].ImageAttributesChanged || FProcess[i].NeedsInitialise())
+								for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+									FProcess[iProcess].Initialise();
+							try
+							{
+								if (FInput[i].ImageChanged)
+									for (int iProcess = i; iProcess < SliceCount; iProcess += (FInput.SliceCount > 0 ? FInput.SliceCount : int.MaxValue))
+										FProcess[iProcess].Process();
+							}
+							catch (Exception e)
+							{
+								ImageUtils.Log(e);
+							}
+						}
 					}
 
 					Thread.Sleep(1);
@@ -103,18 +113,21 @@ namespace VVVV.Nodes.EmguCV
 			if (!FInput.CheckInputSize() && FProcess.SliceCount==FInput.SliceCount)
 				return false;
 
-			if (FInput[0] == null)
-				SpreadMax = 0;
-
-			for (int i = FProcess.SliceCount; i < SpreadMax; i++)
-				Add(FInput[i]);
-
-			if (FProcess.SliceCount > SpreadMax)
+			lock (FLockProcess)
 			{
-				for (int i = SpreadMax; i < FProcess.SliceCount; i++)
-					Dispose(i);
+				if (FInput[0] == null)
+					SpreadMax = 0;
 
-				FProcess.SliceCount = SpreadMax;
+				for (int i = FProcess.SliceCount; i < SpreadMax; i++)
+					Add(FInput[i]);
+
+				if (FProcess.SliceCount > SpreadMax)
+				{
+					for (int i = SpreadMax; i < FProcess.SliceCount; i++)
+						Dispose(i);
+
+					FProcess.SliceCount = SpreadMax;
+				}
 			}
 
 			return true;
@@ -137,14 +150,26 @@ namespace VVVV.Nodes.EmguCV
 			}
 		}
 
-		protected void Dispose(int i)
-		{
-			FProcess[i].Dispose();
-		}
-
 		protected void Resize(int count)
 		{
 			FProcess.SliceCount = count;
 		}
+
+		public void Dispose()
+		{
+			StopThread();
+
+			foreach (var process in FProcess)
+				process.Dispose();
+
+			FInput.Dispose();
+		}
+
+		protected void Dispose(int i)
+		{
+			FProcess[i].Dispose();
+			FInput[i].Dispose();
+		}
+
 	}
 }

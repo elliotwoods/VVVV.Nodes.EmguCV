@@ -1,0 +1,81 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\Thread speed test.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\Thread speed test.v4p" systemname="Thread speed test">
+   <BOUNDS height="10665" left="2610" top="8055" type="Window" width="12090">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="..\modules\ImageQuad(EmguCV DX9).v4p" id="4" nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\ImageQuad(EmguCV DX9).v4p" systemname="ImageQuad(EmguCV DX9)" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\">
+   <BOUNDS height="100" left="1620" top="2220" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="8670" left="6360" top="3045" type="Window" width="10590">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="1995" top="2865" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1995" top="2865" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="5145" top="10065" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\plugins\VVVV.Nodes.EmguCV.dll" id="17" nodename="Framerate (EmguCV)" systemname="Framerate (EmguCV)">
+   <BOUNDS height="100" left="6150" top="645" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="Filtered">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6135" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6135" top="1170" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Y Input Value" srcnodeid="17" srcpinname="Framerate">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\modules\ImageQuad(EmguCV DX9).v4p" id="22" nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\ImageQuad(EmguCV DX9).v4p" systemname="ImageQuad(EmguCV DX9)" path="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\">
+   <BOUNDS height="100" left="5640" top="2985" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS height="8670" left="6360" top="3045" type="Window" width="10590">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="6015" top="3630" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="6015" top="3630" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="5145" top="10065" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="22" srcpinname="Layer">
+   </LINK>
+   <NODE systemname="VideoIn (EmguCV)" filename="..\plugins\VVVV.Nodes.EmguCV.dll" nodename="VideoIn (EmguCV)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="1500" top="795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Image" dstnodeid="4" dstpinname="Image">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Image" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Image" dstnodeid="22" dstpinname="Image">
+   </LINK>
+   </PATCH>

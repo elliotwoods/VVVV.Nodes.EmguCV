@@ -61,7 +61,11 @@ namespace VVVV.Nodes.EmguCV
 		public override void Process()
 		{
 			FChannelCount = ImageUtils.CountChannels(FInput.ImageAttributes.ColourFormat);
+
+			if (!FInput.LockForReading())
+				return;
 			CvInvoke.cvAvgSdv(FInput.CvMat, ref FAverage, ref FStandardDeviation, IntPtr.Zero);
+			FInput.ReleaseForReading();
 		}
 
 	}

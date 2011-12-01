@@ -19,7 +19,8 @@ namespace VVVV.Nodes.EmguCV
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			foreach (var output in FOutput)
+				output.Dispose();
 		}
 
 		public void AlignOutputPins()

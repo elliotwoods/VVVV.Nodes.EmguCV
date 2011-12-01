@@ -30,11 +30,11 @@ namespace VVVV.Nodes.EmguCV
 			FPeriod = FTimer.Elapsed;
 
 			double thisFrame = 1.0d / FPeriod.TotalSeconds;
-			if (Mode == FramerateNodeMode.Raw && !double.IsNaN(Framerate))
+			if (Mode == FramerateNodeMode.Raw || double.IsNaN(Framerate) || double.IsInfinity(Framerate))
 				Framerate = thisFrame;
 			else
 			{
-				Framerate = 0.5 * (Framerate + thisFrame);
+				Framerate = 0.9 * Framerate + 0.1 * thisFrame;
 			}
 
 			FTimer.Reset();

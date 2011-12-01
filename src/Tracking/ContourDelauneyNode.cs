@@ -46,14 +46,33 @@ namespace VVVV.Nodes.EmguCV
 
 		#endregion fields & pins
 
+		#region thread
+		Thread FThread;
+
+		Object FLockPoints = new Object();
+		Spread<PointF[]> FPoints = new Spread<PointF[]>(0);
+
+		Object FLockTriangles = new Object();
+		Spread<Triangle2DF[]> FTriangles = new Spread<Triangle2DF[]>(0);
+
+		bool FApply = false;
+		bool FResults = false;
+		#endregion
+
 		[ImportingConstructor]
 		public ContourDelauneyNode(IPluginHost host)
 		{
-
+			FThread = new Thread(ThreadedFunction);
+			FThread.Start();
 		}
 
 		public void Dispose()
 		{
+			if (FThread != null)
+			{
+				FThread.Abort();
+				FThread = null;
+			}
 		}
 
 		//called when data for any output pin is requested
@@ -67,37 +86,97 @@ namespace VVVV.Nodes.EmguCV
 				return;
 			}
 
-			FPinOutPosition.SliceCount = SpreadMax;
-			FPinOutArea.SliceCount = SpreadMax;
-			FPinOutCentroid.SliceCount = SpreadMax;
-
-			Triangle2DF[] delaunayTriangles;
-			PlanarSubdivision subdivision;
-			for (int i = 0; i < SpreadMax; i++)
+			if (FPinInApply[0])
 			{
-				if (!FPinInApply[i])
-					continue;
+				FApply = true;
 
-				if (FPinInInput[i].Points.Length > 1000)
-					continue;
-
-				subdivision = new PlanarSubdivision(FPinInInput[i].Points.Clone() as PointF[]);
-				delaunayTriangles = subdivision.GetDelaunayTriangles();
-
-				FPinOutPosition[i].SliceCount = delaunayTriangles.Length * 3;
-				FPinOutArea[i].SliceCount = delaunayTriangles.Length;
-				FPinOutCentroid[i].SliceCount = delaunayTriangles.Length;
-
-				for (int j = 0; j < delaunayTriangles.Length; j++)
+				lock (FLockPoints)
 				{
-					FPinOutPosition[i][j * 3 + 0] = new Vector2D(delaunayTriangles[j].V0.X, delaunayTriangles[j].V0.Y);
-					FPinOutPosition[i][j * 3 + 1] = new Vector2D(delaunayTriangles[j].V1.X, delaunayTriangles[j].V1.Y);
-					FPinOutPosition[i][j * 3 + 2] = new Vector2D(delaunayTriangles[j].V2.X, delaunayTriangles[j].V2.Y);
+					FPoints.SliceCount = SpreadMax;
 
-					FPinOutArea[i][j] = delaunayTriangles[j].Area;
-					FPinOutCentroid[i][j] = new Vector2D(delaunayTriangles[j].Centeroid.X, delaunayTriangles[j].Centeroid.Y);
+					for (int i = 0; i < SpreadMax; i++)
+						FPoints[i] = FPinInInput[i].Points.Clone() as PointF[];
+				}
+			}
+
+			if (FResults)
+			{
+				lock (FLockTriangles)
+				{
+					FPinOutPosition.SliceCount = FTriangles.SliceCount;
+					FPinOutArea.SliceCount = FTriangles.SliceCount;
+					FPinOutCentroid.SliceCount = FTriangles.SliceCount;
+					
+					for (int i = 0; i < FTriangles.SliceCount; i++)
+					{
+						FPinOutPosition[i].SliceCount = FTriangles[i].Length * 3;
+						FPinOutArea[i].SliceCount = FTriangles[i].Length;
+						FPinOutCentroid[i].SliceCount = FTriangles[i].Length;
+
+						for (int j = 0; j < FTriangles[i].Length; j++)
+						{
+							FPinOutPosition[i][j * 3 + 0] = new Vector2D(FTriangles[i][j].V0.X, FTriangles[i][j].V0.Y);
+							FPinOutPosition[i][j * 3 + 1] = new Vector2D(FTriangles[i][j].V1.X, FTriangles[i][j].V1.Y);
+							FPinOutPosition[i][j * 3 + 2] = new Vector2D(FTriangles[i][j].V2.X, FTriangles[i][j].V2.Y);
+
+							FPinOutArea[i][j] = FTriangles[i][j].Area;
+							FPinOutCentroid[i][j] = new Vector2D(FTriangles[i][j].Centeroid.X, FTriangles[i][j].Centeroid.Y);
+						}
+					}
 				}
 
+			}
+		}
+
+		public void ThreadedFunction()
+		{
+			while (true)
+			{
+				while (!FApply)
+					Thread.Sleep(5);
+
+				int SliceCount;
+				Spread<PointF[]> points;
+				Spread<Triangle2DF[]> triangles;
+
+				lock (FLockPoints)
+				{
+					SliceCount = FPoints.SliceCount;
+					points = new Spread<PointF[]>(SliceCount);
+
+					for (int i = 0; i < SliceCount; i++)
+					{
+						points[i] = new PointF[FPoints[i].Length];
+						Array.Copy(FPoints[i], points[i], FPoints[i].Length);
+					}
+	
+				}
+
+				triangles = new Spread<Triangle2DF[]>(SliceCount);
+
+				for (int i = 0; i < SliceCount; i++)
+				{
+					PlanarSubdivision subdivision = new PlanarSubdivision(points[i] as PointF[]);
+					triangles[i] = subdivision.GetDelaunayTriangles(false);
+				}
+
+				lock (FTriangles)
+				{
+					FTriangles.SliceCount = SliceCount;
+
+					Triangle2DF t;
+					for (int i = 0; i < SliceCount; i++)
+					{
+						FTriangles[i] = new Triangle2DF[triangles[i].Length];
+						for (int j = 0; j < triangles[i].Length; j++ )
+						{
+							t = triangles[i][j];
+							FTriangles[i][j] = new Triangle2DF(t.V0, t.V1, t.V2);
+						}
+					}
+				}
+
+				FResults = true;
 			}
 		}
 
