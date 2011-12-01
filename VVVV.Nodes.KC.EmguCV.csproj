@@ -8,7 +8,7 @@
     <RootNamespace>VVVV.Nodes.EmguCV</RootNamespace>
     <AssemblyName>VVVV.Nodes.EmguCV</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>Package\Plugins\</OutputPath>
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
