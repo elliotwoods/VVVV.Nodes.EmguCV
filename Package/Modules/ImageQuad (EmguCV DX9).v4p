@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\ImageQuad(EmguCV DX9).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Modules\ImageQuad.v4p" systemname="ImageQuad">
-   <BOUNDS height="8670" left="6360" top="3045" type="Window" width="10590">
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\modules\ImageQuad (EmguCV DX9).v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Modules\ImageQuad.v4p" systemname="ImageQuad">
+   <BOUNDS height="8670" left="13350" top="4395" type="Window" width="10590">
    </BOUNDS>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="100" left="3765" top="210" type="Node" width="100">
@@ -113,6 +113,8 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Spread Count" srcnodeid="9" srcpinname="Whole Part">
    </LINK>
@@ -122,6 +124,8 @@
    <PIN pinname="Spread Count" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
    </PIN>
    </NODE>
    <LINK dstnodeid="12" dstpinname="Spread Count" srcnodeid="10" srcpinname="Output">
