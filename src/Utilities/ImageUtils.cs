@@ -71,6 +71,8 @@ namespace VVVV.Nodes.EmguCV
 					return new Image<Gray, byte>(width, height);
 				case TColourFormat.L16:
 					return new Image<Gray, ushort>(width, height);
+				case TColourFormat.L32S:
+					return new Image<Gray, int>(width, height);
 				case TColourFormat.L32F:
 					return new Image<Gray, float>(width, height);
 

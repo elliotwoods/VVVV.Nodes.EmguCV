@@ -6,9 +6,9 @@ using System.Drawing;
 
 namespace VVVV.Nodes.EmguCV
 {
-	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, RGBA32F, L8, L16, L32F};
+	public enum TColourFormat { UnInitialised, RGB8, RGB32F, RGBA8, RGBA32F, L8, L16, L32S, L32F };
 
-	public enum TChannelFormat { UnInitialised, Byte, UShort, Float};
+	public enum TChannelFormat { UnInitialised, Byte, UShort, UInt, Float};
 
 	public class ImageAttributesChangedEventArgs : EventArgs
 	{
@@ -104,7 +104,15 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return this.BytesPerPixel * (uint)this.Width * (uint)this.Height;
+				return this.BytesPerPixel * this.PixelsPerFrame;
+			}
+		}
+
+		public uint PixelsPerFrame
+		{
+			get
+			{
+				return (uint)this.Width * (uint)this.Height;
 			}
 		}
 

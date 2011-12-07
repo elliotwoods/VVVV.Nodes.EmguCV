@@ -113,7 +113,7 @@ namespace VVVV.Nodes.EmguCV
 		/// Copy the input image into the back buffer
 		/// </summary>
 		/// <param name="source">Input image</param>
-		public void SetImage(CVImage source)
+		public void Send(CVImage source)
 		{
 			bool Reinitialise;
 
@@ -130,7 +130,7 @@ namespace VVVV.Nodes.EmguCV
 		/// Copy the input image into the back buffer
 		/// </summary>
 		/// <param name="source">Input image</param>
-		public void SetImage(IImage source)
+		public void Send(IImage source)
 		{
 			bool Reinitialise;
 
@@ -138,7 +138,9 @@ namespace VVVV.Nodes.EmguCV
 				Reinitialise = FBackBuffer.SetImage(source);
 
 			if (Reinitialise)
+			{
 				InitialiseFrontFromBack();
+			}
 
 			Swap();
 		}

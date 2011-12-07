@@ -17,7 +17,7 @@ namespace VVVV.Nodes.EmguCV
 		/// </summary>
 		public void Send()
 		{
-			Link.SetImage(Image);
+			Link.Send(Image);
 		}
 
 		/// <summary>
@@ -25,7 +25,7 @@ namespace VVVV.Nodes.EmguCV
 		/// </summary>
 		public void Send(CVImage image)
 		{
-			Link.SetImage(image);
+			Link.Send(image);
 		}
 
 		public CVImageOutput()

@@ -154,6 +154,10 @@ namespace VVVV.Nodes.EmguCV
 					{
 						rect.Data.WriteRange(FInput.Data, FInput.ImageAttributes.BytesPerFrame);
 					}
+					catch (Exception e)
+					{
+						ImageUtils.Log(e);
+					}
 					finally
 					{
 						FInput.ReleaseForReading();

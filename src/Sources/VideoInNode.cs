@@ -68,7 +68,10 @@ namespace VVVV.Nodes.EmguCV
 		{
 			get
 			{
-				return (int) (1.0 / FFramePeriod.TotalSeconds);
+				if (FFramePeriod.TotalSeconds > 0)
+					return (int)(1.0 / FFramePeriod.TotalSeconds);
+				else
+					return 0;
 			}
 		}
 
@@ -125,7 +128,7 @@ namespace VVVV.Nodes.EmguCV
 				{
 					IImage capbuffer = FCapture.QueryFrame();
 					if (ImageUtils.IsIntialised(capbuffer))
-						Output.SetImage(capbuffer);
+						Output.Send(capbuffer);
 				}
 
 				//allow a gap where we're not locked
