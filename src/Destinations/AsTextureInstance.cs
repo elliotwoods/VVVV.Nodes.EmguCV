@@ -127,6 +127,9 @@ namespace VVVV.Nodes.EmguCV
 				Surface srf = texture.GetSurfaceLevel(0);
 				DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
+				if (srf.Description.Width != FBufferConverted.ImageAttributes.Width || srf.Description.Height != FBufferConverted.ImageAttributes.Height)
+					return;
+
 				if (FNeedsConversion)
 				{
 					if (!FBufferConverted.Allocated)

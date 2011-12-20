@@ -36,6 +36,9 @@ _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
 
+#Archives
+.zip
+.7z
 
 #Subversion files
 .svn

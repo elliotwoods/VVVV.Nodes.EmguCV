@@ -29,7 +29,7 @@ namespace VVVV.Nodes.EmguCV
 		{
 			bool changedAttributes = FImageAttributes.CheckChanges(format, size);
 
-			if (changedAttributes)
+			if (changedAttributes || this.Allocated == false)
 			{
 				Allocate();
 				return true;

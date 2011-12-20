@@ -232,6 +232,9 @@ namespace VVVV.Nodes.EmguCV
 				case TColourFormat.RGBA8:
 					return "RGBA8";
 
+				case TColourFormat.RGBA32F:
+					return "RGBA32F";
+
 				default:
 					throw (new NotImplementedException("We haven't implemented AsString for this type"));
 			}

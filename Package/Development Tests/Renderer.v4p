@@ -1,0 +1,151 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Package\Development Tests\ImageView.v4p" filename="C:\kimchiandchips\VVVV.Research\VVVV.Nodes.EmguCV\Development Tests\ImageResize.v4p" systemname="ImageResize">
+   <BOUNDS height="10335" left="5265" top="2685" type="Window" width="15015">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="6" nodename="I (Spreads)" systemname="I (Spreads)">
+   <BOUNDS height="100" left="255" top="135" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="5460" top="1620" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="495" left="5460" top="1620" type="Box" width="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2850" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="420" left="2850" top="1770" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Real">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="FPS">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2850" top="180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2850" top="180" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="640">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5475" top="195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5475" top="195" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="480">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="21" nodename="Damper (Animation)" systemname="Damper (Animation)">
+   <BOUNDS height="100" left="2850" top="1410" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="21" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InABox" id="27" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="240" top="7905" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1830" left="240" top="7905" type="Box" width="14250">
+   </BOUNDS>
+   <BOUNDS height="5010" left="7545" top="11745" type="Window" width="6240">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="28" nodename="Timing (Debug)" systemname="Timing (Debug)">
+   <BOUNDS height="100" left="7455" top="90" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="frames per second" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="7470" top="495" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="7470" top="495" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="28" srcpinname="frames per second">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\Build\plugins\VVVV.Nodes.EmguCV.dll" id="52" nodename="VideoIn (EmguCV)" systemname="VideoIn (EmguCV)">
+   <BOUNDS height="270" left="240" top="795" type="Node" width="5295">
+   </BOUNDS>
+   <PIN pinname="Camera ID" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Image" visible="1">
+   </PIN>
+   <PIN pinname="FPS" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="52" dstpinname="Camera ID" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="52" dstpinname="Width" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="52" dstpinname="Height" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Go To Position" srcnodeid="52" srcpinname="FPS">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="52" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="InABox" filename="..\plugins\VVVV.Nodes.EmguCV.dll" id="55" nodename="Renderer (EmguCV)" systemname="Renderer (EmguCV)">
+   <BOUNDS height="100" left="780" top="9030" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="6195" left="7020" top="5760" type="Window" width="11835">
+   </BOUNDS>
+   <BOUNDS height="4875" left="255" top="2520" type="Box" width="7770">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Input" srcnodeid="52" srcpinname="Image">
+   </LINK>
+   </PATCH>

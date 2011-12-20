@@ -23,7 +23,10 @@ namespace VVVV.Nodes.EmguCV
 				FSize.Height = 1;
 
 			if (FInput.Allocated)
+			{
 				Initialise();
+				Process();
+			}
 		}
 
 		public override void Initialise()

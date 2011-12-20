@@ -9,7 +9,7 @@ namespace VVVV.Nodes.EmguCV
 {
 	public class ImageLoadInstance : IGeneratorInstance
 	{
-		string FLoadedImage = "";
+		string FFilename = "";
 		
 		public override bool NeedsThread()
 		{
@@ -20,31 +20,30 @@ namespace VVVV.Nodes.EmguCV
 		{
 			set
 			{
-				if (FLoadedImage != value)
+				if (FFilename != value)
 				{
-					LoadImage(value);
+					FFilename = value;
+					LoadImage();
 				}
 			}
 		}
 
 		public void Reload()
 		{
-			LoadImage(FLoadedImage);
+			LoadImage();
 		}
 
-		private void LoadImage(string filename)
+		private void LoadImage()
 		{
 			try
 			{
-				FOutput.Image.LoadFile(filename);
-				FLoadedImage = filename;
+				FOutput.Image.LoadFile(FFilename);
 				FOutput.Send();
 				Status = "OK";
 			}
 			catch
 			{
 				Status = "Image load failed";
-				FLoadedImage = "";
 			}
 		}
 	}
