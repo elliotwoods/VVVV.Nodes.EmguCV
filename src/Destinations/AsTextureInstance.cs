@@ -127,8 +127,13 @@ namespace VVVV.Nodes.EmguCV
 				Surface srf = texture.GetSurfaceLevel(0);
 				DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
 
-				if (srf.Description.Width != FBufferConverted.ImageAttributes.Width || srf.Description.Height != FBufferConverted.ImageAttributes.Height)
+				Size imageSize = FNeedsConversion ? FBufferConverted.ImageAttributes.Size : FInput.ImageAttributes.Size;
+
+				if (srf.Description.Width != imageSize.Width || srf.Description.Height != imageSize.Height)
+				{
+					ImageUtils.Log(new Exception("AsTextureInstance : srf dimensions don't match image dimensions"));
 					return;
+				}
 
 				if (FNeedsConversion)
 				{

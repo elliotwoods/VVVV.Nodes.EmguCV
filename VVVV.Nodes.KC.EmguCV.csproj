@@ -30,6 +30,7 @@
     <OutputPath>Package\Plugins\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL" />
     <Reference Include="Emgu.CV" />
     <Reference Include="Emgu.CV.UI" />
     <Reference Include="Emgu.Util" />

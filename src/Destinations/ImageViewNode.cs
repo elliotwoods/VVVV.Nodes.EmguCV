@@ -23,7 +23,7 @@ namespace VVVV.Nodes.EmguCV
 	Tags = "",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class ImageViewNode : UserControl, IPluginEvaluate
+	public class ImageViewNode : UserControl, IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
 
@@ -150,5 +150,11 @@ namespace VVVV.Nodes.EmguCV
 			FImageBox.Size = this.Size;
 		}
 
+
+		void IDisposable.Dispose()
+		{
+			RemoveListeners();
+			FImageBox.Dispose();
+		}
 	}
 }

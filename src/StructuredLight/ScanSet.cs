@@ -93,5 +93,15 @@ namespace VVVV.Nodes.EmguCV.StructuredLight
 
 			FDataAvailable = false;
 		}
+
+		public bool GetValue(ulong index, ref ulong output)
+		{
+			if (index > Payload.MaxIndex)
+				return false;
+
+			output = Payload.DataInverse[index];
+
+			return true;
+		}
 	}
 }

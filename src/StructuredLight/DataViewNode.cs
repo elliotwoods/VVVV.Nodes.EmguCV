@@ -21,7 +21,7 @@ namespace VVVV.Nodes.EmguCV.StructuredLight
 		[Input("Input", IsSingle = true)]
 		IDiffSpread<ScanSet> FPinInInput;
 
-		[Input("Threshold", IsSingle = true)]
+		[Input("Threshold", IsSingle = true, MinValue=0, MaxValue=1)]
 		IDiffSpread<float> FPinInThreshold;
 
 		[Output("Output")]
@@ -110,18 +110,19 @@ namespace VVVV.Nodes.EmguCV.StructuredLight
 			{
 				fixed (float* strideFixed = &FScanSet.Stride[0])
 				{
-					float threshold = FPinInThreshold[0];
+					float threshold = FPinInThreshold[0] * 255.0f;
 
 					ulong* index = indexFixed;
 					float* stride = strideFixed;
 
-					ulong decoded;
+					ulong decoded = 0;
 
 					if (factor > 0)
 					{
 						for (int i = 0; i < PixelCount; i++)
 						{
-							decoded = FScanSet.Payload.DataInverse[*index++];
+							if (!FScanSet.GetValue(*index++, ref decoded))
+								continue;
 							if (Math.Abs(*stride++) > threshold)
 								*p++ = (byte)((decoded >> factor) & ~((ulong)1 << 8));
 							else

@@ -20,8 +20,9 @@ namespace VVVV.Nodes.EmguCV.StructuredLight
 			this.Width = (uint)Width;
 			this.Height = (uint)Height;
 
+			FMaxIndex = (ulong)this.PixelCount * 2;
 			this.Data = new ulong[this.PixelCount];
-			this.DataInverse = new ulong[this.PixelCount * 2];
+			this.DataInverse = new ulong[FMaxIndex];
 			Render();
 		}
 
@@ -75,7 +76,13 @@ namespace VVVV.Nodes.EmguCV.StructuredLight
 
 		public ulong[] Data { get; protected set; }
 		public ulong[] DataInverse { get; protected set; }
-		
+
+		private ulong FMaxIndex = 0;
+		public ulong MaxIndex
+		{
+			get { return FMaxIndex; }
+		}
+
 		public abstract void Render();
 	}
 }

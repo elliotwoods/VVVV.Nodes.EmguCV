@@ -44,9 +44,9 @@ namespace VVVV.Nodes.EmguCV
 				CvInvoke.cvResize(FInput.Image.CvMat, FOutput.Image.CvMat, INTER.CV_INTER_LINEAR);
 				FOutput.Send();
 			}
-			catch
+			catch (Exception e)
 			{
-				
+				ImageUtils.Log(e);
 			}
 		}
 	}

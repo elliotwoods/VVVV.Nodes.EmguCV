@@ -35,7 +35,7 @@ namespace VVVV.Nodes.EmguCV
 	}
 
 	#region PluginInfo
-	[PluginInfo(Name = "Framerate", Category = "EmguCV", Version = "", Help = "Report the framerate that an image is being updated at", Author = "elliotwoods", Credits = "", Tags = "")]
+	[PluginInfo(Name = "Change", Category = "EmguCV", Version = "", Help = "Report the number of image frames passed through this node between MainLoop frames", Author = "elliotwoods", Credits = "", Tags = "")]
 	#endregion PluginInfo
 	public class ChangeNode : IDestinationNode<ChangeInstance>
 	{
